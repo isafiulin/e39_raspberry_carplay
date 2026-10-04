@@ -1,0 +1,16 @@
+{
+  "name": "bmw-e39-carplay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Держит сеанс CarPlay с донглом Carlinkit и слушает команды по локальному сокету",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node audio-check.cjs"
+  },
+  "dependencies": {
+    "node-carplay": "4.1.0",
+    "usb": "^2.11.0"
+  }
+}

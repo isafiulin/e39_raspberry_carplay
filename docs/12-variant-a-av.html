@@ -1,0 +1,319 @@
+<title>Вариант A: вход AV</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .q { counter-reset: none; list-style: none; padding: 0; margin: 0; }
+  .q > li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .q > li > * { grid-column: 2; min-width: 0; }
+  .q > li > .id { grid-column: 1; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 14px; color: var(--accent); padding-top: 4px; }
+  .q h3 { margin: 0 0 6px; }
+  .q p { margin: 0 0 8px; }
+  .q ul { margin: 0 0 8px; }
+  .how, .out { padding: 8px 12px; font-size: 14.5px; margin-top: 8px; }
+  .how { background: var(--surface-2); }
+  .out { background: var(--surface); border: 1px solid var(--line); }
+  .how b, .out b { font-family: "IBM Plex Sans Condensed", sans-serif; }
+  .tag { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; vertical-align: 2px; margin-left: 8px; }
+  .t-stop { background: var(--stop-soft); color: var(--stop); }
+  .t-warn { background: var(--warn-soft); color: var(--warn); }
+  .t-ok { background: var(--ok-soft); color: var(--ok); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+  .legend div { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 14.5px; }
+  .flow { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 14px; }
+  .flow h3 { margin-top: 0; }
+  .flow ol { margin-bottom: 8px; }
+  .flow .dep { font-size: 14px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · вариант A · приоритетный · состояние на 30.09.2026</p>
+  <h1>Вариант A: картинка через вход AV</h1>
+  <p class="lead">Композит с платы заходит в штатный вход AV видеомодуля, модуль показывает его на мониторе. Звук идёт отдельно, в штатный вход AUX радио, и остаётся стерео. Вариант приоритетный, потому что не трогает камеру заднего вида и не добавляет на плату ни одной детали. Но держится на двух допущениях, ни одно из которых пока не проверено на машине.</p>
+</header>
+
+<h2>Схема</h2>
+<figure>
+<svg viewBox="0 0 1000 470" role="img" aria-label="Вариант A. iPhone по Wi-Fi к донглу Carlinkit, донгл по USB к плате в багажнике. С платы композит идёт в контакты 6 и 15 белого разъёма видеомодуля, модуль отдаёт RGB на монитор. Стерео с платы идёт во вход AUX радио BM54 и дальше на динамики. Микроконтроллер платы по шине I-Bus выбирает вход AV у модуля и возвращает источник звука на AUX." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    <marker id="a-arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f7fd1"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+  <rect x="24" y="36" width="120" height="54" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="84" y="60" text-anchor="middle" font-weight="600">iPhone</text>
+  <text x="84" y="77" text-anchor="middle" font-size="11" opacity=".75">в салоне</text>
+
+  <line x1="144" y1="63" x2="186" y2="63" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#a-arr)" marker-start="url(#a-arr)"/>
+  <text x="165" y="100" text-anchor="middle" font-size="11">Wi-Fi</text>
+
+  <rect x="186" y="36" width="130" height="54" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="251" y="60" text-anchor="middle" font-weight="600">Carlinkit CCPA</text>
+  <text x="251" y="77" text-anchor="middle" font-size="11" opacity=".75">чип MFi</text>
+
+  <line x1="316" y1="63" x2="356" y2="63" stroke="currentColor" stroke-width="1.5" marker-end="url(#a-arr)"/>
+  <text x="336" y="55" text-anchor="middle" font-size="11">USB</text>
+
+  <rect x="356" y="26" width="214" height="200" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="463" y="48" text-anchor="middle" font-weight="600">Плата в багажнике</text>
+  <text x="463" y="70" text-anchor="middle" font-size="11" opacity=".75">CM4 · декод H.264</text>
+  <text x="463" y="86" text-anchor="middle" font-size="11" opacity=".75">WM8960 · стерео и микрофон</text>
+  <text x="463" y="102" text-anchor="middle" font-size="11" opacity=".75">STM32 · I-Bus, питание</text>
+  <line x1="372" y1="116" x2="554" y2="116" stroke="currentColor" stroke-width="1" opacity=".4"/>
+  <text x="463" y="136" text-anchor="middle" font-size="11" opacity=".75">ничего дополнительного</text>
+  <text x="463" y="152" text-anchor="middle" font-size="11" opacity=".75">для этого варианта не нужно</text>
+  <text x="463" y="182" text-anchor="middle" font-size="11" opacity=".75">питание Kl.30, масса и шина</text>
+  <text x="463" y="198" text-anchor="middle" font-size="11" opacity=".75">с 3-pin разъёма чейнджера</text>
+
+  <!-- video -->
+  <line x1="570" y1="70" x2="626" y2="70" stroke="#2f7fd1" stroke-width="2" marker-end="url(#a-arrB)"/>
+  <text x="598" y="62" text-anchor="middle" font-size="11" fill="#2f7fd1">композит</text>
+
+  <rect x="626" y="44" width="140" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="696" y="66" text-anchor="middle" font-weight="600">Белый 6 и 15</text>
+  <text x="696" y="82" text-anchor="middle" font-size="11" opacity=".75">контакты обжать</text>
+
+  <line x1="766" y1="70" x2="812" y2="70" stroke="currentColor" stroke-width="1.5" marker-end="url(#a-arr)"/>
+
+  <rect x="812" y="30" width="164" height="80" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="894" y="52" text-anchor="middle" font-weight="600">Видеомодуль</text>
+  <text x="894" y="68" text-anchor="middle" font-size="11" opacity=".75">режим Television → AV</text>
+  <text x="894" y="84" text-anchor="middle" font-size="11" opacity=".75">RGB на монитор</text>
+  <text x="894" y="100" text-anchor="middle" font-size="11" opacity=".75">с синего 5, 6, 7</text>
+
+  <line x1="894" y1="110" x2="894" y2="146" stroke="currentColor" stroke-width="1.5" marker-end="url(#a-arr)"/>
+  <rect x="812" y="146" width="164" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="894" y="168" text-anchor="middle" font-weight="600">Монитор 16:9</text>
+  <text x="894" y="184" text-anchor="middle" font-size="11" opacity=".75">400 × 234</text>
+
+  <!-- audio -->
+  <line x1="570" y1="168" x2="626" y2="168" stroke="#2f7fd1" stroke-width="2" marker-end="url(#a-arrB)"/>
+  <text x="598" y="160" text-anchor="middle" font-size="11" fill="#2f7fd1">стерео</text>
+
+  <rect x="626" y="142" width="140" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="696" y="164" text-anchor="middle" font-weight="600">Вход AUX радио</text>
+  <text x="696" y="180" text-anchor="middle" font-size="11" opacity=".75">разъём C: 3, 4, земля 10</text>
+  <text x="696" y="194" text-anchor="middle" font-size="11" opacity=".75">+ резистор опознавания</text>
+
+  <line x1="696" y1="200" x2="696" y2="246" stroke="currentColor" stroke-width="1.5" marker-end="url(#a-arr)"/>
+  <rect x="612" y="246" width="168" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="696" y="268" text-anchor="middle" font-weight="600">BM54 → динамики</text>
+  <text x="696" y="284" text-anchor="middle" font-size="11" opacity=".75">громкость штатной ручкой</text>
+
+  <!-- bus -->
+  <line x1="463" y1="226" x2="463" y2="330" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="120" y1="330" x2="950" y2="330" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="140" y="322" font-size="11" font-weight="600">I-Bus</text>
+  <line x1="894" y1="330" x2="894" y2="200" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/>
+  <line x1="696" y1="330" x2="696" y2="300" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/>
+
+  <rect x="120" y="356" width="400" height="92" rx="4" fill="none" stroke="currentColor" stroke-width="1"/>
+  <text x="136" y="378" font-size="11" font-weight="600">Что плата шлёт по шине</text>
+  <text x="136" y="398" font-size="11">1. выбрать вход AV у видеомодуля</text>
+  <text x="136" y="416" font-size="11">2. вернуть источник звука на AUX</text>
+  <text x="136" y="436" font-size="11" opacity=".75">оба кадра надо сначала поймать снифером</text>
+
+  <rect x="546" y="356" width="404" height="92" rx="4" fill="none" stroke="currentColor" stroke-width="1"/>
+  <text x="562" y="378" font-size="11" font-weight="600">Что плата слушает на шине</text>
+  <text x="562" y="398" font-size="11">кнопка DISPLAY, выбор источника, вход в Television</text>
+  <text x="562" y="416" font-size="11">кнопки руля и правая ручка — управление CarPlay</text>
+  <text x="562" y="436" font-size="11" opacity=".75">зажигание и засыпание шины — управление питанием</text>
+
+  </g>
+</svg>
+<figcaption>Синим выделены два аналоговых сигнала, которые формирует плата. Пунктиром — шина I-Bus: плата и слушает её, и передаёт в неё.</figcaption>
+</figure>
+
+<div class="note" style="border-left-width:6px"><b>Проверено в машине 30.09.2026. Вариант работает, и проще, чем предполагалось.</b>
+Картинкой видеомодуля можно управлять напрямую, <b>не трогая звук вообще</b>:
+<code>3B 05 BB 4F 01 00</code> показывает AV, <code>3B 05 BB 4F 02 00</code> возвращает штатный экран.
+Оба кадра отправлены нами с шины, оба сработали, <b>звук с AUX не прерывался ни разу</b>.
+<br><br>Работает это потому, что монитор при входе в Television шлёт <b>две команды разным
+адресатам</b>: <code>4F 01 00</code> ТВ-модулю про картинку и <code>4E 01 00</code> радио про звук.
+Звук пропадает из-за второй. Мы её просто не шлём.
+<br><br>Итог: для стоящей машины не нужны ни реле, ни вход камеры, ни команды радио, ни кодировка
+TV-in-Motion. Нужен трансивер шины и два кадра. Логи: <a href="../logs/README.md">logs/</a>.</div>
+
+<div class="note"><b>Тупиковая ветка, которую стоит помнить.</b> Сначала мы возвращали звук кадром
+<code>3B 05 68 4E 00 00</code>, уже находясь в AV. Это тоже работает, но плохо: с одной отправки
+доходит не всегда, монитор отбирает звук обратно при смене источника кнопкой MODE, и на экране
+остаётся невытертая надпись MUTE. Прямое управление картинкой всех этих проблем не создаёт.</div>
+
+<h2>Кадры, снятые с машины</h2>
+<p>Всё ниже поймано снифером 30.09.2026, это не реконструкция по форумам. Монитор при
+переключении в Television командует двумя адресатами сразу — видео отдельно, звук отдельно.
+Именно эта раздельность и делает вариант возможным.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кадр</th><th>Смысл</th></tr></thead>
+<tbody>
+<tr><td><code>3B 05 BB 4F 01 00 CB</code></td><td>ТВ-модулю: картинку на экран</td></tr>
+<tr><td><code>3B 05 BB 4F 02 00 C8</code></td><td>ТВ-модулю: картинку убрать</td></tr>
+<tr><td><code>3B 05 68 4E 01 00 19</code></td><td>Радио: звук забирает ТВ</td></tr>
+<tr><td><code>3B 05 68 4E 00 00 18</code></td><td><b>Радио: забирай звук обратно.</b> Наш рабочий кадр</td></tr>
+<tr><td><code>F0 04 68 48 30 E4</code> / <code>48 B0</code></td><td>Кнопка DISPLAY, нажатие и отпускание</td></tr>
+<tr><td><code>F0 04 68 48 23 F7</code> / <code>48 A3</code></td><td>Кнопка MODE</td></tr>
+<tr><td><code>F0 04 FF 48 34 77</code> / <code>48 B4</code></td><td>Кнопка MENU, широковещательно</td></tr>
+<tr><td><code>ED 05 F0 4F 11 12</code> / <code>4F 12 11</code></td><td>Монитор рапортует источник: TV или GT</td></tr>
+<tr><td><code>68 12 3B 23 62 10 41 55 58 …</code></td><td>Радио пишет на экран «AUX» — готовая обратная связь о текущем источнике</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><b>MODE в режиме ТВ мёртвый.</b> В логе четырнадцать нажатий подряд без единого
+ответа радио. Значит «крутить источники по кругу, пока не дойдёт до AUX» как способ возврата
+звука не годится, и <code>4E 00 00</code> — не просто удобнее, а единственный найденный путь.</div>
+
+<h2>На чём держится вариант</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Допущение</th><th>Состояние</th><th>Чем проверяется</th></tr></thead>
+<tbody>
+<tr><td>Лок по скорости снимается настройкой TV-in-Motion в кодировке видеомодуля</td><td><b>Не проверено, и это теперь единственный блокер варианта.</b> Сам лок подтверждён: в движении синий оверлей поверх всего. Заявлено производителем инструмента NavCoder, поддержка E39 1995–2004</td><td>Прочитать кодировку модуля ноутбуком, найти настройку, включить, проехать</td></tr>
+<tr><td>Картинку AV можно включить и выключить своей командой, не трогая звук</td><td><b>ПРОВЕРЕНО 30.09.2026.</b> <code>4F 01 00</code> и <code>4F 02 00</code> в ТВ-модуль сработали оба раза, звук с AUX не прерывался</td><td>Сделано в машине, логи <code>20260930-nash-4F-01-00.log</code> и <code>-02-00</code></td></tr>
+<tr><td>Вход AV активирован в модуле</td><td><b>Да.</b> Режим AV включался и работал во время проверки</td><td>Сделано в машине</td></tr>
+<tr><td>Контакты 6 и 15 белого разъёма свободны</td><td><b>Не проверено</b></td><td>Осмотр разъёма, контакты обжать и вставить</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Осталось одно непроверенное допущение — картинка в движении.</b> Главное сомнение варианта A, возврат звука, снято опытом в машине. Вариант A теперь основной: он не трогает камеру, не требует ни одной дополнительной детали на плате и оставляет штатный экран полностью доступным. Вариант B остаётся запасным на случай, если TV-in-Motion окажется недостижим.</div>
+
+<h2>Что подключается в машине</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кабель</th><th>Куда</th><th>Примечание</th></tr></thead>
+<tbody>
+<tr><td>3-pin, штатное гнездо из донора</td><td>Родной разъём чейнджера</td><td>+12 В Kl.30 (красно-зелёный), масса (коричневый), I-Bus (бело-красно-жёлтый). По цвету, не по номеру</td></tr>
+<tr><td>Коаксиал 75 Ом</td><td>Белый разъём видеомодуля, 6 и 15</td><td>Контакты MQS 0,63 обжать и вставить в пустые гнёзда</td></tr>
+<tr><td>Экранированная пара</td><td>Разъём C радио BM54: 3, 4, земля 10</td><td>Радио в том же багажнике. Номера контактов подтвердить по ETM и мультиметром</td></tr>
+<tr><td>Пара микрофона</td><td>Плафон в салоне</td><td>Только для звонков, штатная проводка если есть</td></tr>
+<tr><td>USB к донглу</td><td>Наружу корпуса</td><td>Сталь глушит Wi-Fi 5 ГГц</td></tr>
+<tr><td>Сервисные USB-C и HDMI</td><td>Стенка корпуса</td><td>Обслуживание без разборки</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Камера заднего вида не трогается вообще.</b> Она остаётся подключённой как сейчас: свой вход на контактах 13 и 14 белого разъёма, свой триггер на 17 синего от штатного реле. Мы в эту цепь не вмешиваемся.</div>
+
+<h2>Что на плате</h2>
+<p>Ничего сверх общей части: композитный выход, стерео на AUX с резистором опознавания, I-Bus, питание. Блок коммутации видео, ключ триггера и вход заднего хода <b>не запаиваются</b>, хотя места под них на плате зарезервированы.</p>
+
+<div class="note"><b>Пока наша картинка на экране, экран занят полностью. Проверено 30.09.2026.</b>
+При включённом нами AV кнопки MENU и DISPLAY на экране не делают <b>ничего</b>: меню машины не
+появляется, картинка не уходит. Звук при этом переключается свободно, MODE работает. Монитор
+при этом и не пытается вмешаться — ни одного <code>4F 01 00</code> или <code>4E 01 00</code> от
+него за всю проверку: он не считает себя в режиме ТВ, картинку включили мимо него.
+<br><br>Отсюда <b>обязательное</b> требование к прошивке: плата сама ловит кнопки и сама отпускает
+экран. Иначе владелец физически не сможет попасть в настройки машины.</div>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Плата увидела на шине</th><th>Что делает</th></tr></thead>
+<tbody>
+<tr><td><code>F0 04 FF 48 34</code> — MENU</td><td>Шлёт <code>4F 02 00</code>, отпускает экран, запоминает «убрано пользователем»</td></tr>
+<tr><td><code>F0 04 68 48 30</code> — DISPLAY</td><td>Переключает: убрано — шлёт <code>4F 01 00</code>, показано — <code>4F 02 00</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Так DISPLAY становится честной кнопкой «показать или скрыть CarPlay», а MENU всегда уводит
+в машину. Обе кнопки сняты с шины и лежат в логах.</p>
+
+<h2>Управление</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Событие</th><th>Что делает плата</th></tr></thead>
+<tbody>
+<tr><td>Телефон подключился</td><td>Отправить <code>3B 05 BB 4F 01 00</code>. Картинка CarPlay на экране, звук не трогается и остаётся на AUX в стерео</td></tr>
+<tr><td>Кнопка DISPLAY</td><td>Скрыть CarPlay или показать обратно</td></tr>
+<tr><td>Пользователь сам вошёл в Television кнопкой</td><td>Не мешать. Звук при этом заберёт монитор — это его право, не наша логика</td></tr>
+<tr><td>Выбран AUX с другого источника</td><td>Показать CarPlay</td></tr>
+<tr><td>Выбран другой источник звука</td><td>Вернуть модуль в штатный режим</td></tr>
+<tr><td>Пользователь сам вошёл в Television</td><td>Не мешать</td></tr>
+<tr><td>Задняя передача</td><td><b>Ничего.</b> Проверено 30.09.2026: камера перебивает нашу картинку аппаратно, после возврата на паркинг AV восстанавливается сам. Переотправлять не нужно</td></tr>
+<tr><td>CM4 грузится или поток не идёт</td><td>Модуль не переключать</td></tr>
+<tr><td>Телефон отключился</td><td>Отправить <code>3B 05 BB 4F 02 00</code>, вернуть штатный экран</td></tr>
+</tbody>
+</table>
+</div>
+<p>Подробный автомат с признаком «убрано вручную» и экраном состояния при отсутствии телефона — в <a href="02-plata-nositel.html">документе 02</a>.</p>
+
+<div class="tip"><b>Отказоустойчивость проверена 30.09.2026, оба ответа хорошие.</b>
+<ul>
+<li><b>Цикл зажигания снимает захват экрана.</b> Через 11 мс после возвращения Kl.R модуль сам
+вернул штатный источник, без команд от нас. Значит при зависании платы экран освобождается
+поворотом ключа, и аппаратный сброс на плате из критичного становится желательным.</li>
+<li><b>Камера имеет аппаратный приоритет.</b> При нашей картинке задняя передача показала камеру,
+после возврата на паркинг AV восстановился сам. Задняя передача в логике платы не участвует вообще.</li>
+</ul></div>
+
+<div class="note" style="border-left-width:6px"><b>Движение: проверено 30.09.2026, лок есть и на входе AV.</b>
+В короткой поездке с нашей картинкой на экране появился <b>синий оверлей поверх всего</b> с текстом,
+что режим не работает во время езды. Не затемнение, а полное перекрытие.
+<br><br><b>Модуль об этом в шину ничего не сообщает:</b> состояние <code>4F 11 12</code> за время
+движения вперёд не изменилось ни разу. Плата узнает о погасании только косвенно, по скорости
+от IKE кадром <code>80 05 BF 18 &lt;скорость&gt; &lt;обороты&gt;</code>.
+<br><br><b>Следствие: TV-in-Motion из желательного становится обязательным.</b> Без него CarPlay
+виден только на стоянке. Это единственное, что отделяет вариант A от готовности, и это же
+возвращает в игру <a href="13-variant-b-kamera.html">вариант B</a>: вход камеры — помощь при
+парковке, глушить его в движении незачем, и он, скорее всего, не залочен. Но это пока догадка,
+проверяется замыканием триггера на массу.</div>
+
+<h2>Риски именно этого варианта</h2>
+<ul>
+  <li><b>Кодировку можно потерять.</b> Замена модуля, чужая диагностика или сброс вернут лок, и картинка в движении пропадёт. Провод такого свойства не имеет.</li>
+  <li><b>Надпись MUTE остаётся на экране.</b> Монитор считает, что звук у ТВ, и не перерисовывает подпись. На звук не влияет, под картинкой CarPlay скорее всего не видна. Чем стирается — пока не выяснено.</li>
+  <li><b>Режим Television меняет и звук, и экран сразу.</b> Значит любое переключение затрагивает больше систем, чем в варианте B, и больше мест, где что-то пойдёт не так.</li>
+  <li><b>Перед пайкой сверить распиновку.</b> Контакты 6 и 15 подтверждены тремя независимыми источниками, но заводской схемы BMW среди них нет.</li>
+</ul>
+
+<h2>Порядок проверки</h2>
+<ol class="chk">
+<li><h3>Прочитать кодировку видеомодуля</h3><p>Только чтение, сохранить в файл. Найти TV-in-Motion, записать текущее значение. Ничего пока не менять.</p></li>
+<li><h3>Снять кадры на шине</h3><p><b>Сделано 30.09.2026.</b> Кнопки, вход и выход из Television, команды видео и звука. Лежат в <a href="../logs/README.md">logs/</a>.</p></li>
+<li><h3>Управлять картинкой самим</h3><p><b>Сделано 30.09.2026, получилось.</b> Отправлены <code>3B 05 BB 4F 01 00</code> и <code>3B 05 BB 4F 02 00</code>: картинка AV включилась и выключилась по нашей команде, звук с AUX не прерывался.</p></li>
+<li><h3>Включить TV-in-Motion</h3><p>Только после того, как сохранена исходная кодировка. Проехать и проверить картинку.</p></li>
+<li><h3>Завести настоящий композит</h3><p>Обжать контакты, подать сигнал с Pi на 6 и 15, повторить проверку целиком.</p></li>
+</ol>
+
+<div class="tip"><b>Если пункт 3 или пункт 4 провалится</b>, вариант A закрыт и работа идёт по <a href="13-variant-b-kamera.html">варианту B</a>. Общая часть платы от этого не меняется.</div>
+
+</div>

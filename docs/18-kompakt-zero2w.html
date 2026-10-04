@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Компакт на Zero 2 W</title>
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+    --w-pwr: #b3261e; --w-bus: #1d6b3a; --w-vid: #0b5fa5; --w-aud: #b36a00; --w-usb: #6b4aa0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+      --w-pwr: #f08080; --w-bus: #74c790; --w-vid: #5aa2f0; --w-aud: #e2a84a; --w-usb: #b79cf0;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    --w-pwr: #f08080; --w-bus: #74c790; --w-vid: #5aa2f0; --w-aud: #e2a84a; --w-usb: #b79cf0;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  pre { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 13.5px; background: var(--mono-bg); padding: 10px 14px; overflow-x: auto; margin: 0 0 14px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .stop { background: var(--stop-soft); border-left: 3px solid var(--stop); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .stop b { color: var(--stop); }
+  figure { margin: 0 0 16px; background: var(--surface); border: 1px solid var(--line); padding: 10px; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 14px; color: var(--muted); padding: 8px 4px 2px; max-width: 80ch; }
+  svg text { font-family: "IBM Plex Sans", Arial, sans-serif; fill: var(--ink); font-size: 13px; }
+  svg .m { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 11.5px; }
+  svg .s { fill: var(--muted); font-size: 12px; }
+  svg .b { font-weight: 600; font-size: 14px; }
+  svg .box { fill: var(--surface-2); stroke: var(--ink); stroke-width: 1.5; }
+  svg .out { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 4; }
+  svg .w { fill: none; stroke-width: 2.5; }
+  svg .pwr { stroke: var(--w-pwr); } svg .bus { stroke: var(--w-bus); } svg .vid { stroke: var(--w-vid); }
+  svg .aud { stroke: var(--w-aud); } svg .usb { stroke: var(--w-usb); }
+  svg .tpwr { fill: var(--w-pwr); } svg .tbus { fill: var(--w-bus); } svg .tvid { fill: var(--w-vid); }
+  svg .taud { fill: var(--w-aud); } svg .tusb { fill: var(--w-usb); }
+  svg .dot { stroke: none; }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · компактная версия · Pi Zero 2 W · схема подключения и пайки</p>
+  <h1>Компакт на Zero 2 W</h1>
+  <p class="lead">Всё, что стоит в машине: Zero 2 W с шляпой WM8960, один чип L9637D на шину и модуль питания. Донгл снаружи корпуса. Отдельных плат нет, KKL-кабель, Nucleo и composite-кабель с джеком выпадают. Чертежи ниже. То, что не сверено по даташиту или не проверено в машине, помечено.</p>
+</header>
+
+<div class="note"><b>Статус.</b> Это черновик схемы для проверки на столе, не готовый к машине проект. Три места помечены «сверить»: пятаки USB на Zero 2 W, выводы линейного выхода на HAT и питание от зажигания (раздел 4). Пока они не закрыты, паять навсегда не надо.</div>
+
+<h2>1. Общая схема</h2>
+<figure>
+<svg viewBox="0 0 960 600" role="img" aria-label="Общая схема соединений компактной версии">
+  <!-- connector -->
+  <rect class="box" x="20" y="30" width="150" height="110"/>
+  <text class="b" x="30" y="52">Разъём чейнджера</text>
+  <text class="s" x="30" y="68">3-pin, в багажнике</text>
+  <text class="m" x="30" y="92">+12 В (Kl.30)</text>
+  <text class="m" x="30" y="110">Масса</text>
+  <text class="m" x="30" y="128">I-Bus</text>
+  <!-- power chain -->
+  <path class="w pwr" d="M170 88 H230"/>
+  <rect class="box" x="230" y="68" width="70" height="40"/><text x="248" y="85">F 2 А</text><text class="s" x="240" y="100">предохр.</text>
+  <path class="w pwr" d="M300 88 H340"/>
+  <rect class="box" x="340" y="68" width="70" height="40"/><text x="358" y="85">TVS</text><text class="s" x="346" y="100">SMBJ24A</text>
+  <path class="w pwr" d="M410 88 H450"/>
+  <rect class="box" x="450" y="58" width="140" height="60"/><text class="b" x="470" y="82">12 → 5 В, 3 А</text><text class="s" x="462" y="100">залитый, вход 9–36 В</text>
+  <path class="w pwr" d="M590 88 H620 V190"/>
+  <text class="s" x="628" y="150">5 В</text>
+  <!-- +12 branch to L9637D -->
+  <path class="w pwr" d="M215 88 V300 H210"/><circle class="dot tpwr" cx="215" cy="88" r="4"/>
+  <!-- Pi block -->
+  <rect class="box" x="330" y="190" width="310" height="215"/>
+  <text class="b" x="345" y="212">Pi Zero 2 W + WM8960 HAT</text>
+  <text class="m" x="345" y="238">5 В  → пины 2 и 4</text>
+  <text class="m" x="345" y="260">UART GPIO14 / 15 (пины 8, 10)</text>
+  <text class="m" x="345" y="282">3,3 В → пин 1 (питание L9637D)</text>
+  <text class="m" x="345" y="304">USB-пятаки (D+, D−, GND, 5 В)</text>
+  <text class="m" x="345" y="326">пятак TV + GND (композит)</text>
+  <text class="m" x="345" y="348">линейный выход L, R, GND (HAT)</text>
+  <text class="s" x="345" y="378">к шляпе на I2S, GPIO 2, 3, 18–21 заняты</text>
+  <text class="s" x="345" y="394">тепло — через прокладку в стенку корпуса</text>
+  <!-- L9637D -->
+  <rect class="box" x="40" y="280" width="160" height="110"/>
+  <text class="b" x="52" y="304">L9637D</text><text class="s" x="52" y="320">SOP8 на переходнике</text>
+  <text class="s" x="52" y="342">вывод 6 K ↑</text><text class="s" x="52" y="358">выв. 7 VS →</text><text class="s" x="52" y="374">выв. 1, 3, 4 ↔ Pi</text>
+  <path class="w bus" d="M95 128 V280"/><circle class="dot tbus" cx="95" cy="128" r="4"/>
+  <path class="w bus" d="M200 330 H330"/><text class="m" x="236" y="324">RX</text>
+  <path class="w bus" d="M200 352 H330"/><text class="m" x="236" y="346">TX</text>
+  <path class="w bus" d="M200 374 H330"/><text class="m" x="236" y="368">3,3 В</text>
+  <!-- USB / dongle -->
+  <path class="w usb" d="M640 304 H760"/>
+  <rect class="box" x="760" y="270" width="180" height="70"/>
+  <text class="b" x="772" y="294">Carlinkit CCPA</text><text class="s" x="772" y="312">снаружи корпуса,</text><text class="s" x="772" y="328">стороной в салон</text>
+  <path class="out" d="M740 250 V360"/><text class="s" x="682" y="262">стенка корпуса</text>
+  <text class="s" x="760" y="360">Wi-Fi к телефону</text>
+  <!-- video -->
+  <path class="w vid" d="M410 405 V490"/>
+  <rect class="box" x="300" y="490" width="220" height="80"/>
+  <text class="b" x="312" y="512">Видеомодуль, X18806</text>
+  <text class="m" x="312" y="534">TV → контакт 6 (видео)</text><text class="m" x="312" y="552">GND → контакт 15 (масса)</text>
+  <text class="s" x="420" y="450">композит, 75 Ом</text>
+  <!-- audio -->
+  <path class="w aud" d="M590 405 V490"/>
+  <rect class="box" x="540" y="490" width="400" height="80"/>
+  <text class="b" x="552" y="512">Радио BM54, разъём C (вход AUX)</text>
+  <text class="m" x="552" y="534">L → 3, R → 4, масса → 10</text><text class="m" x="552" y="552">резистор 47 кОм между L и R, у разъёма</text>
+  <text class="s" x="600" y="450">стерео, линейный уровень</text>
+  <text class="s" x="20" y="470">Красный: питание</text>
+  <text class="s" x="20" y="488">Зелёный: шина</text>
+  <text class="s" x="20" y="506">Синий: видео</text>
+  <text class="s" x="20" y="524">Оранжевый: звук</text>
+  <text class="s" x="20" y="542">Фиолетовый: USB</text>
+  <text class="s" x="20" y="566">Масса общая, не рисуется.</text>
+</svg>
+<figcaption>Шесть соединений. Донгл с платой связан только USB, за стенкой корпуса. Линия I-Bus из разъёма чейнджера идёт в единственный чип L9637D.</figcaption>
+</figure>
+
+<h2>2. Схема пайки трансивера шины</h2>
+<p>Та же схема, что на стенде в <code>docs/06-stend-shiny.html</code>, только вместо Nucleo чип сидит на UART Pi. Подтяжка K на +12 В не нужна: в машине её обеспечивает радио.</p>
+<figure>
+<svg viewBox="0 0 960 360" role="img" aria-label="Распайка L9637D">
+  <rect class="box" x="380" y="40" width="160" height="240" rx="6"/>
+  <text class="b" x="418" y="64">L9637D</text><text class="s" x="408" y="82">SO-8, вид сверху</text>
+  <circle cx="394" cy="56" r="5" fill="none" stroke="currentColor"/><text class="s" x="402" y="262">метка — у вывода 1</text>
+  <!-- left pins 1..4 -->
+  <g class="m">
+    <text x="392" y="110">1 RX</text><text x="392" y="160">2 LO</text><text x="392" y="210">3 VCC</text><text x="392" y="250">4 TX</text>
+  </g>
+  <g class="m">
+    <text x="478" y="250">5 GND</text><text x="478" y="210">6 K</text><text x="478" y="160">7 VS</text><text x="478" y="110">8 LI</text>
+  </g>
+  <!-- left wires -->
+  <path class="w bus" d="M380 106 H260"/><rect class="box" x="60" y="86" width="200" height="40"/><text class="m" x="72" y="104">GPIO15 RXD</text><text class="s" x="72" y="119">Pi, пин 10</text>
+  <path class="w" style="stroke:var(--muted);stroke-dasharray:4 4" d="M380 156 H320"/><text class="s" x="270" y="160">никуда</text>
+  <path class="w pwr" d="M380 206 H260"/><rect class="box" x="60" y="186" width="200" height="40"/><text class="m" x="72" y="204">3,3 В</text><text class="s" x="72" y="219">Pi, пин 1 + C 100 нФ на землю</text>
+  <path class="w bus" d="M380 246 H260"/><rect class="box" x="60" y="226" width="200" height="40"/><text class="m" x="72" y="244">GPIO14 TXD</text><text class="s" x="72" y="259">Pi, пин 8</text>
+  <!-- right wires -->
+  <path class="w" style="stroke:var(--muted)" d="M540 106 H640"/><rect class="box" x="640" y="86" width="240" height="40"/><text class="m" x="652" y="104">масса</text><text class="s" x="652" y="119">вывод 8 — не оставлять висеть</text>
+  <path class="w pwr" d="M540 156 H640"/><rect class="box" x="640" y="136" width="240" height="40"/><text class="m" x="652" y="154">+12 В после TVS</text><text class="s" x="652" y="169">+ C 100 нФ на землю у вывода</text>
+  <path class="w bus" d="M540 206 H640"/><rect class="box" x="640" y="186" width="240" height="40"/><text class="m" x="652" y="204">провод I-Bus</text><text class="s" x="652" y="219">контакт чейнджера, по прозвонке</text>
+  <path class="w" style="stroke:var(--muted)" d="M540 246 H640"/><rect class="box" x="640" y="226" width="240" height="40"/><text class="m" x="652" y="244">масса</text><text class="s" x="652" y="259">общая с Pi и разъёмом</text>
+  <text class="s" x="60" y="320">Нумерация SO-8 против часовой от метки, как в даташите ST. В схеме выше левые выводы 1–4 сверху вниз, правые 5–8 снизу вверх.</text>
+</svg>
+<figcaption>Чип с двумя конденсаторами и без резисторов. Отдельная плата под него не нужна: хватает переходника SOP8 из закупленного.</figcaption>
+</figure>
+
+
+<h2>3. Таблица проводов</h2>
+<div class="tablewrap"><table>
+<tr><th>Откуда</th><th>Куда</th><th>Цвет на схеме</th><th>Заметка</th></tr>
+<tr><td>Чейнджер, +12 В</td><td>F 2 А → TVS → вход модуля 12→5 В</td><td>питание</td><td>Контакт найти прозвонкой, по <code>docs/10</code> номера из E38 не переносить</td></tr>
+<tr><td>Модуль 12→5 В, выход</td><td>Zero: пины 2 и 4 (5 В), пин 6 (масса)</td><td>питание</td><td>Не через micro-USB</td></tr>
+<tr><td>Чейнджер, +12 В (после TVS)</td><td>L9637D, вывод 7</td><td>питание</td><td>+ 100 нФ рядом</td></tr>
+<tr><td>Чейнджер, I-Bus</td><td>L9637D, вывод 6</td><td>шина</td><td>скорость 9600 8E1</td></tr>
+<tr><td>L9637D, вывод 1 (RX)</td><td>Zero, GPIO15, пин 10</td><td>шина</td><td></td></tr>
+<tr><td>L9637D, вывод 4 (TX)</td><td>Zero, GPIO14, пин 8</td><td>шина</td><td></td></tr>
+<tr><td>L9637D, вывод 3 (VCC)</td><td>Zero, 3,3 В, пин 1</td><td>шина</td><td>уровни RX и TX привязаны к VCC, преобразователь не нужен</td></tr>
+<tr><td>L9637D, выводы 5 и 8</td><td>масса</td><td>шина</td><td></td></tr>
+<tr><td>Zero, пятак TV</td><td>контакт 6 разъёма X18806 (через MQS)</td><td>видео</td><td>75 Ом экранированный кабель, экран на контакт 15</td></tr>
+<tr><td>Zero, GND рядом с TV</td><td>контакт 15 разъёма X18806</td><td>видео</td><td></td></tr>
+<tr><td>HAT, линейный выход L</td><td>радио, разъём C, контакт 3</td><td>звук</td><td><b>сверить</b>, какая ножка джека HAT — L, прозвонкой</td></tr>
+<tr><td>HAT, линейный выход R</td><td>радио, разъём C, контакт 4</td><td>звук</td><td></td></tr>
+<tr><td>HAT, масса джека</td><td>радио, разъём C, контакт 10</td><td>звук</td><td></td></tr>
+<tr><td>Между L и R у разъёма радио</td><td>резистор 47 кОм</td><td>звук</td><td>измерено 01.10: порог опознавания AUX лежит между 100 и 220 кОм</td></tr>
+<tr><td>Zero, USB-пятаки</td><td>донгл, провод USB</td><td>USB</td><td><b>сверить</b> пятаки D+, D−, GND, 5 В по схеме Zero 2 W</td></tr>
+</table></div>
+
+<h2>4. Что ещё не решено</h2>
+<div class="stop"><b>Питание от зажигания.</b> Разъём чейнджера даёт постоянный +12 В (Kl.30). Zero 2 W с шляпой и донглом потребляет сотни миллиампер, даже остановленная Pi берёт заметный ток. Так аккумулятор сядет за недели. Раньше это решал отдельный микроконтроллер на шине. Теперь возможны три пути:</div>
+<ul>
+  <li><b>Взять питание с коммутируемой линии</b> (Kl.15 или аксессуары), например через предохранитель в блоке. Проще всего, ничего не добавляет. Минус: питание пропадает сразу, система должна пережить жёсткое выключение (read-only файловая система).</li>
+  <li><b>Постоянный +12 В и реле</b>, которое включается по сигналу зажигания. Тоже одна деталь, но нужно ещё место и проводка.</li>
+  <li><b>Оставить Nucleo</b> дежурным: возвращает вторую плату, зато умеет мягкое выключение.</li>
+</ul>
+<p>Мой выбор для первого макета: коммутируемая линия и read-only система. Решить надо до сборки в корпус.</p>
+
+<h2>5. Что поменять в ПО</h2>
+<p>Предположительные правки, ни одна не проверена на Zero 2 W:</p>
+<pre># /boot/firmware/config.txt
+dtoverlay=disable-bt        # отдать быстрый UART выводам 14 и 15
+enable_uart=1
+dtoverlay=wm8960-soundcard
+enable_tvout=1              # композит
+sdtv_mode=2                 # PAL</pre>
+<ul>
+  <li>Агент шины запускать на <code>/dev/serial0</code> вместо <code>/dev/ttyUSB0</code>.</li>
+  <li>Проверить эхо: L9637D возвращает отправленные байты в RX, как делал KKL, поэтому логика не меняется.</li>
+  <li>Картинку выводить без рабочего стола, через DRM/KMS. Сейчас ffplay идёт через X11 и на Zero 2 W скорее всего не потянет.</li>
+  <li>Файловая система: read-only <code>overlayfs</code>, журнал в отдельный небольшой раздел.</li>
+</ul>
+
+<h2>6. Порядок сборки</h2>
+<ol>
+  <li>На столе: Zero + HAT + донгл через переходник OTG. Запустить текущий CarPlay и измерить, держит ли Zero 30 кадров без пропусков при 60 °C. Если нет, дальше смысла нет.</li>
+  <li>Подключить L9637D к UART по схеме выше, проверить связь со стендом шины (<code>docs/06</code>).</li>
+  <li>Подключить видео и звук к монитору 4,3″ и радиомакету, перенести резистор AUX.</li>
+  <li>Заменить OTG-переходник пайкой на USB-пятаки.</li>
+  <li>Собрать в корпус чейнджера, закрепить провода клеем, пролить платы лаком, проверить на вибростоле или на езде.</li>
+</ol>
+</div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<title>Закупка для стенда CarPlay</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --ok: #1d6b3f; --ok-soft: #dbeee2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --ok: #6cc48d; --ok-soft: #1b3527; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --ok: #6cc48d; --ok-soft: #1b3527; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 30px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 6px; text-wrap: balance; }
+  .h2sub { color: var(--muted); font-size: 15px; margin: 0 0 16px; max-width: 72ch; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .item { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 14px 16px; margin-bottom: 12px; }
+  .item.opt { border-left-color: var(--muted); }
+  .itop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+  .iname { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 19px; }
+  .iprice { font-family: "IBM Plex Mono", monospace; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; margin-left: auto; white-space: nowrap; }
+  .item p { margin: 0 0 8px; font-size: 15px; }
+  .q { display: block; font-family: "IBM Plex Mono", monospace; font-size: 13.5px; background: var(--mono-bg); padding: 7px 10px; margin: 8px 0; overflow-x: auto; white-space: nowrap; }
+  .q b { color: var(--muted); font-weight: 500; }
+  .links { font-size: 14.5px; margin: 8px 0 0; }
+  .links span { color: var(--muted); }
+  .check { font-size: 14.5px; background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 8px 12px; margin: 10px 0 0; }
+  .check b { color: var(--warn); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 16px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 16px 0; max-width: 78ch; }
+  .totals { background: var(--surface); border: 1px solid var(--line); padding: 4px 16px 12px; margin: 20px 0 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; padding: 7px 0; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.sum td { font-weight: 600; border-bottom: none; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · этап 1 · стенд на готовых модулях · без своей платы</p>
+  <h1>Закупка для стенда CarPlay</h1>
+  <p class="lead">Всё, что нужно купить, чтобы собрать работающий макет на проводах: CarPlay на мониторе, звук в штатную магнитолу, эмуляция чейнджера на шине. Свою плату заказывают потом, когда макет уже поехал. Ссылки даны как образец вида товара, не как рекомендация конкретного продавца.</p>
+</header>
+
+<div class="note"><b>Порядок заказа.</b> Сначала первые две группы, они нужны в любом случае и приедут за пару недель. Третью группу, разъёмы в машину, заказывайте после того, как снимете обшивку багажника и посмотрите, что там реально стоит. У машин 2002–2003 годов комплектация отличается, и лучше сверить вживую.</div>
+
+<h2>Группа 1. Ядро стенда</h2>
+<p class="h2sub">Заказывайте сразу. Без этого ничего не проверить, а идёт дольше всего.</p>
+
+<div class="item">
+  <div class="itop"><span class="iname">Carlinkit CPC200-CCPA</span><span class="iprice">≈ 220 ¥ / 30 $</span></div>
+  <p>CarPlay-модем. Тот самый, который вы нашли: в характеристиках должно стоять 适配车型 «安卓4.4及以上版本的安卓车机» (для Android-магнитол), на коробке «For Android Multimedia Car Player». Форм-фактор с USB-A на кабеле удобнее коробки с гнёздами.</p>
+  <span class="q"><b>Taobao:</b> Carlinkit CCPA 安卓车机 &nbsp;·&nbsp; <b>Ali:</b> Carlinkit CPC200-CCPA Android head unit</span>
+  <div class="check"><b>Не перепутать.</b> Модели «原车有线转无线», Carlinkit 5.0, U2W, A2A и любые с оперативной памятью в ГБ не подходят. Они притворяются айфоном перед магнитолой, а не наоборот.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Raspberry Pi 4 Model B, 2 ГБ</span><span class="iprice">≈ 45–60 $</span></div>
+  <p>Тот же процессор, что в Compute Module 4, но с готовыми разъёмами: композитный выход на 3,5 мм, HDMI, USB для донгла. Софт, написанный здесь, переедет на CM4 без переделок. Плюс карта microSD на 32 ГБ и блок питания USB-C 3 А для стола.</p>
+  <p class="links"><span>Образец:</span> <a href="https://www.aliexpress.com/item/4000054878108.html">официальная плата Pi 4 Model B, выбор объёма памяти</a></p>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Аудиошляпа Waveshare WM8960</span><span class="iprice">≈ 84 ¥ / 13 $</span></div>
+  <p>Тот же кодек, что пойдёт на свою плату, драйвер уже есть в ядре. Линейный выход через гнездо 3,5 мм, два микрофона на плате для первых тестов звонков.</p>
+  <p class="links"><span>Образец:</span> <a href="https://www.aliexpress.com/item/1005003668401040.html">Waveshare WM8960 Hi-Fi Sound Card HAT</a> &nbsp;·&nbsp; <a href="https://www.waveshare.com/wiki/WM8960_Audio_HAT">вики производителя с драйвером</a></p>
+  <div class="check"><b>Динамики не нужны.</b> В лоте бывает вариант «плата + пара динамиков». Берите только плату: звук уходит в магнитолу, играет штатная акустика. И проверьте, что на плате есть металлический кварцевый генератор рядом с чипом, у клонов его иногда нет.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Монитор 4,3 дюйма с композитным входом</span><span class="iprice">≈ 6–10 $</span></div>
+  <p>Автомобильный монитор камеры заднего вида, питание 12 В. Разрешение 480×234 почти совпадает с матрицей E39, поэтому читаемость интерфейса CarPlay вы оцените честно ещё дома, до всякой установки. Часто в комплекте идёт нужный видеокабель.</p>
+  <span class="q"><b>Taobao:</b> 倒车显示器 4.3寸 AV输入 12V &nbsp;·&nbsp; <b>Ali:</b> 4.3 inch car rear view monitor AV input</span>
+</div>
+
+<h2>Группа 2. Работа с шиной</h2>
+<p class="h2sub">Тоже сразу. Дешёвое, но именно этим снимаются точные байты вашей машины.</p>
+
+<div class="item">
+  <div class="itop"><span class="iname">Кабель VAG KKL 409.1 с чипом FT232RL</span><span class="iprice">≈ 40 ¥ / 6 $</span></div>
+  <p>Готовый снифер шины. Внутри уже есть и трансивер K-линии, и USB-UART, отдельно собирать ничего не надо. Разъём OBD отрезаете: контакт 7 это K-линия, контакт 16 это +12 В, контакты 4 и 5 масса. Дальше три провода на разъём чейнджера, порт открываете на 9600 8E1.</p>
+  <p class="links"><span>Образцы:</span> <a href="https://www.aliexpress.com/i/1005005622911077.html">VAG KKL 409.1 USB</a> &nbsp;·&nbsp; <a href="https://www.aliexpress.us/item/3256801513236928.html">версия с явной пометкой FTDI FT232RL</a></p>
+  <div class="check"><b>Про чип.</b> FT232RL удобнее: драйверы есть везде, чётность even работает честно. Если основная машина на Windows, берите вариант с CH340, старый драйвер FTDI блокировал клоны.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Отладочная плата NUCLEO-G0B1RE</span><span class="iprice">≈ 90–130 ¥</span></div>
+  <p>Прототип дежурного микроконтроллера. На ней тот же STM32G0B1, что запланирован на свою плату, поэтому прошивка переедет без переделок вместе с режимом сна.</p>
+  <span class="q"><b>Запрос:</b> NUCLEO-G0B1RE</span>
+  <div class="check"><b>Если нет в наличии</b>, берите NUCLEO-F411RE, примерно 100 ¥. Три UART и USB на месте, но нет пробуждения по шине из сна, эту часть проверите уже на своей плате. F103RB, F401RE, F446RE и F767ZI не нужны.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Микросхема L9637D, 5–10 штук</span><span class="iprice">≈ 2 ¥ / шт</span></div>
+  <p>Трансивер K-линии для Nucleo, чтобы микроконтроллер сидел на шине сам, без ноутбука. Полное обозначение L9637D013TR, это тот же чип в ленте. Берите с запасом: одна на макет, остальные пойдут на свою плату, если TH3122 не найдётся.</p>
+  <span class="q"><b>Taobao:</b> L9637D013TR SOP8 &nbsp;·&nbsp; <b>Ali:</b> L9637D SOP-8</span>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Переходники SOP8 в DIP8 и гребёнка</span><span class="iprice">≈ 4 ¥ за 50 шт</span></div>
+  <p>Микросхема в планарном корпусе в макетную плату не втыкается. Переходник даёт ей ножки с шагом 2,54 мм. Берите двусторонний, где одна сторона SOP8, другая SSOP8. Гребёнку 2,54 мм на 40 контактов возьмите отдельно, если её нет в лоте.</p>
+  <span class="q"><b>Taobao:</b> SOP8转DIP8 转接板 &nbsp;+&nbsp; 2.54mm 排针 单排 40P &nbsp;·&nbsp; <b>Ali:</b> SOP8 to DIP8 adapter board</span>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Модули CP2102, 2 штуки</span><span class="iprice">≈ 1–2 $ / шт</span></div>
+  <p>USB в UART для отладочной консоли Nucleo и как запасной канал. Обязательно с джампером выбора уровня, поставите 3,3 В.</p>
+  <span class="q"><b>Taobao:</b> CP2102 USB转TTL 模块 &nbsp;·&nbsp; <b>Ali:</b> CP2102 USB to TTL module 3.3V</span>
+</div>
+
+<div class="item opt">
+  <div class="itop"><span class="iname">Мелочь для пайки</span><span class="iprice">≈ 5 $</span></div>
+  <p>Конденсаторы 100 нФ (десяток), макетная плата и провода-перемычки, разъём DuPont. Если паяльника нет, он тоже в этот список.</p>
+</div>
+
+<h2>Группа 3. Подключение к машине</h2>
+<p class="h2sub">Заказывайте после осмотра багажника. Ничего резать не придётся, всё через штатные разъёмы. Чейнджер-донор берите сразу, его разъёмы нужны уже на макете.</p>
+
+<div class="item">
+  <div class="itop"><span class="iname">Автомобильный преобразователь 12 В в 5 В, 3 А</span><span class="iprice">≈ 5–8 $</span></div>
+  <p>Питание макета от бортсети. Нужен залитый модуль для видеорегистраторов с входом 9–36 В и защитой, размером примерно 63×32×18 мм. Берите версию с открытыми проводами на выходе, а не с гнездом USB.</p>
+  <span class="q"><b>Taobao:</b> 车载 降压模块 9-36V转5V 3A 防水 &nbsp;·&nbsp; <b>Ali:</b> car power converter 12V 24V to 5V 3A waterproof</span>
+  <div class="check"><b>Не берите</b> открытые платки на LM2596 или XL4015 без корпуса. Импульсы бортсети при работе генератора они не переживут.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Неисправный CD-чейнджер как донор</span><span class="iprice">≈ 10–25 $</span></div>
+  <p>Вместо покупных косичек. Из него берутся родные разъёмы 3-pin и 6-pin, стальной корпус под плату и штатное крепление с демпферами. Механизм выбрасывается. Ищите заведомо неисправный шестидисковый Alpine или Philips для E36, E38, E39, E46, Z3 с формулировкой «не читает диски» или «на запчасти».</p>
+  <span class="q"><b>Разборки, Авито, eBay:</b> BMW CD чейнджер E39 неисправный &nbsp;·&nbsp; BMW 6 disc CD changer faulty</span>
+  <div class="check"><b>Проверьте у продавца фото задней стенки.</b> Иногда чейнджер снимают с машины кусачками, и разъёмы остаются в жгуте. Нужен экземпляр с целыми гнёздами. Подробности разбора в документе про корпус.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Контакты MQS 0,63 для видеомодуля</span><span class="iprice">≈ 5 $ за набор</span></div>
+  <p>В разъём X18806 видеомодуля вставляются 4 контакта под AV-вход, гнёзда под них пустые. Серия TE MQS, обозначение вроде 962885. Возьмите десяток, обжимать удобнее с запасом.</p>
+  <p class="links"><span>Образец:</span> <a href="https://www.aliexpress.com/item/1005011930590217.html">набор терминалов TE MQS 0,63 мм</a></p>
+  <div class="check"><b>Сначала снимите видеомодуль</b> и сравните размер с контактами, которые уже стоят в разъёме. Если обжимных клещей нет, попросите продавца косичек добавить готовые обжатые хвостики.</div>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Кабель 3,5 мм TRRS на 3 RCA</span><span class="iprice">≈ 2 $</span></div>
+  <p>Композитный выход Pi 4 сидит на четырёхконтактном гнезде 3,5 мм вместе со звуком. Нужен кабель именно для Raspberry Pi: у камерных кабелей земля и видео поменяны местами, и картинки не будет. Часто такой кабель лежит в коробке монитора камеры заднего вида.</p>
+  <span class="q"><b>Taobao:</b> 树莓派 AV线 3.5mm 转 三莲花 &nbsp;·&nbsp; <b>Ali:</b> Raspberry Pi AV cable 3.5mm to 3 RCA</span>
+</div>
+
+<div class="item">
+  <div class="itop"><span class="iname">Видеокабель 75 Ом</span><span class="iprice">≈ 2 $</span></div>
+  <p>Обычный автомобильный RCA-видеокабель. Один конец отрезается, центральная жила и экран обжимаются в контакты MQS. Часто уже лежит в коробке с монитором.</p>
+  <span class="q"><b>Taobao:</b> RCA 视频线 75欧 1.5米 &nbsp;·&nbsp; <b>Ali:</b> RCA video cable 75 ohm</span>
+</div>
+
+<div class="item opt">
+  <div class="itop"><span class="iname">Экранированная пара для микрофона</span><span class="iprice">≈ 3 $</span></div>
+  <p>Нужна, только если в машине нет подготовки под телефон и штатной проводки от плафона. Тогда же берите электретный микрофон на стойку.</p>
+</div>
+
+<h2>Сколько это стоит</h2>
+<div class="totals">
+<table>
+<thead><tr><th>Группа</th><th class="n">Примерно</th></tr></thead>
+<tbody>
+<tr><td>Ядро стенда: донгл, Pi 4, аудиошляпа, монитор</td><td class="n">95–115 $</td></tr>
+<tr><td>Работа с шиной: KKL, Nucleo, чипы, переходники, CP2102</td><td class="n">35–45 $</td></tr>
+<tr><td>Подключение к машине: питание, чейнджер-донор, контакты, кабели</td><td class="n">25–45 $</td></tr>
+<tr class="sum"><td>Итого на весь стенд</td><td class="n">155–205 $</td></tr>
+</tbody>
+</table>
+</div>
+<p>Своя плата с Compute Module 4, корпусом и монтажом добавит ещё примерно 200–250 долларов, но это следующий этап. Пока макет не поехал в машине, платы заказывать рано: половина решений в ней зависит от того, как поведёт себя видеомодуль.</p>
+
+<div class="tip"><b>Что проверить в багажнике перед третьей группой.</b> Висят ли оба разъёма чейнджера и стоит ли сам чейнджер. Какой номер детали у видеомодуля и какие гнёзда в его разъёме пустые. Приходит ли в багажник проводка микрофона. Сфотографируйте разъёмы вблизи, по фото легко сверить контакты с тем, что предлагает продавец.</div>
+</div>

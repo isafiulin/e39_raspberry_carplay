@@ -1,0 +1,232 @@
+<title>Первый запуск CarPlay</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --ok: #1d6b3f; --ok-soft: #dbeee2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --ok: #6cc48d; --ok-soft: #1b3527; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --ok: #6cc48d; --ok-soft: #1b3527; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 26px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 42px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 20px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  pre { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 13.5px; background: var(--mono-bg); padding: 12px 14px; overflow-x: auto; margin: 0 0 14px; line-height: 1.5; }
+  pre code { background: none; padding: 0; white-space: pre; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .ok { background: var(--ok-soft); border-left: 3px solid var(--ok); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .ok b { color: var(--ok); }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps > li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .steps > li > * { grid-column: 2; min-width: 0; }
+  .steps > li::before { grid-column: 1; content: counter(s); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 24px; color: var(--accent); line-height: 1; padding-top: 3px; }
+  .steps h3 { margin: 0 0 6px; }
+  .steps p { margin: 0 0 10px; }
+  .have { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin: 16px 0; }
+  .have div { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ok); padding: 9px 12px; font-size: 14.5px; }
+  .have div.wait { border-left-color: var(--muted); color: var(--muted); }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · этап 1 · железо приехало · первая картинка</p>
+  <h1>Первый запуск CarPlay на столе</h1>
+  <p class="lead">Цель одна: увидеть интерфейс CarPlay на экране размером с монитор E39 и понять, читается он или нет. Это главный риск всего проекта, и закрыть его можно за вечер, не трогая машину. Свой софт пока не пишем: сначала доказываем, что железо работает, готовой реализацией.</p>
+</header>
+
+<h2>Что уже есть и чего ждём</h2>
+<div class="have">
+  <div>Carlinkit CPC200-CCPA</div>
+  <div>Raspberry Pi 4, 2 ГБ</div>
+  <div>Аудиошляпа WM8960</div>
+  <div>Монитор 4,3 дюйма</div>
+  <div>Кабель VAG KKL</div>
+  <div>Nucleo-G0B1RE</div>
+  <div>L9637D, 10 шт.</div>
+  <div>CP2102</div>
+  <div>Преобразователь 12→5 В</div>
+  <div class="wait">Кабель 3,5 мм TRRS на 3 RCA</div>
+  <div class="wait">Переходники SOP8-DIP8</div>
+  <div class="wait">Макетная плата, перемычки</div>
+  <div class="wait">Конденсаторы, резисторы</div>
+  <div class="wait">Блок питания 12 В</div>
+  <div class="wait">Чейнджер-донор</div>
+</div>
+<p>Работа с шиной ждёт второй посылки: без переходников микросхему некуда воткнуть. Композитный выход ждёт кабеля. Но шаги 1–3 делаются прямо сейчас по HDMI, а это и есть проверка донгла и звука.</p>
+
+<div class="note"><b>Монитору нужны 12 В.</b> Автомобильный монитор от USB не запитать. Если дома нет адаптера на 12 В, возьмите любой от роутера или внешнего диска. Ток нужен небольшой, хватит 0,5 А.</div>
+
+<h2>Порядок шагов и почему именно такой</h2>
+<p>Ключевая деталь: на Raspberry Pi 4 композитный выход и HDMI взаимоисключающие. Как только вы включите композит, HDMI погаснет. Поэтому всё настраивается по HDMI и по сети, а на композит переключаемся последним шагом, когда система уже доступна по SSH.</p>
+
+<ol class="steps">
+
+<li>
+  <h3>Система на карту</h3>
+  <p>Raspberry Pi Imager, образ <b>Raspberry Pi OS (64-bit)</b> с рабочим столом. Не Lite: для первой проверки нужен экран с картинкой. В настройках Imager сразу включите SSH, задайте имя пользователя и пароль и пропишите свою домашнюю сеть Wi-Fi. Это обязательно, иначе после переключения на композит вы потеряете доступ к машине.</p>
+  <p>64-битная версия важна: с 32-битной драйвер аудиошляпы собирается с ошибками.</p>
+  <pre><code>ssh pi@raspberrypi.local
+sudo apt update &amp;&amp; sudo apt full-upgrade -y
+sudo reboot</code></pre>
+</li>
+
+<li>
+  <h3>Донгл и первая картинка по HDMI</h3>
+  <p>Проверяем, что Pi видит донгл. Втыкаем в USB и смотрим:</p>
+  <pre><code>lsusb</code></pre>
+  <p>В списке должно появиться устройство с идентификатором производителя <code>1314</code>. Это и есть Carlinkit. Если его нет, попробуйте другой порт USB и другой кабель.</p>
+  <p>Дальше ставим готовую реализацию, чтобы доказать работоспособность цепочки. Берём релиз <b>react-carplay</b> для arm64 со страницы релизов проекта и запускаем на рабочем столе Pi. Свой драйвер напишем потом, сейчас задача другая: убедиться, что донгл, телефон и Pi договариваются.</p>
+  <p>На телефоне при первом подключении примите запрос на соединение. Донгл поднимает свою точку Wi-Fi, телефон переходит на неё сам. Ожидайте 10–30 секунд.</p>
+  <div class="ok"><b>Контрольная точка.</b> На HDMI-мониторе виден интерфейс CarPlay, он отзывается на мышь. Значит донгл живой, USB-протокол работает и поток декодируется. Половина риска снята.</div>
+  <div class="note"><b>Не путайте с аппаратным декодированием.</b> Картинка на экране сама по себе не доказывает, что работает аппаратный декодер: Electron мог справиться и программно. У нас в логе как раз видно, что процесс GPU падал и приложение запущено с <code>--disable-gpu</code>. Для конечного устройства аппаратное декодирование обязательно, и проверять его нужно отдельно, по загрузке процессора и по счётчикам V4L2.</div>
+</li>
+
+<li>
+  <h3>Звук через аудиошляпу</h3>
+  <p>Выключите Pi, <b>выньте питание</b>, наденьте шляпу на сорокаконтактную гребёнку, поставьте стойки, включите обратно.</p>
+  <p>Сторонний драйвер не нужен: в ядре 6.18 уже есть и кодек <code>snd-soc-wm8960</code>, и готовый оверлей Waveshare. Одна строка в общую часть <code>config.txt</code>:</p>
+  <pre><code>dtoverlay=wm8960-soundcard</code></pre>
+  <p>После перезагрузки карта появляется в <code>aplay -l</code> как <code>wm8960soundcard</code>, кодек отзывается по I2C на адресе 0x1a.</p>
+  <div class="note"><b>Карта поднимется молча.</b> Штатный установщик Waveshare кроме драйвера накатывает настройки микшера, а с одним оверлеем ключи выходного микшера закрыты. Нужно открыть их и выставить уровни:</div>
+  <pre><code>amixer -c 1 sset 'Left Output Mixer PCM' on
+amixer -c 1 sset 'Right Output Mixer PCM' on
+amixer -c 1 sset 'Playback' 255
+amixer -c 1 sset 'Headphone' 95
+sudo alsactl store</code></pre>
+  <p>Проверка: <code>speaker-test -D plughw:1,0 -c 2 -t sine -f 440</code>, тон идёт поочерёдно в левый и правый.</p>
+  <div class="note"><b>Номер карты не постоянен.</b> Единица в <code>-c 1</code> и <code>plughw:1,0</code> это порядковый номер, и он может смениться при изменении набора устройств. Надёжнее обращаться по имени: <code>amixer -c wm8960soundcard</code>. Перед разбором чужих ошибок всегда сверяйтесь с выводом <code>aplay -l</code>.</div>
+  <div class="note"><b>Про 32 бита.</b> Совет ставить 64-битную систему относится к сборке сторонних форков драйвера, которые нам в итоге не понадобились. Со штатным оверлеем разрядность роли не играет.</div>
+</li>
+
+<li>
+  <h3>Направить звук приложения в шляпу</h3>
+  <p>Самая коварная часть. Electron ходит не через ALSA напрямую, а через PipeWire, и файл <code>/etc/asound.conf</code> на него не влияет вообще. У PipeWire свой выбор устройства по умолчанию, и там стоит звуковая карта на мэйлбоксе VideoCore, то есть тот самый разъём 3,5 мм, куда мы вывели видео. Звука в нём, разумеется, нет.</p>
+  <pre><code>wpctl status                  # найти приёмники
+wpctl inspect &lt;id&gt;            # platform-soc_sound это шляпа
+                              # platform-…mailbox это встроенный выход Pi
+wpctl set-default &lt;id шляпы&gt;
+wpctl set-volume &lt;id шляпы&gt; 1.0</code></pre>
+  <p>Потом перезапустить приложение. Проверить можно там же: в разделе Streams поток Chromium должен уходить в <code>wm8960-hifi-0:playback</code>.</p>
+  <div class="tip"><b>Вход и выход выбираются независимо.</b> У нас микрофон приложение взяло со шляпы сразу и правильно, а выход остался на встроенной карте. Так что проверяйте обе стороны.</div>
+</li>
+
+<li>
+  <h3>Выставить уровень правильно</h3>
+  <p>Цифровую часть держим на максимуме, громкость задаём одной аналоговой ступенью. Цифровое ослабление съедает разрядность и добавляет шум, аналоговое нет.</p>
+  <div class="tablewrap">
+  <table>
+  <thead><tr><th>Ступень</th><th>Значение</th><th>Почему</th></tr></thead>
+  <tbody>
+  <tr><td>PipeWire</td><td>1,00</td><td>без ослабления</td></tr>
+  <tr><td>ЦАП, регулятор <code>Playback</code></td><td>255 из 255, 0 дБ</td><td>без ослабления</td></tr>
+  <tr><td>Аналог, <code>Headphone</code></td><td>подобрать на слух</td><td>единственная ступень громкости</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p>В машине эта аналоговая ступень уйдёт на максимум, а нужный уровень задаст резистивный делитель на плате: так, чтобы CarPlay на полной громкости звучал примерно как FM. Громкостью там управляет BM54 штатной ручкой, ровно как для чейнджера, и вмешиваться в этот уровень больше нельзя, иначе получится две независимые громкости.</p>
+</li>
+
+<li>
+  <h3>Композит и настоящая проверка читаемости</h3>
+  <p>Теперь главное. Правим два файла и переключаемся на композитный выход. Работать придётся по SSH, HDMI после этого погаснет.</p>
+  <p>В <code>/boot/firmware/config.txt</code> добавить и поправить:</p>
+  <pre><code>enable_tvout=1
+dtoverlay=vc4-kms-v3d,composite</code></pre>
+  <p>В <code>/boot/firmware/cmdline.txt</code>, в ту же единственную строку, через пробел:</p>
+  <pre><code>vc4.tv_norm=PAL</code></pre>
+  <p>Перезагрузиться. Монитор подключить в гнездо 3,5 мм на Pi кабелем TRRS на три тюльпана, жёлтый в видеовход монитора. Питание монитора от адаптера 12 В.</p>
+  <div class="note"><b>Кабель нужен именно для Raspberry Pi.</b> У четырёхконтактного разъёма две несовместимые распайки. У Pi: кончик левый звук, первое кольцо правый звук, второе кольцо земля, основание видео. У кабелей от видеокамер земля и видео поменяны местами, и картинки не будет. Запрос <code>树莓派 AV线 3.5mm 转 三莲花</code> или <code>Raspberry Pi AV cable 3.5mm to 3 RCA</code>. Проверьте коробку монитора, такой кабель часто кладут в комплект.</div>
+  <p>Запустить CarPlay и <b>смотреть на экран</b>. Это и есть ответ на главный вопрос проекта.</p>
+  <div class="note"><b>На Pi 4 композит выключен по умолчанию не просто так.</b> Ему нужна особая тактовая частота, и её включение слегка замедляет остальную систему. Плюс HDMI отключается полностью. Для конечного устройства это нормально, для отладки неудобно, поэтому держите SSH под рукой.</div>
+</li>
+
+</ol>
+
+<h2>Грабли композитного выхода на Pi 4</h2>
+<p>Пройдено на практике, все четыре по очереди. Если повторяете на другой плате, пригодится.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Симптом</th><th>Причина</th><th>Лечение</th></tr></thead>
+<tbody>
+<tr>
+  <td>Настройки в <code>config.txt</code> не действуют, <code>enable_tvout</code> остаётся нулём</td>
+  <td>Строки попали в секцию <code>[cm4]</code> или другую чужую. Секции применяются только к своим платам, а Pi 4 Model B это не Compute Module 4</td>
+  <td>Переносим строки в общую часть файла, то есть выше первого заголовка в квадратных скобках</td>
+</tr>
+<tr>
+  <td>Коннектора <code>Composite-1</code> нет в <code>/sys/class/drm/</code></td>
+  <td>Композит на Pi 4 выключен по умолчанию, ему нужна особая тактовая частота</td>
+  <td><code>enable_tvout=1</code> и <code>dtoverlay=vc4-kms-v3d,composite</code>. HDMI после этого гаснет, работаем по SSH</td>
+</tr>
+<tr>
+  <td>Сообщения загрузки на экране видны, а рабочий стол нет</td>
+  <td>У композита нет определения подключения, статус остаётся <code>unknown</code>. Консоль ядра рисует всё равно, а композитор такой выход игнорирует</td>
+  <td>В <code>cmdline.txt</code> добавить <code>video=Composite-1:720x576@50ie</code>. Буква <code>e</code> приказывает считать выход подключённым, после этого статус становится <code>connected</code></td>
+</tr>
+<tr>
+  <td>Выход уже <code>connected</code>, но рабочего стола всё равно нет, <code>lightdm.service</code> в состоянии failed</td>
+  <td>labwc поверх wlroots падает с кодом 1 при работе только на композите</td>
+  <td>Перейти на X11: <code>raspi-config</code> → Advanced Options → Wayland → X11 Openbox. Драйвер modesetting с таким выходом работает</td>
+</tr>
+<tr>
+  <td>Экран гаснет через несколько минут и кажется, что всё сломалось</td>
+  <td>Штатное гашение экрана</td>
+  <td><code>raspi-config</code> → Display Options → Screen Blanking → No, и <code>consoleblank=0</code> в <code>cmdline.txt</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tip"><b>Итоговые строки.</b> В общей части <code>config.txt</code>: <code>dtoverlay=vc4-kms-v3d,composite</code> и <code>enable_tvout=1</code>. В единственной строке <code>cmdline.txt</code>: <code>vc4.tv_norm=PAL video=Composite-1:720x576@50ie consoleblank=0</code>. Сеанс переключён на X11.</div>
+<div class="note"><b>В конечном устройстве этой возни не будет.</b> На своей плате система соберётся на Buildroot, CarPlay будет рисоваться прямо через DRM, без X и без Wayland. Оболочка нужна только сейчас, чтобы запустить готовое приложение и оценить читаемость.</div>
+
+<h2>Что записать по итогам</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Вопрос</th><th>Что делать с ответом</th></tr></thead>
+<tbody>
+<tr><td>Читается ли текст в CarPlay на маленьком экране</td><td>Главный вопрос. Если да, план идёт как есть. Если нет, решаем: либо RGB-тракт вместо композита, либо отказываемся от картинки и оставляем музыку, звонки и текст на штатном экране</td></tr>
+<tr><td>За сколько телефон цепляется к донглу</td><td>Если дольше минуты, в машине будет раздражать. Тогда стоит подумать про вынос донгла ближе к салону</td></tr>
+<tr><td>Есть ли задержка звука и картинки</td><td>Замерьте на глаз по видео. Пригодится, когда будете настраивать параметр задержки в донгле</td></tr>
+<tr><td>Греется ли Pi под нагрузкой</td><td><code>vcgencmd measure_temp</code> во время работы CarPlay. Это вход в расчёт теплоотвода для корпуса из чейнджера</td></tr>
+<tr><td>Потребление всей связки</td><td>Если есть USB-тестер, замерьте. Уточнит требования к преобразователю на своей плате</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip"><b>Сфотографируйте экран.</b> Снимок интерфейса CarPlay на мониторе 4,3 дюйма это самый ценный результат вечера. По нему решается, нужен ли вообще RGB-тракт, а это половина сложности своей платы.</div>
+
+<h2>Что дальше</h2>
+<ul>
+<li>Когда картинка и звук работают на готовой реализации, начинаем писать свой хост: драйвер донгла на libusb, вывод через DRM, маршрутизация звука. Референс есть в исходниках node-carplay и LIVI.</li>
+<li>Параллельно, как придёт вторая посылка, собирается стенд шины и пишется прошивка чейнджера.</li>
+<li>Когда оба стенда работают по отдельности, они соединяются по UART, и это уже прототип целиком.</li>
+</ul>
+</div>

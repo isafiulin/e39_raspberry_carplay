@@ -1,0 +1,274 @@
+<title>Вариант B: вход камеры</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .q { counter-reset: none; list-style: none; padding: 0; margin: 0; }
+  .q > li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .q > li > * { grid-column: 2; min-width: 0; }
+  .q > li > .id { grid-column: 1; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 14px; color: var(--accent); padding-top: 4px; }
+  .q h3 { margin: 0 0 6px; }
+  .q p { margin: 0 0 8px; }
+  .q ul { margin: 0 0 8px; }
+  .how, .out { padding: 8px 12px; font-size: 14.5px; margin-top: 8px; }
+  .how { background: var(--surface-2); }
+  .out { background: var(--surface); border: 1px solid var(--line); }
+  .how b, .out b { font-family: "IBM Plex Sans Condensed", sans-serif; }
+  .tag { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; vertical-align: 2px; margin-left: 8px; }
+  .t-stop { background: var(--stop-soft); color: var(--stop); }
+  .t-warn { background: var(--warn-soft); color: var(--warn); }
+  .t-ok { background: var(--ok-soft); color: var(--ok); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+  .legend div { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 14.5px; }
+  .flow { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 14px; }
+  .flow h3 { margin-top: 0; }
+  .flow ol { margin-bottom: 8px; }
+  .flow .dep { font-size: 14px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · вариант B · запасной · состояние на 30.09.2026</p>
+  <h1>Вариант B: картинка через вход камеры</h1>
+  <p class="lead">Композит с платы заходит не в AV, а во вход камеры заднего вида, и включается железно — замыканием контакта 17 синего разъёма на массу. Главное достоинство: этот режим <b>не трогает звук</b>, что проверено на машине. Значит стерео с AUX и картинка работают одновременно без единой команды по шине. Цена — реле для разделения входа с настоящей камерой и общий с ней видеостандарт.</p>
+</header>
+
+<h2>Схема</h2>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Вариант B. iPhone по Wi-Fi к донглу, донгл по USB к плате. Композит с платы и сигнал штатной камеры приходят на реле, реле отдаёт один из них в контакты 13 и 14 белого разъёма видеомодуля. Сигнал заднего хода напрямую снимает питание с катушки реле, поэтому камера имеет приоритет. Микроконтроллер замыкает контакт 17 синего разъёма на массу, чем включает показ. Стерео с платы идёт во вход AUX радио и дальше на динамики." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="b-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    <marker id="b-arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f7fd1"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+  <rect x="24" y="30" width="116" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="82" y="52" text-anchor="middle" font-weight="600">iPhone</text>
+  <text x="82" y="68" text-anchor="middle" font-size="11" opacity=".75">в салоне</text>
+
+  <line x1="140" y1="55" x2="178" y2="55" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#b-arr)" marker-start="url(#b-arr)"/>
+  <text x="159" y="90" text-anchor="middle" font-size="11">Wi-Fi</text>
+
+  <rect x="178" y="30" width="126" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="241" y="52" text-anchor="middle" font-weight="600">Carlinkit CCPA</text>
+  <text x="241" y="68" text-anchor="middle" font-size="11" opacity=".75">чип MFi</text>
+
+  <line x1="304" y1="55" x2="342" y2="55" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+  <text x="323" y="47" text-anchor="middle" font-size="11">USB</text>
+
+  <rect x="342" y="22" width="206" height="212" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="445" y="44" text-anchor="middle" font-weight="600">Плата в багажнике</text>
+  <text x="445" y="64" text-anchor="middle" font-size="11" opacity=".75">CM4 · декод H.264 · только NTSC</text>
+  <text x="445" y="80" text-anchor="middle" font-size="11" opacity=".75">WM8960 · стерео и микрофон</text>
+  <text x="445" y="96" text-anchor="middle" font-size="11" opacity=".75">STM32 · I-Bus, питание</text>
+  <line x1="356" y1="110" x2="534" y2="110" stroke="currentColor" stroke-width="1" opacity=".4"/>
+  <text x="445" y="130" text-anchor="middle" font-size="11" font-weight="600">Дополнительно для этого варианта:</text>
+  <text x="445" y="148" text-anchor="middle" font-size="11" opacity=".75">реле коммутации видео</text>
+  <text x="445" y="164" text-anchor="middle" font-size="11" opacity=".75">ключ триггера на массу</text>
+  <text x="445" y="180" text-anchor="middle" font-size="11" opacity=".75">вход сигнала заднего хода</text>
+  <text x="445" y="196" text-anchor="middle" font-size="11" opacity=".75">аппаратное освобождение экрана</text>
+  <text x="445" y="220" text-anchor="middle" font-size="11" opacity=".75">питание с 3-pin разъёма чейнджера</text>
+
+  <!-- camera input -->
+  <rect x="24" y="270" width="140" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="94" y="292" text-anchor="middle" font-weight="600">Штатная камера</text>
+  <text x="94" y="308" text-anchor="middle" font-size="11" opacity=".75">питание от фонаря</text>
+
+  <line x1="164" y1="296" x2="262" y2="296" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+  <text x="213" y="288" text-anchor="middle" font-size="11">колокольчик</text>
+
+  <!-- relay -->
+  <rect x="262" y="256" width="130" height="80" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="327" y="278" text-anchor="middle" font-weight="600">Реле</text>
+  <text x="327" y="296" text-anchor="middle" font-size="11" opacity=".75">без питания —</text>
+  <text x="327" y="310" text-anchor="middle" font-size="11" opacity=".75">камера напрямую</text>
+  <text x="327" y="326" text-anchor="middle" font-size="11" opacity=".75">мёртвая плата не мешает</text>
+
+  <line x1="445" y1="234" x2="445" y2="266" stroke="#2f7fd1" stroke-width="2"/>
+  <line x1="445" y1="266" x2="394" y2="266" stroke="#2f7fd1" stroke-width="2" marker-end="url(#b-arrB)"/>
+  <text x="470" y="256" font-size="11" fill="#2f7fd1">композит NTSC</text>
+
+  <!-- reverse signal -->
+  <rect x="222" y="386" width="212" height="48" rx="4" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="328" y="406" text-anchor="middle" font-size="11" font-weight="600">Сигнал заднего хода</text>
+  <text x="328" y="422" text-anchor="middle" font-size="11" opacity=".75">снимает катушку напрямую, мимо MCU</text>
+  <line x1="328" y1="386" x2="328" y2="340" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#b-arr)"/>
+
+  <line x1="392" y1="296" x2="446" y2="296" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+
+  <rect x="446" y="270" width="150" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="521" y="292" text-anchor="middle" font-weight="600">Белый 13 и 14</text>
+  <text x="521" y="308" text-anchor="middle" font-size="11" opacity=".75">контакты уже стоят</text>
+
+  <line x1="596" y1="296" x2="650" y2="296" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+
+  <rect x="650" y="252" width="180" height="88" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="740" y="274" text-anchor="middle" font-weight="600">Видеомодуль</text>
+  <text x="740" y="290" text-anchor="middle" font-size="11" opacity=".75">экран занят потоком</text>
+  <text x="740" y="306" text-anchor="middle" font-size="11" opacity=".75">звук не трогает</text>
+  <text x="740" y="322" text-anchor="middle" font-size="11" opacity=".75">кнопки работают</text>
+  <text x="740" y="336" text-anchor="middle" font-size="11" opacity=".75">RGB на монитор</text>
+
+  <line x1="830" y1="296" x2="876" y2="296" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+  <rect x="876" y="268" width="100" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="926" y="292" text-anchor="middle" font-weight="600">Монитор</text>
+  <text x="926" y="308" text-anchor="middle" font-size="11" opacity=".75">400 × 234</text>
+
+  <!-- trigger -->
+  <line x1="548" y1="150" x2="740" y2="150" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="740" y1="150" x2="740" y2="248" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+  <text x="556" y="142" font-size="11" font-weight="600">Ключ STM32 → синий 17 на массу: включает показ</text>
+  <text x="556" y="176" font-size="11" opacity=".75">штатное реле камеры замыкает тот же контакт параллельно</text>
+
+  <!-- audio -->
+  <line x1="548" y1="86" x2="612" y2="86" stroke="#2f7fd1" stroke-width="2" marker-end="url(#b-arrB)"/>
+  <text x="580" y="78" text-anchor="middle" font-size="11" fill="#2f7fd1">стерео</text>
+
+  <rect x="612" y="58" width="150" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="687" y="80" text-anchor="middle" font-weight="600">Вход AUX радио</text>
+  <text x="687" y="96" text-anchor="middle" font-size="11" opacity=".75">разъём C: 3, 4, земля 10</text>
+  <text x="687" y="110" text-anchor="middle" font-size="11" opacity=".75">+ резистор опознавания</text>
+
+  <line x1="762" y1="86" x2="812" y2="86" stroke="currentColor" stroke-width="1.5" marker-end="url(#b-arr)"/>
+  <rect x="812" y="58" width="164" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="894" y="80" text-anchor="middle" font-weight="600">BM54 → динамики</text>
+  <text x="894" y="96" text-anchor="middle" font-size="11" opacity=".75">источник не сбивается</text>
+  <text x="894" y="110" text-anchor="middle" font-size="11" opacity=".75">проверено на машине</text>
+
+  <!-- bus -->
+  <line x1="445" y1="234" x2="445" y2="466" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4" opacity=".5"/>
+  <line x1="80" y1="466" x2="950" y2="466" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="96" y="458" font-size="11" font-weight="600">I-Bus</text>
+  <text x="96" y="492" font-size="11">Плата только слушает: кнопка DISPLAY, выбор источника, вход в Television,</text>
+  <text x="96" y="510" font-size="11">кнопки руля и правая ручка, зажигание и засыпание.</text>
+  <text x="96" y="528" font-size="11" opacity=".75">Передавать в шину для показа картинки не требуется вообще.</text>
+
+  </g>
+</svg>
+<figcaption>Синим выделены сигналы, которые формирует плата. Реле без питания пропускает камеру, поэтому обесточенная или неисправная плата не мешает штатной работе.</figcaption>
+</figure>
+
+<h2>На чём держится вариант</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Допущение</th><th>Состояние</th><th>Чем проверяется</th></tr></thead>
+<tbody>
+<tr><td>Вход камеры не гасится в движении</td><td><b>Не проверено. Единственный открытый вопрос варианта</b></td><td>Выключатель на массу в обход штатного реле, поехать вперёд, разгоняясь постепенно</td></tr>
+<tr><td>Режим камеры не трогает звук</td><td><b>Проверено на машине:</b> радио, AUX и чейнджер переключаются свободно</td><td>—</td></tr>
+<tr><td>Кнопки работают в режиме камеры</td><td><b>Проверено на машине</b></td><td>—</td></tr>
+<tr><td>Экран занят потоком, штатного интерфейса не видно</td><td><b>Проверено на машине.</b> Отсюда требование отпускать экран по кнопке</td><td>—</td></tr>
+<tr><td>Вход и контакты уже разведены</td><td><b>Да,</b> в машине стоит камера, есть разъём под колокольчик</td><td>—</td></tr>
+<tr><td>Стандарт NTSC</td><td><b>Известно:</b> камера NTSC, вход закодирован под неё</td><td>Разницы по картинке нет, монитор всё равно 400 × 234</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip"><b>Одно непроверенное допущение против двух у варианта A.</b> И проверяется оно дешевле всего: выключателем и одной поездкой, без единой новой детали, потому что живой сигнал на этом входе уже есть — от вашей камеры.</div>
+
+<h2>Что подключается в машине</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кабель</th><th>Куда</th><th>Примечание</th></tr></thead>
+<tbody>
+<tr><td>3-pin, штатное гнездо из донора</td><td>Родной разъём чейнджера</td><td>+12 В Kl.30, масса, I-Bus. По цвету провода, не по номеру контакта</td></tr>
+<tr><td>Колокольчик, вход</td><td>От камеры в плату</td><td>Врезка в существующий разрыв. Контакты в разъёмах модуля <b>трогать не нужно</b></td></tr>
+<tr><td>Колокольчик, выход</td><td>С платы в существующее гнездо к модулю</td><td>Выдернул два штекера — камера снова напрямую</td></tr>
+<tr><td>Провод триггера</td><td>Синий разъём модуля, контакт 17</td><td>Параллельно штатному реле камеры, его не трогаем</td></tr>
+<tr><td>Отвод сигнала заднего хода</td><td>С провода штатного реле в плату</td><td>Аппаратный приоритет камеры</td></tr>
+<tr><td>Экранированная пара</td><td>Разъём C радио BM54: 3, 4, земля 10</td><td>Номера контактов подтвердить по ETM и мультиметром</td></tr>
+<tr><td>Пара микрофона</td><td>Плафон в салоне</td><td>Только для звонков</td></tr>
+<tr><td>USB к донглу</td><td>Наружу корпуса</td><td>Сталь глушит Wi-Fi 5 ГГц</td></tr>
+<tr><td>Сервисные USB-C и HDMI</td><td>Стенка корпуса</td><td>Обслуживание без разборки</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Что добавляется на плату</h2>
+<ul>
+  <li><b>Реле коммутации видео.</b> Однополюсное на переключение: нормально замкнутый контакт — камера, нормально разомкнутый — наш композит, общий на контакт 13. Электронный ключ не годится: он остаётся в цепи в любом состоянии, а реле при обесточенной плате просто пропускает камеру.</li>
+  <li><b>Ключ триггера на массу.</b> Полевой транзистор с подтяжкой затвора к массе, чтобы при обесточенной плате линия гарантированно не была замкнута.</li>
+  <li><b>Вход сигнала заднего хода.</b> Снимает питание с катушки реле напрямую, мимо микроконтроллера.</li>
+  <li><b>Аппаратное освобождение экрана.</b> Схема, которая сама размыкает триггер через секунду после того, как MCU перестал её подтверждать. Программного сторожевого таймера мало: зависшая плата иначе оставит водителя без штатного экрана.</li>
+</ul>
+<p>Номиналы, тип реле и его полоса, развязка катушки, защита от дребезга при переключении — ничего из этого пока не выбрано, см. «Что ещё не посчитано» в <a href="02-plata-nositel.html">документе 02</a>.</p>
+
+<h2>Управление</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Событие</th><th>Что делает плата</th></tr></thead>
+<tbody>
+<tr><td>Телефон подключился</td><td>Выбрать AUX источником звука и замкнуть триггер</td></tr>
+<tr><td>Кнопка DISPLAY</td><td>Разомкнуть или замкнуть триггер</td></tr>
+<tr><td>Выбран AUX с другого источника</td><td>Замкнуть триггер</td></tr>
+<tr><td>Выбран другой источник звука</td><td>Разомкнуть</td></tr>
+<tr><td>Пользователь вошёл в Television</td><td><b>Разомкнуть обязательно.</b> Иначе штатный телевизор невозможно включить: триггер камеры главнее</td></tr>
+<tr><td>Задняя передача</td><td>Реле само отдаёт картинку камере. Триггер можно не трогать</td></tr>
+<tr><td>Задняя выключена</td><td>Реле само возвращается, CarPlay появляется обратно. Логику писать не надо</td></tr>
+<tr><td>CM4 грузится или поток не идёт</td><td>Триггер не замыкать, иначе на экране чернота</td></tr>
+<tr><td>Телефон отключился</td><td>Разомкнуть</td></tr>
+<tr><td>MCU завис</td><td>Триггер размыкается аппаратно</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip"><b>Возврат после задней передачи получается бесплатно.</b> Контакт 17 замыкают и штатное реле, и наш ключ — это параллельные пути на массу. Пока идёт задняя, оба замкнуты, а видеореле отдаёт картинку камере. Задняя кончилась, реле вернулось к нашему видео, ключ всё это время оставался замкнутым, и CarPlay появляется сам.</div>
+
+<h2>Риски именно этого варианта</h2>
+<ul>
+  <li><b>Лок по скорости может действовать и здесь.</b> Или действовать с порогом вроде 15–20 км/ч, как на более поздних моделях. Это главный и единственный открытый вопрос.</li>
+  <li><b>Картинка может оказаться зеркальной или обрезанной</b> под формат камеры. Лечится на стороне Pi, но знать надо заранее.</li>
+  <li><b>Модуль может выключать камеру по таймауту.</b> Проверяется десятью минутами на стоянке.</li>
+  <li><b>Плата встаёт в цепь работающей камеры.</b> Реле с нормально замкнутым контактом делает отказ безопасным, но цепь всё равно усложняется.</li>
+  <li><b>Экран занят, пока идёт CarPlay.</b> Значит логика отпускания экрана обязательна, а не желательна.</li>
+</ul>
+
+<h2>Порядок проверки</h2>
+<ol class="chk">
+<li><h3>Подтвердить подключение камеры</h3><p>Контакты 13 и 14 белого разъёма, триггер 17 синего. Записать цвета проводов, найти разъём под колокольчик.</p></li>
+<li><h3>Звук при включённой камере</h3><p>Включить музыку через AUX, замкнуть триггер выключателем, послушать. <b>Уже проверено: звук не трогается.</b> Повторить заодно с логом шины.</p></li>
+<li><h3>Поехать вперёд</h3><p>С замкнутым триггером в обход реле. Разгоняться постепенно, записать: пропадает картинка или нет, на какой скорости, что вместо неё, возвращается ли при остановке. <b>Это решающая проверка.</b></p></li>
+<li><h3>Посмотреть на картинку</h3><p>Зеркало — по номерам машин сзади. Растянут ли кадр на весь экран, рисует ли модуль линии. Не выключается ли камера сама через десять минут.</p></li>
+<li><h3>Снять кадры кнопок</h3><p>DISPLAY, выбор источников, повторный выбор уже выбранного, вход в Television. Без них не построить логику отпускания экрана.</p></li>
+<li><h3>Завести настоящий композит</h3><p>Pi в багажник через врезку колокольчиком, вывод в NTSC. Повторить проверку целиком.</p></li>
+</ol>
+
+<div class="tip"><b>Если пункт 3 провалится</b>, остаётся <a href="12-variant-a-av.html">вариант A</a> с кодированием TV-in-Motion, а если и он не сложится — мост I-Bus с подменой скорости. Общая часть платы при этом не меняется.</div>
+
+</div>

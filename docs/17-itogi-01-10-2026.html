@@ -1,0 +1,184 @@
+<title>Итоги 1 октября</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .q { counter-reset: none; list-style: none; padding: 0; margin: 0; }
+  .q > li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .q > li > * { grid-column: 2; min-width: 0; }
+  .q > li > .id { grid-column: 1; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 14px; color: var(--accent); padding-top: 4px; }
+  .q h3 { margin: 0 0 6px; }
+  .q p { margin: 0 0 8px; }
+  .q ul { margin: 0 0 8px; }
+  .how, .out { padding: 8px 12px; font-size: 14.5px; margin-top: 8px; }
+  .how { background: var(--surface-2); }
+  .out { background: var(--surface); border: 1px solid var(--line); }
+  .how b, .out b { font-family: "IBM Plex Sans Condensed", sans-serif; }
+  .tag { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; vertical-align: 2px; margin-left: 8px; }
+  .t-stop { background: var(--stop-soft); color: var(--stop); }
+  .t-warn { background: var(--warn-soft); color: var(--warn); }
+  .t-ok { background: var(--ok-soft); color: var(--ok); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+  .legend div { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 14.5px; }
+  .flow { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 14px; }
+  .flow h3 { margin-top: 0; }
+  .flow ol { margin-bottom: 8px; }
+  .flow .dep { font-size: 14px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · день работы · 01.10.2026</p>
+  <h1>Что сделано 1 октября</h1>
+  <p class="lead">Первый день, когда всё собрано в машине целиком: картинка на штатном мониторе,
+  звук через штатный AUX, управление штатными кнопками. Ниже — что выяснилось и что из этого
+  пришлось переделать.</p>
+</header>
+
+<div class="tip"><b>Коротко.</b> CarPlay работает в машине: видно, слышно, управляется. Крутилку
+пришлось отдать машине — видеомодуль рисует поверх картинки своё меню. Порог опознавания AUX
+измерен и оказался втрое меньше форумного. Звука не было из-за нулевой громкости кодека.
+Осталось одно: проверить картинку в движении.</div>
+
+<h2>1. Крутилка оказалась непригодна</h2>
+<p>В режиме AV видеомодуль <b>подслушивает кадры крутилки</b>, адресованные навигации, и рисует
+поверх нашей картинки своё меню <code>Programme / Set / Display</code> — полоской сверху,
+на секунду-две, на каждый щелчок.</p>
+<p>Помешать нечем: за весь день проверок модуль <b>не произнёс в шину ни одного кадра</b>.
+Он полностью пассивен, только подсматривает и рисует. Договариваться не с кем, перехватить
+кадр на общей шине невозможно.</p>
+<div class="note"><b>Опасная сторона:</b> пока плашка на экране, нажатие крутилки уходит и в
+CarPlay, и в меню модуля, где есть пункт его настроек. Поэтому крутилка отдана машине целиком.</div>
+
+<h2>2. Новая раскладка кнопок</h2>
+<p>Проверено нажатием каждой: на эти кнопки модуль <b>не реагирует вовсе</b>.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кнопка</th><th>Кадр</th><th>Действие</th></tr></thead>
+<tbody>
+<tr><td>◄ нижняя пара</td><td><code>F0 04 68 48 10</code></td><td>влево</td></tr>
+<tr><td>► нижняя пара</td><td><code>F0 04 68 48 00</code></td><td>вправо</td></tr>
+<tr><td><b>SELECT</b></td><td><code>F0 05 FF 47 00 0F</code></td><td>выбор</td></tr>
+<tr><td>TONE</td><td><code>F0 04 68 48 04</code></td><td>назад</td></tr>
+<tr><td>DISPLAY</td><td><code>F0 04 68 48 30</code></td><td>показать или скрыть</td></tr>
+<tr><td>MENU</td><td><code>F0 04 FF 48 34</code></td><td>отпустить экран</td></tr>
+<tr><td>Руль вверх, вниз</td><td><code>50 04 .. 3B 01</code> / <code>08</code></td><td>треки</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><b>SELECT живёт отдельно от всех.</b> У неё команда <code>0x47</code> вместо
+<code>0x48</code> и лишний нулевой байт перед кодом. В опубликованной таблице BMBT её нет вовсе,
+и мы дважды сочли её «немой», пока не записали весь поток подряд. То же случилось с TONE:
+первый раз она просто не попала в запись.
+<br><br>Ещё наблюдение: кнопки руля меняют адресата — те же нажатия уходили то радио
+<code>68</code>, то телефонному блоку <code>C8</code>. Наш разбор смотрит на источник, поэтому
+переживает это молча.</div>
+
+<h2>3. Порог опознавания AUX измерен</h2>
+<p>Радио показывает AUX в списке источников, только когда видит нагрузку между каналами.
+Подбор на живой машине:</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Номинал</th><th>Результат</th></tr></thead>
+<tbody>
+<tr><td>220 кОм</td><td>не срабатывает</td></tr>
+<tr><td><b>100 кОм</b></td><td>срабатывает, установлен в машине</td></tr>
+<tr><td>47 кОм</td><td>срабатывает</td></tr>
+</tbody>
+</table>
+</div>
+<p>Порог лежит между 100 и 220 кОм. <b>Форумная цифра 300 кОм для этой машины неверна.</b>
+Для платы берём 47 кОм — двукратный запас вниз.</p>
+<p>Резистор впаян между левым и правым каналами со стороны БМВ-разъёма. После этого AUX из
+списка больше не пропадает.</p>
+
+<h2>4. Звука не было по глупой причине</h2>
+<p>Громкость выхода наушников на звуковой плате стояла <b>в нуле</b> — заводская настройка,
+которую мы ни разу не трогали. Подняли до максимума, сохранили через <code>alsactl store</code>.
+Цифровая громкость кодека и так была на максимуме, ослабление в шесть децибел выключено.</p>
+<p>Уровень регулируется со стороны машины. Нужен ли делитель на плате — покажет замер на
+клиппинг, он по-прежнему не сделан.</p>
+
+<h2>5. Защита звука от ручного переключения</h2>
+<p>Если входить в AV <b>через меню монитора</b>, он отдельной командой <code>4E 01 00</code>
+забирает звук себе, и CarPlay становится виден, но не слышен. Сама плата так не делает — она
+командует только картинкой, — но против ручного переключения добавлена защита: увидев, что звук
+отобрали, плата возвращает его кадром <code>4E 00 00</code>.</p>
+<p>Не бесконечно: три попытки подряд. Если монитор упрётся, лучше остаться без звука, чем
+молотить по шине. Счётчик сбрасывается, как только звук вернулся. Проверено в машине, работает.</p>
+
+<h2>6. Картинка</h2>
+<ul>
+<li><b>Заполняет кадр целиком.</b> Раньше поток 800 × 480 вписывался в кадр композита 720 × 576
+с чёрными полосами сверху и снизу. Это была чистая потеря высоты: кадр PAL всё равно
+растягивается монитором на всю ширину.</li>
+<li><b>Поля по краям настраиваются</b> по каждой стороне отдельно, в файле <code>~/.carplay</code>,
+без правки кода. Композит обрезает края, и на каждом мониторе по-своему.</li>
+<li><b>Проигрыватель больше не стартует посреди кадра.</b> Теперь он не получает ни байта, пока
+в потоке не встретится заголовок последовательности. Это и была причина «показывает через раз».</li>
+</ul>
+
+<h2>7. Надёжность</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Что</th><th>Как</th></tr></thead>
+<tbody>
+<tr><td>Зависание системы</td><td>Аппаратный сторожевой таймер, перезагрузка через 15 секунд</td></tr>
+<tr><td>Разбор причины</td><td>Постоянный журнал. Пришлось перебить настройку самой Raspberry Pi OS, которая намеренно держит журнал в памяти ради сохранности карты</td></tr>
+<tr><td>Нет кабеля шины</td><td>Служба ждёт его, а не падает. Воткнули позже — подхватывает</td></tr>
+<tr><td>Кабель выдернули на ходу</td><td>Записывает в журнал, ждёт, подключается заново</td></tr>
+<tr><td>Процесс упал</td><td>systemd поднимает через пять секунд</td></tr>
+</tbody>
+</table>
+</div>
+<p>Автозапуск при включении: процесс CarPlay и обработчик шины. Мышь и «живой звук» выключены —
+первая нужна только стенду, вторая оказалась не нужна вовсе.</p>
+
+<h2>8. Что осталось</h2>
+<ol class="chk">
+<li><h3>Картинка в движении</h3><p>Кодировка TV-in-Motion через NavCoder <b>сделана, но не
+проверена</b>. Одна короткая поездка закрывает вопрос. Побочный эффект: после кодирования
+пропал пункт <code>4:3 / 16:9 / zoom</code> в меню монитора — разобраться, связано ли.</p></li>
+<li><h3>Меню машины под нашей картинкой</h3><p>Кнопки мы не перехватываем, и машина их исполняет.
+Крутилку мы теперь не трогаем, так что риск меньше, но стрелки и SELECT по-прежнему уходят и
+в машину тоже. Проверить, до чего доберётся её меню.</p></li>
+<li><h3>Замер на клиппинг</h3><p>Чтобы понять, нужен ли делитель уровня на плате.</p></li>
+</ol>
+</div>

@@ -1,0 +1,234 @@
+<title>Макет на малине</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .q { counter-reset: none; list-style: none; padding: 0; margin: 0; }
+  .q > li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .q > li > * { grid-column: 2; min-width: 0; }
+  .q > li > .id { grid-column: 1; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 14px; color: var(--accent); padding-top: 4px; }
+  .q h3 { margin: 0 0 6px; }
+  .q p { margin: 0 0 8px; }
+  .q ul { margin: 0 0 8px; }
+  .how, .out { padding: 8px 12px; font-size: 14.5px; margin-top: 8px; }
+  .how { background: var(--surface-2); }
+  .out { background: var(--surface); border: 1px solid var(--line); }
+  .how b, .out b { font-family: "IBM Plex Sans Condensed", sans-serif; }
+  .tag { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; vertical-align: 2px; margin-left: 8px; }
+  .t-stop { background: var(--stop-soft); color: var(--stop); }
+  .t-warn { background: var(--warn-soft); color: var(--warn); }
+  .t-ok { background: var(--ok-soft); color: var(--ok); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+  .legend div { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 14.5px; }
+  .flow { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 14px; }
+  .flow h3 { margin-top: 0; }
+  .flow ol { margin-bottom: 8px; }
+  .flow .dep { font-size: 14px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · макет · до платы · 30.09.2026</p>
+  <h1>Макет на Raspberry Pi: CarPlay на штатном экране без своей платы</h1>
+  <p class="lead">Собрать работающую грубую версию на том, что уже есть, и только потом разводить плату.
+  Вся логика к этому моменту проверена в машине, поэтому макет проверяет не идею, а исполнение:
+  качество картинки, качество звука и удобство управления.</p>
+</header>
+
+<div class="tip"><b>Зачем макет, если всё уже проверено.</b> Проверено переключение. Не проверено
+главное для жизни с этим каждый день: читается ли интерфейс CarPlay на 400 × 234, не фонит ли
+длинный аудиокабель через весь кузов, и не бесит ли управление одной крутилкой. Ошибки такого рода
+видны только на живом макете, и исправлять их на разведённой плате поздно.</div>
+
+<div class="note"><b>Макет работает только на стоянке.</b> В движении модуль накрывает картинку
+синим оверлеем — проверено 30.09.2026. Это снимается кодировкой TV-in-Motion, и до неё макет
+остаётся стояночным. На проверку читаемости и управления это не влияет.</div>
+
+<h2>Что подключается</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Что</th><th>Куда</th><th>Замечание</th></tr></thead>
+<tbody>
+<tr><td>Композит с малины</td><td>Белый разъём видеомодуля, контакты 6 и 15</td><td>Обжать MQS 0,63 и вставить в пустые гнёзда. На конец удобно вывести «тюльпан», чтобы втыкать и вынимать без разборки</td></tr>
+<tr><td>Стерео с выхода наушников аудиоплаты WM8960</td><td>Штатный AUX за монитором</td><td>Длинный экранированный кабель из багажника в салон. Вход — та самая заводская мама за монитором, куда втыкается штатный переходник на 3,5 мм</td></tr>
+<tr><td>I-Bus</td><td>3-контактный разъём чейнджера</td><td>Уже подключено и проверено: та же косичка, тот же кабель</td></tr>
+<tr><td>Донгл Carlinkit</td><td>USB малины</td><td>Уже подключён, определяется как <code>1314:1521</code></td></tr>
+<tr><td>Питание</td><td>Павербанк или прикуриватель</td><td>Для макета сойдёт. Павербанк уже давал просадку, для долгих сессий нужен источник покрепче</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Три места, где макет может не поехать</h2>
+
+<h3>Композит: уже включён, проверено 30.09.2026</h3>
+<p>Оказалось, на малине всё готово заранее. В <code>/boot/firmware/config.txt</code> стоит
+<code>enable_tvout=1</code> и <code>dtoverlay=vc4-kms-v3d,composite</code>, а в системе есть выход
+<code>card1-Composite-1</code> в состоянии <code>connected</code> и <code>enabled</code>.
+Доступные режимы: <code>720x576i</code> это PAL и <code>720x480i</code> это NTSC. Через модуль
+пойдёт любой, монитор всё равно 400 × 234.</p>
+<p>Остаётся вторая половина вопроса — <b>кабель</b>. Разъём у малины четырёхконтактный, и порядок
+контактов у неё <b>не такой</b>, как у большинства готовых AV-кабелей от камер. Про это есть
+<a href="08-proverka-kabelya.html">отдельный документ</a>: анатомия штекера, две распайки,
+прозвонка. Первое дело на столе — получить картинку на любом телевизоре.</p>
+
+<div class="note"><b>Машина:</b> Raspberry Pi 4 Model B Rev 1.5, Debian 13 trixie.
+Композит задан в строке загрузки ядра жёстко: <code>vc4.tv_norm=PAL video=Composite-1:720x576@50ie</code>,
+то есть PAL с чересстрочной развёрткой. Аудиоплата WM8960 — карта 1, воспроизведение и запись.
+<b>Node не установлен</b>, а <code>node-CarPlay</code> написан на нём: это единственное, чего
+не хватает для стендовой части.</div>
+
+<h3>Звук: аудиоплата уже стоит, покупать нечего</h3>
+<p>На малине установлена плата на WM8960, и она полностью работает: ALSA видит её как карту 1,
+драйвер поднялся, чип отвечает по I²C на адресе <code>0x1a</code>. Есть выход на наушники и
+динамики и <b>есть вход записи</b>.</p>
+<p>Встроенный звук самой малины делается широтно-импульсной модуляцией и на тихих местах это
+слышно — но он теперь и не нужен. Кабель на AUX идёт с выхода наушников платы.</p>
+<div class="tip"><b>Микрофон: тракт есть, но задача не первостепенная.</b> Решение владельца от
+30.09.2026: CarPlay в этой машине нужен ради удобного подключения телефона и вывода информации
+на монитор, а не ради звонков. Поэтому Siri и разговоры откладываются, и ни макет, ни первая
+версия платы на них не закладываются.
+<br><br>Когда очередь дойдёт, велосипед изобретать не придётся: <b>машина в телефонной
+комплектации</b>, штатный микрофон в плафоне есть, а телефонный модуль <code>C8</code> живой —
+он отвечает на опрос шины, мы это видели. Врезаться надо будет в его проводку. Вход записи
+у WM8960 тоже есть, но микрофон на самой плате окажется в багажнике и для разговора бесполезен.</div>
+
+<h3>Длинный аудиокабель через весь кузов</h3>
+<p>Несимметричная линия метров на пять, малина и радио на разных точках массы — классический
+рецепт для фона и воя по оборотам двигателя. Поэтому кабель <b>только экранированный</b>, а если
+фон всё-таки появится, дело лечится развязывающим трансформатором на входе AUX. Заранее покупать
+не надо, но знать про него стоит: иначе легко решить, что виновата малина.</p>
+
+<h2>Софт: две независимые части</h2>
+<p>Их удобно писать и отлаживать порознь, потому что они общаются между собой одним простым
+сигналом «показывай» или «не показывай».</p>
+
+<h3>Часть первая: CarPlay</h3>
+<div class="tip"><b>Написана и проверена на живом донгле 30.09.2026.</b> Процесс лежит в
+<a href="../carplay/README.md">carplay/</a>. Сеанс поднимается, телефон подключается сам,
+видео идёт настоящим H.264 800×480, звук играет на 44100 в два канала, и команда
+<code>home</code>, отправленная из питона через сокет, вывела на экран приборную панель
+CarPlay. Вся цепочка питон → сокет → Node → донгл → CarPlay работает.
+<br><br><b>30.09.2026, вечер: показ на настоящем экране тоже работает.</b> Композитный монитор
+подключён, CarPlay на нём виден, переподключение телефона отрабатывает само — меню возвращается
+через пару секунд. Процесс поднимается с загрузки пользовательской службой systemd.
+<br><br>Осталось непроверенным только одно: связка с шиной. Каждое звено проверено по отдельности,
+все вместе — ещё нет, потому что во время отладки CarPlay кабель шины к малине не подключался.</div>
+<p>Донгл держит настоящий сеанс с телефоном и отдаёт по USB поток H.264 и звук. Разбор этого
+протокола взят из <a href="https://github.com/rhysmorgan134/node-CarPlay">node-CarPlay</a>.
+Две вещи пришлось обойти: донгл перезагружается сам, если с ним не начать разговаривать, а
+штатный запуск библиотеки сбрасывает устройство и из-за этого сталкивается с его собственным
+сбросом. Подробности в <a href="../carplay/README.md">carplay/README.md</a>.</p>
+<p>Приятная особенность: экран у нас <b>400 × 234</b>. Поток приходит примерно 480 строк, то есть
+его надо уменьшать, а не увеличивать. Для Pi 4 это лёгкая работа.</p>
+
+<h3>Часть вторая: шина</h3>
+<p><b>Написана 30.09.2026.</b> <code>agent.py</code> слушает шину, показывает и прячет картинку,
+передаёт крутилку и выбор в CarPlay. Разложен на разбор событий, чистый автомат состояний
+и заглушку CarPlay с настоящим интерфейсом — когда появится разбор протокола донгла, менять
+придётся только заглушку.</p>
+<p>Два решения, которые стоит знать заранее:</p>
+<ul>
+<li><b>Передача в шину выключена по умолчанию.</b> Случайный запуск на живой машине ничего
+не меняет, он только печатает, что собирался отправить. Нужен явный флаг.</li>
+<li><b>Есть режим проигрывания записанного лога.</b> Весь путь — кадр, событие, решение —
+проверяется без машины и без кабеля, на настоящих записях из <a href="../logs/README.md">logs/</a>.
+Так уже проверено, что первое нажатие MENU отпускает экран, а остальные ничего не делают.</li>
+</ul>
+<p>Тестов 61. Подробности и команды запуска — в <a href="../tools/README.md">tools/README.md</a>.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Увидели на шине</th><th>Что делаем</th></tr></thead>
+<tbody>
+<tr><td>Телефон подключился к донглу</td><td>Отправить <code>3B 05 BB 4F 01 00</code>. Картинка на экране</td></tr>
+<tr><td>MENU <code>F0 04 FF 48 34</code></td><td>Отправить <code>3B 05 BB 4F 02 00</code>, запомнить «убрано пользователем»</td></tr>
+<tr><td>DISPLAY <code>F0 04 68 48 30</code></td><td>Переключить: убрано — показать, показано — убрать</td></tr>
+<tr><td>Крутилка <code>F0 04 3B 49 8X</code></td><td>Перемещение по интерфейсу CarPlay</td></tr>
+<tr><td>Нажатие крутилки <code>F0 04 3B 48 05</code></td><td>Выбор</td></tr>
+<tr><td>Долгое нажатие крутилки <code>F0 04 3B 48 45</code></td><td>«Назад» в CarPlay. <b>Не проверено:</b> кадра удержания в логах нет</td></tr>
+<tr><td>Телефон отключился</td><td>Отправить <code>3B 05 BB 4F 02 00</code></td></tr>
+<tr><td>Задняя передача</td><td>Ничего. Камера перебивает аппаратно, после паркинга картинка возвращается сама</td></tr>
+<tr><td>Зажигание выключено</td><td>Ничего. Модуль сбрасывается сам</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Возврат звука на AUX — единственное место, где придётся схитрить.</b> Прямого
+выбора источника в этой машине нет, источники идут по кругу кнопкой MODE. Значит возврат делается
+так: отправить кадр кнопки MODE <code>F0 04 68 48 23</code> вместе с отпусканием
+<code>F0 04 68 48 A3</code> и смотреть, что радио написало на экран. Оно само рапортует текущий
+источник: <code>68 12 3B 23 62 10 41 55 58 …</code> это «AUX». Дошли до AUX — перестали жать.
+Обратная связь есть, вслепую гадать не надо. <b>Не проверено одно:</b> послушается ли радио кадра
+кнопки, отправленного нами, а не монитором. Проверяется за минуту в машине.</div>
+
+<h2>Порядок сборки</h2>
+<ol class="chk">
+<li><h3>Композит на столе</h3><p>Включить аналоговое видео на малине, добиться картинки на любом
+телевизоре. Проверить распайку четырёхконтактного штекера по <a href="08-proverka-kabelya.html">документу 08</a>.
+До этого шага в машину не лезть.</p></li>
+<li><h3>CarPlay на столе</h3><p>Донгл, телефон, node-CarPlay, вывод на тот же телевизор.
+Отдельно посмотреть, читается ли интерфейс, если уменьшить окно до 400 × 234.</p></li>
+<li><h3>Звук на столе</h3><p>Воспроизведение с карты 1 на наушники, проверка на слух. Отдельно проверить вход записи — он понадобится для Siri.</p></li>
+<li><h3>Автомат состояний</h3><p>Пишется и проверяется на стенде шины, без машины. Кадры кнопок
+у нас записаны, их можно проигрывать в шину стенда.</p></li>
+<li><h3>В машину</h3><p>Обжать контакты 6 и 15, протянуть аудиокабель, подключить всё разом.
+Проверить: картинку, звук, кнопки, выход в меню и возврат.</p></li>
+<li><h3>Проверить кадр кнопки MODE от нас</h3><p>Одна отправка, один взгляд на экран.</p></li>
+</ol>
+
+<div class="note"><b>Отдельной кнопки возврата у монитора нет.</b> Нижняя пара левого блока —
+это MODE и DISPLAY, и то, что владелец описывал как «вернуть на другой стол», оказалось именно
+DISPLAY. Заводской учебный документ BMW это подтверждает: «Display чередует радиоэкран и другие
+экраны». Но DISPLAY у нас занят показом и скрытием CarPlay, а крутилка только вертится и
+нажимается. Поэтому «назад» повешено на <b>долгое нажатие крутилки</b>: по известной кодировке
+это <code>F0 04 3B 48 45</code>, где к коду кнопки прибавлено <code>0x40</code>. Схема
+подтвердилась на DISPLAY, MODE и MENU, но сам этот кадр мы не ловили — сверить при первой
+проверке в машине.</div>
+
+<h2>Чего в макете сознательно нет</h2>
+<ul>
+  <li><b>STM32.</b> Малина сама работает с шиной через тот же кабель. Микроконтроллер нужен плате
+  ради сна и мгновенного старта, а макету — нет.</li>
+  <li><b>Реле, ключ триггера, вход заднего хода.</b> Вариант B их требует, вариант A — нет,
+  и проверка в машине это подтвердила.</li>
+  <li><b>Корпус из чейнджера.</b> Макет живёт как есть, корпусом занимаемся вместе с платой.</li>
+  <li><b>Кодировка TV-in-Motion.</b> Отдельная задача, макет от неё не зависит.</li>
+</ul>
+</div>

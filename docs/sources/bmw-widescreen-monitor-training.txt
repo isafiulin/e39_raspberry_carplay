@@ -1,0 +1,445 @@
+Initial Print Date:10/03/00
+Revision Date:9/30/00
+Subject
+Page
+Introduction. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .3
+Component overview. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+Principle of operation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+Workshop Hints. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .7
+Review Questions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+Table of Contents
+WIDE SCREEN ON-BOARD MONITOR
+2
+Widescreen board monitor
+WIDE SCREEN ON-BOARD MONITOR
+Model: E39,E38,E46,E53
+Production Date: E38,E39 from 9/00
+E53 from 1/01
+E46 Cabrio from 3/01
+all other E46 models from 9/01
+Objectives
+After completing this module you should be able to:
+•
+Describe the benefits of the wide screen monitor over the previous versions.
+•
+Understand how to operate the wide screen monitor.
+•
+Review the procedures to access the Service Modes.
+3
+Widescreen board monitor
+Introduction
+While the instrument cluster provides all of the important vehicle status information to the
+driver, the on-board monitor is designed as an additional display that can be viewed by both
+the driver and vehicle passengers.  Information relating to the vehicle, navigation, audio sys-
+tem and telephone can be displayed and controlled from a central location.
+The wide screen on-board monitor replaces both the 5.5’’ versions in the E38 and E39, and
+the 5’’ board monitor from the E53 and E46.  The wide screen display has a screen size of
+6.5’’ and an aspect ratio (length:height) of 16:9.  
+The benefits of the wide screen design are:
+•
+Larger display area and higher resolution (400X234 pixels).
+•
+Improved display screen technology (Ad-TFT LC).
+•
+Bigger text size.
+•
+Soft keys replace country specific audio function keys.
+•
+Used for all board monitor applications in all markets reducing variants.
+•
+Larger display area makes split screen and magnification features possible (future 
+software enhancements).
+4
+Widescreen board monitor
+Component Overview
+The wide screen on-board monitor consists
+of:
+1. Monitor housing with cassette drive
+2. Display screen
+3. On-board monitor control panel 
+Cassette Drive
+The cassette drive is located behind the on-board monitor screen.  In order to access the
+cassette, press the “eject” button, the display screen tilts forward to uncover the cassette
+slot.  The images will remain displayed on the screen.  
+After pressing the “eject” button again or automatically after 15 seconds the display returns
+to its normal position (cassette must be completely inside or removed).  The tilt mechanism
+for the display screen utilizes anti-trap, if the board monitor detects a sudden change in
+speed, the display will reverse direction.
+5
+Widescreen board monitor
+Display Screen and Control Panel
+The display screen has a diagonal width of 6.5’’ and an aspect ratio of 16:9 compared to
+the previous monitors that had a ratio of 4:3.  The new screen also uses a Ad-TFT display
+(Advanced Thin Film Transistor).  This type of screen uses ambient light in addition to back-
+lighting in order to illuminate the display.  The advantage is a constant contrast and 
+brightness level at all ambient lighting conditions. 
+11.13.2000 Thursday
+10:17
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+MENU
+On-board computer
+DSP
+Code
+Set
+GPS-Navigation
+Monitor off
+Emergency
+Aux. Ventilation
+INFO = Activates the soft key menu for RDS and PTY
+1-6 BUTTONS = Audio presets and CD selection
+AM/FM SELECTION
+MODE/DISPLAY = Mode selects between audio functions.  Display alternates between
+radio display and other displays. BC,TEL,NAV etc.
+6.5 INCH DISPLAY
+16:9 ASPECT RATIO
+PHOTOCELL SENSOR
+RADIO STATUS LED = Signal from
+radio via I/K bus.
+AUXILIARY FAN INDICATOR LED
+RADIO CONTROL KNOB
+ON-BOARD MONITOR CONTROL
+KNOB
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+TELEPHONE STATUS LEDs  / EJECT = Tilts monitor to access cassette drive.
+TELEPHONE = Send/End button
+TAPE REVERSE/CLOCK = Clock: Pressing with key off displays time.  Aux. ventilation
+can be switched by holding button longer.
+TONE/SELECT=Tone: Dolby (cassette only) and audio adjustments.
+Select: Choose between station search methods (a,m or scan).
+FAST FORWARD/REVERSE / STATION SEARCH
+MENU = Returns display to main menu
+6
+Widescreen board monitor
+Wide Screen Board Monitor Interface
+Example of E38/E39 with Wide Screen Board Monitor
+RED SIGNAL
+GREEN SIGNAL
+BLUE SIGNAL
+LCM III
+LCM III
+MFL-CM
+Telephone
+PSE Box
+Telephone
+PSE Box
+I-BUS
+I-BUS
+K-BUS
+DIAGNOSIS BUS
+DIAGNOSIS BUS
+SRS
+AIRBAG
+SRS
+AIRBAG
+B
+M
+W
+BM53
+NAVIGATION
+AUDIO
+SIGNALS
+GPS
+ANTENNA
+CD
+PLAYER
+AUDIO
+SIGNALS
+AUDIO SIGNALS
+FOR AMPLIFICATION
+TAPE PLAYER
+AUDIO SIGNALS
+AMPLIFIER
+DSC
+(processed
+left front wheel
+speed signal)
+REVERSE SIGNAL FROM
+LCM
+POWER
+GPS NAVIGATION SYSTEM
+13.07.2000 Thursday
+10:17
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+BOSCH
+0
+½
+CHECK
+ENGINE
+OIL SERVICE
+OIL SERVICE
+INSPECTION
+P
+1/min
+x 1000
+km/h
+ELECTRONIC
+MPH
+1
+20
+20
+40
+40
+60
+60
+80
+80
+100
+180
+160
+140
+120
+100
+200 120
+220
+140
+240
+0
+2
+3
+4
+5
+6
+7
+!
+!
+ABS
+20
+DIGIT
+READOUT
+123456
+PRND SM
+54321
+122 4
+72 0F
+miles
+0
+10
+15
+20
+40
++
+BMW
+StarTAC
+7
+Widescreen board monitor
+Principle of operation
+The on-board monitor is an input and display device that performs no internal calculations.  
+Inputs from the control panel buttons and knobs are converted into I-bus (K-bus E46)
+signals by the BM control panel.  All of the devices controlled by the BM are connected to
+the I/K bus interface.
+The navigation computer contains the graphics stage integrated into the navigation 
+computer housing.  Request for on-board monitor displays are made to the navigation
+computer via the I/K bus.  The navigation computer generates the RGB video signals and
+transmits them via 3 shielded wires.
+Audio signals generated by the cassette drive are sent via traditional audio wires (4) to the
+radio (located in the trunk or cargo area) for output to the audio system amplifier.
+Workshop Hints
+Service mode
+Access for the radio, on-board monitor and navigation service modes is available through
+the on-board monitor screen.
+To enter the radio service mode:
+•
+Turn the ignition key to position 1 (KLR).
+•
+Turn the radio on, then off, then on again.
+•
+Press the “INFO” button.  From the selection list choose “RDS”.
+•
+Press and hold the on-board monitor control knob for at least 8 seconds.
+•
+The audio display window will show the radio serial number as the first display.
+•
+The station search < > buttons are used to scroll through the various settings.
+•
+Turn off the radio to “set” any changes made.
+Note: See the “NG” Radios
+module for a list of the
+tests and settings available
+in the radio service mode.
+11.13.2000 Thursday
+10:17
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+INFO
+PTY
+RDS
+1
+3
+2
+8
+Widescreen board monitor
+To enter the On-Board Monitor and Navigation Service Mode:
+•
+Turn the ignition key to position 1 (KL R).
+•
+From the Menu screen select “SET”.
+•
+Once in the Set screen, press and hold the “MENU” button for 8 seconds.
+•
+The Service Mode menu will appear on the display.
+•
+Select “On-board monitor” for monitor specific tests.
+Tests and adjustments available for the on-board monitor are:
+•
+Version Information
+•
+Key Function (button and rotary knob test)
+•
+Brightness (Screen brightness adjustment)
+11.13.2000 Thursday
+10:17
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+Language
+Distance
+Consumpt.
+Temp.
+Clock
+Date
+Audio+OBC
+USA
+miles
+mpg
+F
+12h
+mm/dd
+off
+E
+km
+1/100km
+km/l
+C
+24h
+set
+dd.mm
+set
+on
+SW 3-1/20
+SET
+11.13.2000 Thursday
+10:17
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+On-board monitor
+Video Module
+GPS
+Sensor check
+Telematics
+NAVIGATION/GRAPHIC ELEMENT
+SERVICE MODE
+11.13.2000 Thursday
+10:17
+INFO
+1
+4
+2
+5
+3
+6
+FM
+AM
+MODE
+MENU
+TONE SELECT
+Sw level
+Hw level:
+Diag. Index:
+Bus index:
+Encoding index:
+Supplier
+ON-BOARD MONITOR VERSION
+Return
+Functions
+return
+Version
+Key function
+Brightness
+Press and hold for 8 seconds after entering 
+the “SET” screen.
+Service Mode main menu display
+9
+Widescreen board monitor
+Diagnosis
+Fault driven diagnosis is possible using the DIS/MoDiC Diagnosis Program.  The Diagnosis
+Program features:
+•
+Identification 
+•
+Read/Clear fault memory
+•
+Diagnosis requests
+•
+Fault driven test modules. (E46 concept)
+Review Questions
+1. Which component is responsible for providing the display signals to the wide screen on-
+board monitor?
+2. How does the radio receive the control requests from the on-board monitor control 
+panel?
+3. What tests and adjustments are available in the service mode that are specific to the 
+on-board monitor?
+BMW DIS
+BMW DIS
+BMW DIS

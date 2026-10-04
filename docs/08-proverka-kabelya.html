@@ -1,0 +1,468 @@
+<title>Проверка AV-кабеля</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --bad: #a33417; --bad-soft: #f8e0d9; --mono-bg: #e8ebef;
+    --sig: #0b5fa5; --err: #b34a2a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --bad: #e8886a; --bad-soft: #3a1f17; --mono-bg: #262b32;
+      --sig: #4f9bea; --err: #e0805f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --bad: #e8886a; --bad-soft: #3a1f17; --mono-bg: #262b32;
+    --sig: #4f9bea; --err: #e0805f;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 26px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 42px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 20px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  figure { margin: 18px 0 8px; background: var(--surface); border: 1px solid var(--line); padding: 16px; overflow-x: auto; }
+  figure svg { display: block; width: 100%; min-width: 620px; height: auto; color: var(--ink); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; max-width: 80ch; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  tr.swap td { background: var(--accent-soft); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps > li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .steps > li > * { grid-column: 2; min-width: 0; }
+  .steps > li::before { grid-column: 1; content: counter(s); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 24px; color: var(--accent); line-height: 1; padding-top: 3px; }
+  .steps h3 { margin: 0 0 5px; }
+  .steps p { margin: 0 0 8px; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · Raspberry Pi 4 · композитный выход · рябь вместо картинки</p>
+  <h1>Проверка AV-кабеля</h1>
+  <p class="lead">Сигнал с Pi подтверждён: PAL, 720×576, композитный выход поднят. Монитор оживает, но показывает рябь. Значит дело в кабеле: у обычных AV-кабелей и кабелей для Raspberry Pi поменяны местами два контакта из четырёх. Ниже как это увидеть мультиметром и как починить.</p>
+</header>
+
+<h2>Итог одной таблицей</h2>
+<p>Всё, что нужно сделать, без пояснений. Подробности выше.</p>
+
+<h3>Видео: что с чем делаем</h3>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Контакт штекера 3,5 мм</th><th>Ветвь кабеля сейчас</th><th>Что несёт</th><th>Действие</th></tr></thead>
+<tbody>
+<tr><td>1 · кончик</td><td>центр красного тюльпана</td><td>звук левый</td><td>откусить, заизолировать</td></tr>
+<tr><td>2 · кольцо 1</td><td>центр белого тюльпана</td><td>звук правый</td><td>откусить, заизолировать</td></tr>
+<tr class="swap"><td>3 · кольцо 2</td><td>центр жёлтого тюльпана</td><td>земля</td><td>на <b>юбку</b> нового RCA</td></tr>
+<tr class="swap"><td>4 · основание</td><td>оплётка, общая на все три</td><td>видео</td><td>на <b>центральный штырёк</b> нового RCA</td></tr>
+</tbody>
+</table>
+</div>
+<p>Оставляем жёлтую ветвь целиком, она рабочая. Новый разъём берём жёлтый: по стандарту жёлтый это видео.</p>
+
+<h3>Проверки</h3>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Когда</th><th>Что прозвонить</th><th>Должно быть</th></tr></thead>
+<tbody>
+<tr><td>До пайки</td><td>оплётка жёлтой ветви ↔ штекер</td><td>звонится <b>основание</b></td></tr>
+<tr><td>До пайки</td><td>центральная жила ↔ штекер</td><td>звонится <b>кольцо 2</b></td></tr>
+<tr><td>После пайки</td><td>центр RCA ↔ штекер</td><td>звонится <b>основание</b></td></tr>
+<tr><td>После пайки</td><td>центр RCA ↔ юбка RCA</td><td><b>не звонится</b>, замыкания нет</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Звук</h3>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Откуда</th><th>Контакт</th><th>Куда</th></tr></thead>
+<tbody>
+<tr><td rowspan="3">Гнездо 3,5 мм на аудиошляпе WM8960, не на Pi</td><td>кончик · левый канал</td><td>центральный штырёк RCA</td></tr>
+<tr><td>кольцо · правый канал</td><td>не подключать</td></tr>
+<tr><td>основание · земля</td><td>юбка RCA</td></tr>
+</tbody>
+</table>
+</div>
+<p>Паять не обязательно: готовый кабель 3,5 мм на два тюльпана даёт то же самое, достаточно воткнуть один тюльпан в аудиовход монитора, второй оставить висеть. Собственный аудиовыход Pi в проекте не используется вообще, звук всегда идёт через шляпу.</p>
+
+<h3>Что понадобится</h3>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Позиция</th><th>Сколько</th><th>Зачем</th></tr></thead>
+<tbody>
+<tr><td>Разъём RCA под пайку, жёлтый</td><td>1</td><td>Новый видеовыход кабеля</td></tr>
+<tr><td>Кабель 3,5 мм на 2RCA</td><td>1</td><td>Звук со шляпы, вместо пайки</td></tr>
+<tr><td>Термоусадка или изолента</td><td>—</td><td>Обрубки белой и красной ветвей</td></tr>
+<tr><td>Паяльник, припой, мультиметр</td><td>—</td><td>Сама работа и проверки</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Как устроен штекер</h2>
+<figure>
+<svg viewBox="0 0 900 250" role="img" aria-label="Схема четырёхконтактного штекера 3,5 мм: от кончика к проводу идут кончик, первое кольцо, второе кольцо и основание, разделённые чёрными изоляторами." xmlns="http://www.w3.org/2000/svg">
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+    <!-- plug body -->
+    <path d="M70,120 Q70,96 96,96 L150,96 L150,144 L96,144 Q70,144 70,120 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="150" y="96" width="14" height="48" fill="currentColor" opacity=".55"/>
+    <rect x="164" y="96" width="70" height="48" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="234" y="96" width="14" height="48" fill="currentColor" opacity=".55"/>
+    <rect x="248" y="96" width="70" height="48" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="318" y="96" width="14" height="48" fill="currentColor" opacity=".55"/>
+    <rect x="332" y="96" width="150" height="48" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="482" y="86" width="60" height="68" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <line x1="542" y1="120" x2="640" y2="120" stroke="currentColor" stroke-width="5"/>
+    <text x="648" y="124" font-size="12" opacity=".75">к кабелю</text>
+
+    <!-- callouts -->
+    <line x1="110" y1="96" x2="110" y2="58" stroke="currentColor" stroke-width="1"/>
+    <text x="110" y="48" text-anchor="middle" font-size="12" font-weight="600">Кончик</text>
+    <line x1="199" y1="96" x2="199" y2="74" stroke="currentColor" stroke-width="1"/>
+    <text x="199" y="64" text-anchor="middle" font-size="12" font-weight="600">Кольцо 1</text>
+    <line x1="283" y1="144" x2="283" y2="176" stroke="currentColor" stroke-width="1"/>
+    <text x="283" y="192" text-anchor="middle" font-size="12" font-weight="600">Кольцо 2</text>
+    <line x1="407" y1="144" x2="407" y2="196" stroke="currentColor" stroke-width="1"/>
+    <text x="407" y="212" text-anchor="middle" font-size="12" font-weight="600">Основание</text>
+    <text x="407" y="228" text-anchor="middle" font-size="11" opacity=".75">самая длинная часть, у самого корпуса</text>
+
+    <text x="70" y="240" font-size="11" opacity=".75">Серым показаны изоляторы между контактами. Четыре контакта — значит кабель может нести и звук, и видео.</text>
+  </g>
+</svg>
+<figcaption>Считать контакты нужно всегда от кончика. Трёхконтактный штекер, где колец только одно, видео нести не может в принципе.</figcaption>
+</figure>
+
+<h2>Две распайки и в чём разница</h2>
+<figure>
+<svg viewBox="0 0 900 330" role="img" aria-label="Сравнение двух распаек: у Raspberry Pi земля на втором кольце, а видео на основании; у камерного кабеля наоборот, видео на втором кольце, земля на основании. Звук на кончике и первом кольце одинаков в обоих случаях." xmlns="http://www.w3.org/2000/svg">
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+    <!-- headers -->
+    <text x="240" y="30" text-anchor="middle" font-size="14" font-weight="600">Raspberry Pi</text>
+    <text x="660" y="30" text-anchor="middle" font-size="14" font-weight="600">Обычный AV-кабель</text>
+    <line x1="450" y1="14" x2="450" y2="310" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".5"/>
+
+    <!-- left column rows -->
+    <g>
+      <rect x="60" y="50" width="360" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/>
+      <text x="76" y="76" font-size="12.5">Кончик</text>
+      <text x="404" y="76" text-anchor="end" font-size="12.5" opacity=".75">звук левый</text>
+
+      <rect x="60" y="100" width="360" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/>
+      <text x="76" y="126" font-size="12.5">Кольцо 1</text>
+      <text x="404" y="126" text-anchor="end" font-size="12.5" opacity=".75">звук правый</text>
+
+      <rect x="60" y="150" width="360" height="42" rx="3" fill="none" stroke="#0b5fa5" stroke-width="2"/>
+      <text x="76" y="176" font-size="12.5" font-weight="600">Кольцо 2</text>
+      <text x="404" y="176" text-anchor="end" font-size="12.5" font-weight="600" fill="#0b5fa5">земля</text>
+
+      <rect x="60" y="200" width="360" height="42" rx="3" fill="none" stroke="#0b5fa5" stroke-width="2"/>
+      <text x="76" y="226" font-size="12.5" font-weight="600">Основание</text>
+      <text x="404" y="226" text-anchor="end" font-size="12.5" font-weight="600" fill="#0b5fa5">ВИДЕО</text>
+    </g>
+
+    <!-- right column rows -->
+    <g>
+      <rect x="480" y="50" width="360" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/>
+      <text x="496" y="76" font-size="12.5">Кончик</text>
+      <text x="824" y="76" text-anchor="end" font-size="12.5" opacity=".75">звук левый</text>
+
+      <rect x="480" y="100" width="360" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/>
+      <text x="496" y="126" font-size="12.5">Кольцо 1</text>
+      <text x="824" y="126" text-anchor="end" font-size="12.5" opacity=".75">звук правый</text>
+
+      <rect x="480" y="150" width="360" height="42" rx="3" fill="none" stroke="#0b5fa5" stroke-width="2"/>
+      <text x="496" y="176" font-size="12.5" font-weight="600">Кольцо 2</text>
+      <text x="824" y="176" text-anchor="end" font-size="12.5" font-weight="600" fill="#0b5fa5">ВИДЕО</text>
+
+      <rect x="480" y="200" width="360" height="42" rx="3" fill="none" stroke="#0b5fa5" stroke-width="2"/>
+      <text x="496" y="226" font-size="12.5" font-weight="600">Основание</text>
+      <text x="824" y="226" text-anchor="end" font-size="12.5" font-weight="600" fill="#0b5fa5">земля</text>
+    </g>
+
+    <text x="450" y="282" text-anchor="middle" font-size="12.5" font-weight="600">Отличие ровно одно: земля и видео стоят в обратном порядке.</text>
+    <text x="450" y="302" text-anchor="middle" font-size="12" opacity=".8">Звуковые контакты совпадают, поэтому белый и красный тюльпаны работают в обоих случаях.</text>
+  </g>
+</svg>
+<figcaption>Из-за этой перестановки видео с Pi попадает на землю камерного кабеля, то есть на юбки всех трёх тюльпанов, а на центральный штырёк жёлтого приходит земля. Монитор видит мусор и показывает рябь.</figcaption>
+</figure>
+
+<h2>Прозвонка: что и куда</h2>
+<p>Мультиметр в режим прозвонки или измерения сопротивления. Кабель ни к чему не подключён.</p>
+<figure>
+<svg viewBox="0 0 900 300" role="img" aria-label="Схема прозвонки: один щуп на центральный штырёк жёлтого тюльпана, второй по очереди на контакты штекера. Если звонится основание, кабель для Raspberry Pi. Если звонится второе кольцо, кабель камерный." xmlns="http://www.w3.org/2000/svg">
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+    <!-- RCA -->
+    <rect x="40" y="110" width="110" height="70" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="95" cy="145" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="95" cy="145" r="3.5" fill="currentColor"/>
+    <text x="95" y="100" text-anchor="middle" font-size="12" font-weight="600">Жёлтый тюльпан</text>
+    <text x="95" y="200" text-anchor="middle" font-size="11" opacity=".75">центральный штырёк</text>
+
+    <!-- plug simplified -->
+    <path d="M540,128 Q540,112 556,112 L580,112 L580,178 L556,178 Q540,178 540,162 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="590" y="112" width="40" height="66" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="640" y="112" width="40" height="66" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="690" y="112" width="90" height="66" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="560" y="196" text-anchor="middle" font-size="11">кончик</text>
+    <text x="610" y="196" text-anchor="middle" font-size="11">кольцо 1</text>
+    <text x="660" y="212" text-anchor="middle" font-size="11">кольцо 2</text>
+    <text x="735" y="196" text-anchor="middle" font-size="11">основание</text>
+
+    <!-- good path -->
+    <path d="M110,140 C 300,70 560,58 735,105" fill="none" stroke="#0b5fa5" stroke-width="2.5"/>
+    <text x="420" y="62" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0b5fa5">звонится основание → кабель для Raspberry Pi, годится</text>
+
+    <!-- bad path -->
+    <path d="M110,152 C 300,240 520,250 660,190" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <text x="400" y="268" text-anchor="middle" font-size="12.5" font-weight="600">звонится кольцо 2 → кабель камерный, нужна переделка</text>
+
+    <text x="40" y="40" font-size="12" opacity=".8">Один щуп держим на центральном штырьке жёлтого, вторым касаемся контактов штекера по очереди.</text>
+  </g>
+</svg>
+<figcaption>Достаточно одной проверки. Если центральный штырёк жёлтого звонится на основание, кабель правильный и рябь вызвана чем-то другим. Если на второе кольцо, распайка камерная.</figcaption>
+</figure>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Что нашли</th><th>Вывод</th><th>Что делать</th></tr></thead>
+<tbody>
+<tr><td>Центр жёлтого → основание</td><td>Кабель правильный</td><td>Ищите причину в другом: вход монитора AV1/AV2, сам монитор, контакт в гнезде</td></tr>
+<tr class="swap"><td>Центр жёлтого → кольцо 2</td><td>Камерная распайка</td><td>Перепаять жёлтый тюльпан, см. ниже</td></tr>
+<tr><td>Центр жёлтого → кончик или кольцо 1</td><td>Экзотическая распайка</td><td>Прозвоните все три тюльпана и составьте свою таблицу, дальше по тому же принципу</td></tr>
+<tr><td>Ни на что не звонится</td><td>Обрыв внутри кабеля</td><td>Кабель в мусор</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Не пытайтесь обойтись без переделки.</b> Соблазнительно просто воткнуть в видеовход белый или красный тюльпан. Так делать нельзя: их юбки сидят на том же основании штекера и несут тот же видеосигнал, а в аудиовходе монитора юбка это земля. Сигнал замкнётся на землю, картинки не будет, а выходу Pi это на пользу не пойдёт. По той же причине после переделки оставшиеся тюльпаны никуда не подключайте, просто заизолируйте.</div>
+
+<h2>Переделка этого кабеля: схема</h2>
+<p>Прозвонка показала камерную распайку: основание штекера уходит на юбки всех трёх тюльпанов, а центр жёлтого сидит на кольце 2. Значит видео едет по общей оплётке, а земля по центральной жиле жёлтой ветви. Задача: собрать из этого один видеовыход, где всё стоит на своих местах.</p>
+<figure>
+<svg viewBox="0 0 920 390" role="img" aria-label="Схема переделки кабеля: от четырёхконтактного штекера идёт жгут, который разветвляется на три; белая и красная ветви откусываются и изолируются, жёлтая остаётся; её оплётка, несущая видео, припаивается к центральному штырьку нового разъёма RCA, а центральная жила, несущая землю, к юбке." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="cut" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M1,1 L9,9 M9,1 L1,9" stroke="currentColor" stroke-width="1.6" fill="none"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+    <!-- 3.5 plug, simplified as 4 segments -->
+    <path d="M40,168 Q40,152 56,152 L84,152 L84,208 L56,208 Q40,208 40,192 Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="90" y="152" width="40" height="56" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="136" y="152" width="40" height="56" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="182" y="152" width="78" height="56" fill="none" stroke="#0b5fa5" stroke-width="2.5"/>
+    <text x="62" y="146" text-anchor="middle" font-size="11">кончик</text>
+    <text x="62" y="228" text-anchor="middle" font-size="10.5" opacity=".7">звук</text>
+    <text x="110" y="146" text-anchor="middle" font-size="11">кольцо 1</text>
+    <text x="110" y="228" text-anchor="middle" font-size="10.5" opacity=".7">звук</text>
+    <text x="156" y="146" text-anchor="middle" font-size="11">кольцо 2</text>
+    <text x="156" y="228" text-anchor="middle" font-size="10.5" font-weight="600">земля</text>
+    <text x="221" y="146" text-anchor="middle" font-size="11">основание</text>
+    <text x="221" y="228" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0b5fa5">ВИДЕО</text>
+    <text x="150" y="60" text-anchor="middle" font-size="12.5" font-weight="600">Штекер 3,5 мм остаётся как есть</text>
+    <text x="150" y="78" text-anchor="middle" font-size="11" opacity=".75">его не трогаем и не разбираем</text>
+
+    <!-- jacket -->
+    <line x1="260" y1="180" x2="380" y2="180" stroke="currentColor" stroke-width="6"/>
+    <text x="320" y="166" text-anchor="middle" font-size="11" opacity=".75">общий жгут</text>
+    <circle cx="380" cy="180" r="4" fill="currentColor"/>
+    <text x="380" y="330" text-anchor="middle" font-size="11" opacity=".75">место разветвления</text>
+    <line x1="380" y1="184" x2="380" y2="316" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+
+    <!-- white and red branches: cut -->
+    <path d="M380,180 C 410,140 430,120 470,112" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="470" y1="112" x2="486" y2="110" stroke="currentColor" stroke-width="2.5" marker-end="url(#cut)"/>
+    <text x="508" y="107" font-size="11.5">белая ветвь: откусить</text>
+    <text x="508" y="123" font-size="11" opacity=".75">и заизолировать</text>
+
+    <path d="M380,180 C 410,220 430,244 470,252" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="470" y1="252" x2="486" y2="254" stroke="currentColor" stroke-width="2.5" marker-end="url(#cut)"/>
+    <text x="508" y="249" font-size="11.5">красная ветвь: откусить</text>
+    <text x="508" y="265" font-size="11" opacity=".75">и заизолировать</text>
+
+    <!-- yellow branch as two conductors -->
+    <line x1="380" y1="176" x2="700" y2="150" stroke="#0b5fa5" stroke-width="2.5"/>
+    <line x1="380" y1="186" x2="700" y2="214" stroke="currentColor" stroke-width="2.5"/>
+    <text x="545" y="160" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0b5fa5">оплётка = видео</text>
+    <text x="545" y="212" text-anchor="middle" font-size="11.5" font-weight="600">центральная жила = земля</text>
+    <text x="545" y="186" text-anchor="middle" font-size="11" opacity=".7">жёлтая ветвь, её и оставляем</text>
+
+    <!-- new RCA -->
+    <rect x="700" y="120" width="130" height="124" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="765" cy="182" r="34" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="765" cy="182" r="9" fill="#0b5fa5"/>
+    <text x="765" y="108" text-anchor="middle" font-size="12.5" font-weight="600">новый RCA</text>
+    <line x1="700" y1="150" x2="756" y2="176" stroke="#0b5fa5" stroke-width="2.5"/>
+    <line x1="700" y1="214" x2="732" y2="205" stroke="currentColor" stroke-width="2.5"/>
+    <text x="848" y="168" font-size="11.5" font-weight="600" fill="#0b5fa5">штырёк</text>
+    <text x="848" y="216" font-size="11.5" font-weight="600">юбка</text>
+    <text x="765" y="268" text-anchor="middle" font-size="11" opacity=".75">провода приходят крест-накрест</text>
+
+    <text x="40" y="366" font-size="11.5" opacity=".8">Синим показан путь видеосигнала. Он входит в кабель по основанию штекера, идёт по оплётке и выходит на центральный штырёк RCA.</text>
+  </g>
+</svg>
+<figcaption>Вся суть переделки в одном перекрестье справа: то, что в кабеле было экраном, становится сигналом, а то, что было сигналом, становится землёй.</figcaption>
+</figure>
+
+<h3>Карта соединений</h3>
+<p>Считаем контакты от кончика штекера. Слева то, что показала прозвонка сейчас, справа то, куда жила должна уйти после переделки. Тюльпан после переделки остаётся один, на жёлтой ветви; берите корпус жёлтого цвета, так через год не придётся гадать, что это за провод.</p>
+<figure>
+<svg viewBox="0 0 920 420" role="img" aria-label="Карта соединений: первый контакт от кончика и второй несут звук и не используются; третий контакт, второе кольцо, это земля и идёт на юбку разъёма RCA; четвёртый контакт, основание у провода, это видео и идёт на центральный штырёк RCA." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    <marker id="tipA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b5fa5"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+    <!-- plug -->
+    <text x="60" y="34" font-size="12.5" font-weight="600">Штекер 3,5 мм, вид сбоку. Кончик слева.</text>
+    <path d="M60,74 Q60,58 76,58 L112,58 L112,110 L76,110 Q60,110 60,94 Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="118" y="58" width="44" height="52" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="168" y="58" width="44" height="52" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="218" y="58" width="92" height="52" fill="none" stroke="#0b5fa5" stroke-width="2.5"/>
+    <line x1="310" y1="84" x2="356" y2="84" stroke="currentColor" stroke-width="5"/>
+    <text x="364" y="88" font-size="11" opacity=".7">провод</text>
+
+    <text x="86" y="50" text-anchor="middle" font-size="13" font-weight="600">1</text>
+    <text x="140" y="50" text-anchor="middle" font-size="13" font-weight="600">2</text>
+    <text x="190" y="50" text-anchor="middle" font-size="13" font-weight="600">3</text>
+    <text x="264" y="50" text-anchor="middle" font-size="13" font-weight="600">4</text>
+
+    <!-- drops -->
+    <line x1="86" y1="110" x2="86" y2="166" stroke="currentColor" stroke-width="1"/>
+    <line x1="140" y1="110" x2="140" y2="206" stroke="currentColor" stroke-width="1"/>
+    <line x1="190" y1="110" x2="190" y2="256" stroke="currentColor" stroke-width="1"/>
+    <line x1="264" y1="110" x2="264" y2="316" stroke="#0b5fa5" stroke-width="1.5"/>
+
+    <!-- row 1 -->
+    <text x="96" y="170" font-size="12.5"><tspan font-weight="600">1 · кончик</tspan>  —  центр красного  —  звук</text>
+    <line x1="400" y1="166" x2="520" y2="166" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="532" y="170" font-size="12.5" opacity=".7">не используется</text>
+
+    <!-- row 2 -->
+    <text x="150" y="210" font-size="12.5"><tspan font-weight="600">2 · кольцо 1</tspan>  —  центр белого  —  звук</text>
+    <line x1="400" y1="206" x2="520" y2="206" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="532" y="210" font-size="12.5" opacity=".7">не используется</text>
+
+    <!-- row 3 -->
+    <text x="200" y="260" font-size="12.5"><tspan font-weight="600">3 · кольцо 2</tspan>  —  центр жёлтого  —  <tspan font-weight="600">ЗЕМЛЯ</tspan></text>
+    <path d="M470,256 C 560,256 600,240 646,222" fill="none" stroke="currentColor" stroke-width="2.5" marker-end="url(#tip)"/>
+
+    <!-- row 4 -->
+    <text x="274" y="320" font-size="12.5"><tspan font-weight="600" fill="#0b5fa5">4 · основание</tspan>  —  общая оплётка  —  <tspan font-weight="600" fill="#0b5fa5">ВИДЕО</tspan></text>
+    <path d="M540,316 C 620,316 640,300 682,284" fill="none" stroke="#0b5fa5" stroke-width="2.5" marker-end="url(#tipA)"/>
+
+    <!-- RCA -->
+    <rect x="660" y="196" width="180" height="140" rx="12" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="750" cy="266" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="750" cy="266" r="11" fill="#0b5fa5"/>
+    <text x="750" y="180" text-anchor="middle" font-size="12.5" font-weight="600">новый RCA, жёлтый</text>
+    <text x="750" y="194" text-anchor="middle" font-size="11" opacity=".75">паяется на жёлтую ветвь</text>
+    <text x="856" y="222" font-size="12" font-weight="600">юбка</text>
+    <text x="856" y="290" font-size="12" font-weight="600" fill="#0b5fa5">штырёк</text>
+    <line x1="800" y1="266" x2="850" y2="286" stroke="#0b5fa5" stroke-width="1"/>
+
+    <text x="60" y="380" font-size="11.5" opacity=".85">Синим показан видеосигнал: с четвёртого контакта, который у самого провода, он идёт на центральный штырёк RCA.</text>
+    <text x="60" y="400" font-size="11.5" opacity=".85">Земля с третьего контакта идёт на юбку. Первые два контакта в схеме не участвуют.</text>
+  </g>
+</svg>
+<figcaption>Отсчёт всегда от кончика. Четвёртый контакт, самый длинный и ближний к проводу, несёт видео — именно он должен оказаться на центральном штырьке.</figcaption>
+</figure>
+
+<h3>Порядок действий</h3>
+<ol class="steps">
+<li>
+  <h3>Приготовить</h3>
+  <p>Разъём RCA под пайку, паяльник с припоем, термоусадка или изолента, бокорезы, нож для зачистки, мультиметр. Штекер 3,5 мм не разбираем, он остаётся заводским.</p>
+</li>
+<li>
+  <h3>Откусить все три тюльпана</h3>
+  <p>Жёлтой ветви оставляем всю длину, она станет рабочей. Белую и красную откусываем у самого разветвления: их оплётки сидят на том же основании, что и видео, и в схеме им делать нечего.</p>
+</li>
+<li>
+  <h3>Заизолировать обрубки</h3>
+  <p>Концы белой и красной ветвей у разветвления закрыть термоусадкой. Там висит видеосигнал, и касание корпуса или друг друга ему не на пользу.</p>
+</li>
+<li>
+  <h3>Разделать жёлтую ветвь</h3>
+  <p>Снять сантиметр внешней изоляции. Внутри оплётка и центральная жила в своей изоляции. Оплётку скрутить в жгутик, центральную жилу зачистить на пару миллиметров.</p>
+</li>
+<li>
+  <h3>Проверить мультиметром до пайки</h3>
+  <p>Оплётка должна звониться на <b>основание</b> штекера, центральная жила на <b>кольцо 2</b>. Если наоборот, значит ветвь перепутана, возьмите другую и прозвоните заново. Этот шаг пропускать нельзя: после пайки ошибку искать вдвое дольше.</p>
+</li>
+<li>
+  <h3>Припаять</h3>
+  <p>Один новый разъём, лучше жёлтый, на жёлтую ветвь. Оплётку, которая несёт видео, на <b>центральный штырёк</b>. Центральную жилу, которая несёт землю, на <b>юбку</b>. Сначала наденьте на кабель корпус разъёма, если он разборный: про это забывают все и каждый раз.</p>
+</li>
+<li>
+  <h3>Проверить после пайки</h3>
+  <p>Две проверки. Первая: центральный штырёк RCA звонится на основание штекера. Вторая, не менее важная: между штырьком и юбкой RCA <b>нет</b> короткого замыкания. Волосок оплётки, замкнувший на центр, это самая частая ошибка.</p>
+</li>
+<li>
+  <h3>Подключить</h3>
+  <p>Штекер в гнездо Pi до упора, RCA в видеовход монитора, питание монитора 12 В. Если Pi уже настроена на композит, картинка появится сразу.</p>
+</li>
+</ol>
+
+<div class="note"><b>Про длину и наводки.</b> После переделки видеосигнал идёт по оплётке, то есть экранирования у него больше нет. На столе и на коротком проводе это незаметно. Для машины, где рядом лежит проводка генератора, лучше позже собрать нормальный кабель: разборный штекер 3,5 мм, коаксиал 75 Ом и разъём RCA, с центральной жилой на основание и оплёткой на кольцо 2. Тогда экран снова будет экраном.</div>
+
+<h2>То же самое одной картинкой</h2>
+<p>Если схема выше кажется подробной, вот суть в двух состояниях.</p>
+<figure>
+<svg viewBox="0 0 900 290" role="img" aria-label="Схема переделки: было — центральный штырёк соединён с землёй, юбка с видео; стало — центральный штырёк с видео, юбка с землёй." xmlns="http://www.w3.org/2000/svg">
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+    <text x="30" y="28" font-size="13" font-weight="600" letter-spacing=".04em">БЫЛО</text>
+    <text x="500" y="28" font-size="13" font-weight="600" letter-spacing=".04em">СТАЛО</text>
+
+    <!-- before -->
+    <rect x="30" y="70" width="150" height="120" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="105" cy="130" r="26" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="105" cy="130" r="8" fill="currentColor"/>
+    <text x="105" y="60" text-anchor="middle" font-size="11.5">жёлтый разъём</text>
+    <line x1="180" y1="105" x2="300" y2="105" stroke="currentColor" stroke-width="2"/>
+    <text x="308" y="109" font-size="12">центральный штырёк ← <tspan font-weight="600">земля</tspan></text>
+    <line x1="180" y1="165" x2="300" y2="165" stroke="#0b5fa5" stroke-width="2.5"/>
+    <text x="308" y="169" font-size="12">юбка ← <tspan font-weight="600" fill="#0b5fa5">видео</tspan></text>
+    <text x="30" y="222" font-size="11.5" opacity=".8">Монитор получает землю на сигнальном контакте. Отсюда рябь.</text>
+
+    <!-- after -->
+    <rect x="500" y="70" width="150" height="120" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="575" cy="130" r="26" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="575" cy="130" r="8" fill="#0b5fa5"/>
+    <text x="575" y="60" text-anchor="middle" font-size="11.5">тот же разъём, провода поменяны</text>
+    <line x1="650" y1="105" x2="740" y2="105" stroke="#0b5fa5" stroke-width="2.5"/>
+    <text x="748" y="109" font-size="12">штырёк ← <tspan font-weight="600" fill="#0b5fa5">видео</tspan></text>
+    <line x1="650" y1="165" x2="740" y2="165" stroke="currentColor" stroke-width="2"/>
+    <text x="748" y="169" font-size="12">юбка ← <tspan font-weight="600">земля</tspan></text>
+    <text x="500" y="222" font-size="11.5" opacity=".8">Теперь сигнал приходит туда, куда монитор его ждёт.</text>
+
+    <text x="30" y="266" font-size="12" opacity=".8">Звук в схеме не участвует: на стенде и в машине он идёт через аудиошляпу, а не по этому кабелю.</text>
+  </g>
+</svg>
+<figcaption>Одна перестановка двух проводов решает всю задачу. Подробный порядок с проверками — в разделе выше.</figcaption>
+</figure>
+
+
+
+<div class="note"><b>Если рябь осталась после переделки.</b> Проверьте вход монитора: у многих таких мониторов два входа и кнопка переключения, и он может показывать пустой второй. Ещё вариант — плохой контакт в гнезде Pi: штекер должен войти до упора со щелчком, четырёхконтактные разъёмы туговатые.</div>
+
+<div class="tip"><b>Заводской кабель всё равно стоит заказать.</b> Переделанный годится для стенда, но в машине лучше иметь целый: запрос <code>树莓派 AV线 3.5mm 转 三莲花</code> на Taobao, доллар за штуку. Добавьте во вторую посылку вместе с чейнджером-донором.</div>
+</div>

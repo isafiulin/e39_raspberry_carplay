@@ -1,0 +1,449 @@
+
+===== PAGE 1 =====
+In-Car TV Tuner
+Digital (DVB-T) TV Tuner for BMW IBUS
+MCA-DVBT-TV-01
+User Manual
+
+===== PAGE 2 =====
+Contents
+Contents............................................................................................................................................ 1
+Overview ......................................................................................................................................... 2
+Features..............................................................................................2
+Requirements......................................................................................2
+Package Contents................................................................................3
+Hardware.......................................................................................................................................... 4
+Rear Panel View...................................................................................4
+Using IR Remote Control......................................................................5
+Using Board Monitor Display to Control TV functions...........................7
+Installation........................................................................................................................................ 8
+Installation overview............................................................................8
+Replacing existing TV module with MCA-DVBT-TV-01........................8
+Software..............................................................................................9
+ OSD Operation.......................................................................................................................... 10
+Using OEM board monitor for menu navigation and control...............11
+Using remote control for menu navigation and control......................12
+Advanced Configuration Menu............................................................................................12
+Specifications................................................................................................................................ 14
+Technical Support....................................................................................................................... 14
+Warranty Information................................................................................................................ 15
+1
+
+===== PAGE 3 =====
+Overview 
+Thank you for purchasing Mura Car Accessories TV Tuner. Our product 
+is designed for vehicles operating on the BMW I-BUS protocol. Providing 
+complete integration with OEM car head unit, MCA-DVBT-TV-01 offers 
+an easy to control bult-in digital (DVB-T) HD TV tuner along with a 
+multimedia interface, allowing you to view and record your favorite TV 
+shows when you are on the road.
+Features
+•
+High definition video output directly on existing car monitor screen
+•
+Can be operated from existing car controls or by IR remote control
+•
+Able to receive SD as well as HD broadcast
+•
+USB host interface allows you to record streams on or view 
+audio/video content from a memory stick 
+•
+Support for Rear View Backup camera
+•
+Support for Auxiliary AV input for connecting external audio/video 
+sources
+Requirements
+•
+MCA-DVBT-TV-01 is designed for vehicles with an IBus interface. 
+The following car models implement this protocol:
+BMW 7er E38 with Professional Navigation MK3/MK4 
+BMW 5er E39 with Professional Navigation MK3/MK4 
+BMW 3er E46 with Professional Navigation MK3/MK4 
+BMW X5 E53 with Professional Navigation MK3/MK4 
+BMW X3 E83 with Professional Navigation MK3/MK4 
+BMW Z4 E85 with Professional Navigation MK3/MK4 
+MG ZT / MG ZT-T with Professional Navigation MK3/MK4 
+•
+Your car must be equipped with an OEM navigation (MK3 or MK4)
+•
+Your system must also include an OEM radio tuner (BM24, BM53, 
+BM54)
+2
+
+===== PAGE 4 =====
+•
+MCA-DVBT-TV-01 supports both 16:9 and 4:3 displays
+•
+To benefit from the rear view camera feature, you must have one 
+such camera installed on your car. The camera must implement 
+either PAL or NTSC standards. 
+•
+For a Plug & Play installation you must already have an analog TV 
+tuner properly installed on your car. This assures that the 
+connections between the TV tuner, the navigation and the radio 
+module are already in place. The analog tuner will however be 
+removed. If you're not upgrading from an analog TV tuner, you will 
+need to make the above mentioned connections yourself or seek 
+guidance at a local service. 
+•
+Mura Digital TV tuner implements the DVB-T digital protocol. DVB-
+T is the most widely used protocol for digital television. If you are 
+from North or South America (except Panama, Colombia, Trinidad 
+and Tobago, Suriname, French Guiana and Falkland Islands) you 
+need a tuner that implements a different protocol. For other 
+countries, please check http://www.dtvstatus.net/map/map.html 
+for an up-to-date list of countries who adopted DVB-T. 
+Furthermore, the DVB-T2 is a slightly different protocol, that is not 
+supported by MCA-DVBT-TV-01.
+•
+MCA-DVBT-TV-01 supports free-to-air channels only. Pay-per-
+view channels are not supported by the current version of the 
+tuner.
+Package Contents
+This package contains:
+•
+1 x MCA-DVBT-TV-01
+•
+1 x User Manual
+•
+1 x Remote Control
+•
+1 x IR cable (5m) with sensor 
+•
+1 x USB cable (1.5 m)
+3
+
+===== PAGE 5 =====
+Hardware
+Rear Panel View
+Port
+Connection
+Blue connector
+Connects
+ 
+to
+ 
+car's
+ 
+blue 
+connector 
+White connector
+Connects to car's white 
+connector
+4
+
+===== PAGE 6 =====
+USB port
+Connect USB data stick or 
+extender cable for data stick
+IR port
+IR cable from present package
+Antenna connectors
+Connects to OEM car antenna 
+connections
+All TV module functions can be accessed using both remote control and 
+OEM BMW head unit controls (similar to your old analog TV module). 
+Using IR Remote Control
+Depending on the tuner version you are purchasing, you will receive one 
+of the two following remote controls versions. 
+5
+Remote Control version 1
+
+===== PAGE 7 =====
+6
+Remote Control version 2
+
+===== PAGE 8 =====
+Using Board Monitor Display to Control TV functions
+MCA-DVBT-TV-01 supports both 16:9 and 4:3 BMW OEM head units. 
+Monitor buttons were mapped to TV tuner functions in such a way as to 
+preserve the manner of operation from the old analog tuner. For the 
+users who are migrating from an analog tuner, controlling Mura Digital 
+TV tuner should be a familiar operation. 
+For 16:9 monitors please see the following mapping.
+For 4:3 monitors, the key mapping is illustrated in the figure below:
+7
+
+===== PAGE 9 =====
+Installation
+MCA-DVBT-TV-01 is designed to replace your old, analog TV Tuner. 
+Therefore, it makes use of existing setup which is assumed to have 
+been put in place when you had your analog tuner installed. If this is 
+not your case and this is your first TV tuner, installation will take 
+additional steps for which external documentation should be available 
+from your car manufacturer.
+Installation overview
+•
+If you already have an installed TV tuner (an old analog TV tuner for 
+example), installing MCA-DVBT-TV-01 is a simple plug and play 
+procedure.
+•
+If this if the first TV module for your car, installation is similar to 
+retrofitting an original TV tuner. We recommend you to follow the 
+steps in the BMW retrofit documentation for your particular car 
+model. 
+Replacing existing TV module with MCA-DVBT-TV-01
+•
+Wait for navigation to shut down (for led to turn off). Depending on 
+your car equipment, it should take around 1-5 min
+•
+Disconnect the negative terminal of the car battery 
+•
+Remove the old TV module and put the MCA-DVBT-TV-01 in its 
+place
+•
+Connect the white and blue car cable connectors to corresponding 
+connectors on MCA-DVBT-TV-01 panel
+•
+Connect car antennae to corresponding connectors on  MCA-DVBT-
+TV-01 panel
+•
+If you wish to control the TV tuner via remote control, connect 
+supplied IR cable to IR connector on MCA-DVBT-TV-01 and route IR 
+cable so that the receiver ends up in a location that is most 
+8
+
+===== PAGE 10 =====
+convenient to you. You will need to be able to point the remote 
+control towards this receiver.
+•
+Connect USB cable to the USB port on MCA-DVBT-TV-01 and route 
+the other end of the cable to a convenient position for when you 
+want to use a USB stick
+•
+Installation is now over. Reconnect the car battery.
+The location where you can find your old TV tuner depends on your car 
+model.
+Software
+MCA-DVBT-TV-01 announces itself to the car computer (just like the 
+OEM analog TV tuner). This means that you will find it in the navigation 
+System Menu, under the name 'Television'. The first time you access it 
+after installation, you will be taken to an 'Installation Guide' which 
+allows you to set OSD Language (menu language), Country and to 
+search for available channels. After you perform the channel search, you 
+can start enjoying digital TV in your car.
+9
+
+===== PAGE 11 =====
+ OSD Operation
+Menu
+Sub Menu
+Description
+Program
+Program Edit
+EPG
+Sort
+LCN
+Picture
+Aspect Ratio
+TV Format
+e.g. 16:9, 4:3
+Channel 
+Search
+Auto Search
+Manual Search
+Country
+Antenna Power
+Automatic scan for channels
+Manual scan for channels
+Time
+Time Offset
+Country Region
+Time Zone
+If set to 'Auto' there is no need 
+to worry about the other 
+features in this sub-menu 
+Option
+OSD Language
+Subtitle Language
+Audio Language
+Digital Audio
+Sets menu language
+If multiple options available, 
+sel. lang. for subtitle and audio
+N/A (BMW audio is all analog)
+System
+-
+Present version of TV tuner 
+does not make use of 'System' 
+functions. 
+USB
+Multimedia
+Photo Configure
+Movie Configure
+PVR Configure
+USB
+ 
+→ 
+Multimedia
+Music
+Photo
+Movie
+PVR
+Access to Music, Photo and 
+Movie folders on your memory 
+stick
+Access to streams recorded 
+using MCA-DVBT-TV-01
+10
+
+===== PAGE 12 =====
+Using OEM board monitor for menu navigation and 
+control
+The following instructions refer to controls described in section “Using 
+Board Monitor Display to Control TV functions” on page 6. Mind that the 
+names by which we refer to them differ from what appears on your 
+board monitor, so please use the above mentioned picture to guide 
+your through the following steps.
+•
+Press Menu to enter and Exit to exit the menu
+•
+Navigate by using left/right arrows
+•
+Select desired submenu by pressing rotary button
+•
+Navigate submenu by means of rotary button
+•
+Once you get to desired option, change value by pressing left/right 
+arrows
+The following apply to USB Multimedia submenu only:
+General controls:
+•
+Hierarchical folder structure. Press rotary button to view folder 
+contents.
+•
+Once you get to the desired file, select it by pressing rotary button
+•
+By default, audio/video file plays in preview mode. For full-screen 
+mode, press Fav/Red.
+•
+When viewing self recorded video streams, press Pause/Blue to pause
+Start/Stop Recording:
+•
+Press Record TV and recording starts.
+•
+While recording a TV from channel, you can switch to watching a 
+different program, provided the two belong to the same transponder
+•
+If you try to navigate outside the current transponder while recording, 
+you will not be allowed to continue navigation (Screen goes black and 
+the text 'Recording' is displayed). Navigate back to previous channels. 
+•
+End recording by first navigating back to the program you are 
+recording and then pressing Exit. The recording will then be saved to 
+on your USB stick.
+11
+
+===== PAGE 13 =====
+Delete recording:
+•
+Navigate to the desired file
+•
+Press Pause/Blue
+•
+Confirm deletion by pressing the rotary button
+Using remote control for menu navigation and 
+control
+Menu navigating and control of TV tuner by means of remote control is, 
+in our opinion, quite intuitive. If you encounter problems, please use 
+the address at the end of this file for contacting our customer support.
+Advanced Configuration Menu
+To access the advanced configuration menu, switch to TV mode, then 
+long press SEL(ECT) button. This menu allows the following settings to 
+be made:
+•
+TV motion: switch to ON if you want video output enabled while 
+driving.
+•
+CAM mode: PAL / NTSC / OFF. Choose whichever corresponds to your 
+rear view camera type.
+•
+AUX Mode: switch to ON as a first step in enabling stereo audio.
+•
+AV Mode: OFF / NTSC / PAL. If unsure which option to choose, you 
+should check the specifications of the device you wish to connect and 
+see what type of output it delivers. 
+•
+SW and HW refer to Software and Hardware version of your module. 
+This information will be asked when you contact customer support. 
+ 
+12
+
+===== PAGE 14 =====
+Mura Digital TV Tuner features stereo audio output. 
+To be able to use this feature, you need to have a BM54 radio module with AUX input. 
+The procedure to enable this feature is not so straightforward, due to 
+the fact that audio TV input on BMW OEM radio modules is mono. 
+Consequently, hardware modifications need to be made. These consist 
+of pins re-routing and/or additional wiring. For instructions on this 
+process, please contact us by sending an email to 
+contact@mca.electricmura.ro 
+or
+ 
+through
+ 
+our
+ 
+website, 
+http://mca.electricmura.ro
+ 
+ .  
+After performing the necessary hardware modifications, software 
+configurations must also be made. First set AUX Mode to ON (see 
+instructions above). Back to the menu of your navigation, press MODE 
+button until AUX input is selected (you may need to press it multiple 
+times). Next, enter TV mode, then long press TONE button on your 
+navigation's controls. At this point, TV audio output is switched to radio 
+auxiliary input (stereo). 
+13
+
+===== PAGE 15 =====
+Specifications
+•
+Full compliance with HD DVB-T MPEG2/MPEG4 AVC/H.264 Standard
+•
+High Doppler effect correction
+•
+On screen channel information
+•
+OSD Teletext (DVB ETS 300 706) and subtitle function support (EU model)
+•
+VBI Teletext support (EU model)
+•
+Fast scan for high speed driving and cross difference area
+Supported video and audio formats for playing from a USB stick:
+•
+Video: RMVB, RM, Sorenson H.263, H.264, MPEG-1,2,4, VC1, Divx, Xvid, 
+AVS, JPEG
+•
+Audio: MP2, MP3, AC3, LPCM, ADPCM, AAC, HEAAC, WMA
+•
+Remark: Some formats need a license (for example: DivX, RMVB, AC3)
+Receiving frequency range: 
+•
+UHF 470MHz ~ 862MHz; 
+•
+VHF 174MHz ~ 230MHz
+RF Input level: 81dBm ~ -20dBm
+RF Input connector: SMB terminal x2
+Antenna power: 12V
+Technical Support
+MCA is committed to offering quality products, as well as quality 
+information. If you need help with using Mura TV tuner, please contact 
+our customer support at http://mca.electricmura.ro
+ 
+ /en.
+ 
+ 
+14
+
+===== PAGE 16 =====
+Warranty Information
+This product is backed by a one-year warranty. In addition, MCA 
+warrants its products against defects in materials and workmanship for 
+the period noted following the initial date of purchase. During this 
+period, the product may be returned for repair or replacement with an 
+equivalent product. The warranty covers parts and labor costs only. 
+MCA does not warrant its products against defects or damage arising 
+from misuse, abuse, alteration or normal wear and tear.
+15

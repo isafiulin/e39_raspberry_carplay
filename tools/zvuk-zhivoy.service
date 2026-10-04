@@ -1,0 +1,28 @@
+[Unit]
+# Держит выход кодека включённым постоянно.
+#
+# BM54 показывает AUX в списке источников, только когда видит нагрузку на
+# входе. Когда никто не играет, ALSA закрывает устройство, кодек выключает
+# выходной каскад, и радио теряет источник — а выбрать AUX владельцу нужно
+# ДО того, как пойдёт звук. Поэтому гоняем бесконечную тишину.
+#
+# Это обходной путь. Правильное решение — резистор опознавания около 300 кОм
+# между каналами со стороны радио, он же заложен в спецификацию платы.
+# Пока резистора нет, работает это.
+#
+# Установка:
+#   cp ~/bmw-tools/zvuk-zhivoy.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now zvuk-zhivoy
+
+Description=Не давать кодеку заснуть, чтобы радио видело AUX
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/aplay -q -D carplay -t raw -f S16_LE -r 44100 -c 2 /dev/zero
+Restart=always
+RestartSec=3
+StartLimitIntervalSec=0
+
+[Install]
+WantedBy=default.target

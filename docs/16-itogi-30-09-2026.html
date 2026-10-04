@@ -1,0 +1,214 @@
+<title>Итоги 30 сентября</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .q { counter-reset: none; list-style: none; padding: 0; margin: 0; }
+  .q > li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .q > li > * { grid-column: 2; min-width: 0; }
+  .q > li > .id { grid-column: 1; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 14px; color: var(--accent); padding-top: 4px; }
+  .q h3 { margin: 0 0 6px; }
+  .q p { margin: 0 0 8px; }
+  .q ul { margin: 0 0 8px; }
+  .how, .out { padding: 8px 12px; font-size: 14.5px; margin-top: 8px; }
+  .how { background: var(--surface-2); }
+  .out { background: var(--surface); border: 1px solid var(--line); }
+  .how b, .out b { font-family: "IBM Plex Sans Condensed", sans-serif; }
+  .tag { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; vertical-align: 2px; margin-left: 8px; }
+  .t-stop { background: var(--stop-soft); color: var(--stop); }
+  .t-warn { background: var(--warn-soft); color: var(--warn); }
+  .t-ok { background: var(--ok-soft); color: var(--ok); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+  .legend div { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 14.5px; }
+  .flow { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 14px; }
+  .flow h3 { margin-top: 0; }
+  .flow ol { margin-bottom: 8px; }
+  .flow .dep { font-size: 14px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · день работы · 30.09.2026</p>
+  <h1>Что сделано 30 сентября</h1>
+  <p class="lead">За день проект прошёл от «подключимся и посмотрим, что на шине» до работающего
+  макета, который показывает CarPlay на мониторе и управляется кнопками. Ниже — всё, что выяснилось
+  и что построено, включая собственные ошибки: они стоили времени и должны остаться записанными.</p>
+</header>
+
+<div class="tip"><b>Коротко, если читать нечего времени.</b> Картинкой видеомодуля можно управлять
+одним кадром по шине, не трогая звук — значит стерео с AUX и CarPlay на экране существуют
+одновременно. Вариант A стал основным, вариант B ушёл в запас. Написан обработчик кнопок
+и процесс CarPlay, собран стенд, всё работает. Осталось два блокера: кодировка TV-in-Motion
+для движения и непроверенное поведение меню машины под нашей картинкой.</div>
+
+<h2>1. Подключились к шине</h2>
+<p>Врезка в <b>3-контактный разъём чейнджера в багажнике</b>. В разъёме OBD шины I-Bus нет —
+там диагностические K-линии, другая сеть. Провода прозвонены на месте: коричневый масса,
+красно-зелёный +12 В Kl.30, третий — шина.</p>
+<p>Снято одиннадцать логов, все лежат в <a href="../logs/README.md">logs/</a> с разбором.
+Это первые настоящие данные с машины за весь проект.</p>
+
+<h2>2. Главное открытие дня</h2>
+<p>При входе в режим Television монитор шлёт <b>две команды разным адресатам</b>:</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кадр</th><th>Кому</th><th>О чём</th></tr></thead>
+<tbody>
+<tr><td><code>3B 05 BB 4F 01 00</code></td><td>ТВ-модуль</td><td>картинку на экран</td></tr>
+<tr><td><code>3B 05 BB 4F 02 00</code></td><td>ТВ-модуль</td><td>картинку убрать</td></tr>
+<tr><td><code>3B 05 68 4E 01 00</code></td><td>радио</td><td>звук забирает ТВ</td></tr>
+<tr><td><code>3B 05 68 4E 00 00</code></td><td>радио</td><td>забирай звук обратно</td></tr>
+</tbody>
+</table>
+</div>
+<p><b>Звук пропадает из-за второй команды. Мы её просто не шлём.</b> Отправив только видеополовину,
+мы включили и выключили картинку AV, и звук с AUX не прервался ни разу. Стерео и видео
+одновременно — без реле, без входа камеры, без кодировки, без перепайки по рецепту Mura.</p>
+<p>Заодно расшифрованы коды кнопок монитора, команда громкости и положения селектора коробки.
+Опубликованная таблица BMBT сошлась с нашими замерами по всем четырём кнопкам, которые мы
+ловили сами, включая кодировку нажатия, удержания и отпускания — значит ей можно верить
+и в остальном.</p>
+
+<h2>3. Поведение в углах</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Случай</th><th>Что происходит</th><th>Следствие</th></tr></thead>
+<tbody>
+<tr><td>Наша картинка на экране</td><td>MENU и DISPLAY не делают <b>ничего</b>. Экран занят целиком</td><td>Плата обязана ловить кнопки сама, иначе в настройки машины не попасть</td></tr>
+<tr><td>Цикл зажигания</td><td>Модуль сам возвращает штатный источник через 11 мс</td><td>Зависание платы не запирает экран навсегда</td></tr>
+<tr><td>Задняя передача</td><td>Камера перебивает аппаратно, после паркинга картинка возвращается сама</td><td>В логике платы задняя передача не участвует вообще</td></tr>
+<tr><td><b>Движение</b></td><td><b>Синий оверлей поверх всего</b> с текстом, что режим не работает на ходу</td><td>TV-in-Motion из желательного стал обязательным</td></tr>
+<tr><td>Смена источника кнопкой MODE</td><td>Радио лезет на экран, монитор заново утверждает режим ТВ и забирает звук</td><td>Не страшно, когда картинкой командуем мы сами</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><b>Модуль не сообщает о погасании в шину.</b> Во время движения состояние
+<code>4F 11 12</code> не изменилось ни разу. Плата узнает о синем оверлее только косвенно,
+по скорости из кадра <code>80 05 BF 18 &lt;скорость&gt; &lt;обороты&gt;</code>.</div>
+
+<h2>4. Диагностика по I-Bus</h2>
+<p>Видеомодуль отвечает на диагностические запросы прямо с нашей точки врезки, OBD не нужен.
+Опрос всех адресов читающим запросом дал шесть живых устройств с их идентификацией. Адрес
+<code>BB</code>, которому уходят команды картинки, на диагностику не отвечает — она живёт
+только на <code>ED</code>.</p>
+<p><b>Где остановились:</b> номер работы «прочитать кодировку» в публичных источниках не нашёлся.
+Перебирать номера вслепую нельзя — рядом живут «стереть память неисправностей» и «записать
+кодировку», и отличаются они одним байтом. Дальше NavCoder, который эту работу знает.</p>
+
+<h2>5. Что построено</h2>
+<h3>Обработчик кнопок</h3>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Файл</th><th>Роль</th></tr></thead>
+<tbody>
+<tr><td><code>ibus/events.py</code></td><td>Кадры в смысловые события: кнопки, крутилка, руль, зажигание, скорость, передача, текст радио, состояние монитора</td></tr>
+<tr><td><code>agent/state.py</code></td><td>Чистый автомат состояний. Ни порта, ни сети — поэтому проверяется тестами без машины</td></tr>
+<tr><td><code>agent/dongle.py</code></td><td>Клиент к процессу CarPlay, переподключается сам</td></tr>
+<tr><td><code>agent/replay.py</code></td><td>Проигрывание записанного лога вместо живой шины</td></tr>
+<tr><td><code>agent/logs.py</code></td><td>Журнал в файл с подрезкой: journald тут ничего не хранит</td></tr>
+<tr><td><code>probe.py</code>, <code>scan.py</code></td><td>Диагностика: отправить кадр и услышать ответ тем же портом, опросить все адреса</td></tr>
+<tr><td><code>mysh.py</code></td><td>Мышь как палец. Только для стенда</td></tr>
+</tbody>
+</table>
+</div>
+<p><b>Передача в шину выключена по умолчанию.</b> Случайный запуск на живой машине ничего
+не меняет, он только печатает, что собирался отправить. <b>79 тестов</b>, все на кадрах,
+снятых с этой машины.</p>
+
+<h3>Процесс CarPlay</h3>
+<p>Держит донгл, показывает картинку, играет звук, слушает локальный сокет. Решений не принимает:
+мозг остаётся в питоне, где он под тестами. Разбор протокола донгла взят из node-CarPlay.
+Подробности в <a href="../carplay/README.md">carplay/README.md</a>.</p>
+
+<h2>6. Грабли, на которые наступили</h2>
+<p>Все стоили времени и все записаны, чтобы не наступать снова.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Снаружи выглядело как</th><th>А на самом деле</th></tr></thead>
+<tbody>
+<tr><td>Донгл не открывается</td><td>Он перезагружается сам каждые 13 секунд, пока с ним не начали разговаривать. Плюс штатный запуск библиотеки сбрасывает устройство и сталкивается с его собственным сбросом</td></tr>
+<tr><td>Автозапуск не работает</td><td>Цель <code>graphical-session.target</code> на Raspberry Pi OS с lightdm не активируется вовсе, хотя X работает</td></tr>
+<tr><td>Картинки нет, хотя звук есть</td><td>У службы не было <code>DISPLAY</code>, и <code>ffplay</code> не знал, куда рисовать</td></tr>
+<tr><td>Картинка появляется очень поздно</td><td><code>ffplay</code> до первого кадра изучал поток до пяти секунд. Но срезать до нуля тоже нельзя — перестаёт находить размер картинки</td></tr>
+<tr><td>Ошибка с кодом 123</td><td>Это наш же сигнал завершения, а не поломка</td></tr>
+<tr><td>CarPlay не запускается</td><td>Клик мышью опускал наше окно под рабочий стол. Процесс жив, кадры идут, в журнале всё хорошо, а на экране обои</td></tr>
+<tr><td>Мышь не работает</td><td><code>xinput</code> молчал, хотя ядро выдавало десятки килобайт событий. Обошли: читаем <code>/dev/input</code> напрямую</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><b>Две собственные ошибки в выводах, исправленные тем же днём.</b> Байт, который
+наш декодер читал как формат видео PAL или NTSC, оказался признаком того, что модуль выводит:
+он меняется при включении задней передачи. И «перемотки нет» было поспешным выводом — она есть,
+просто не там, где искали.</div>
+
+<h2>7. Управление: что проверено</h2>
+<p>Всё ниже подтверждено снимками экрана стенда, а не рассуждением.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Действие</th><th>Как</th><th>Состояние</th></tr></thead>
+<tbody>
+<tr><td>Показать и скрыть CarPlay</td><td>DISPLAY</td><td>Проверено на машине</td></tr>
+<tr><td>Уйти в меню машины</td><td>MENU</td><td>Проверено на машине</td></tr>
+<tr><td>Перемещение и выбор</td><td>Крутилка</td><td>Проверено на стенде</td></tr>
+<tr><td>Назад</td><td>Долгое нажатие крутилки</td><td>Команда проверена, кадр удержания — нет</td></tr>
+<tr><td>Треки</td><td>Стрелки монитора, кнопки руля</td><td>Команда проверена, коды кнопок — нет</td></tr>
+<tr><td>Перемотка внутри песни</td><td>Крутилкой встать на полосу, <b>нажать</b>, крутить</td><td>Проверено на стенде. Только на полном экране плеера, в виджете полоса мертва</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>8. Что осталось</h2>
+<ol class="chk">
+<li><h3>Меню машины под нашей картинкой</h3><p><b>Главный незакрытый вопрос.</b> Кнопки мы не
+перехватываем — на общей шине это невозможно. Лог доказывает, что машина их принимает и
+исполняет: на первое нажатие MENU навигационный блок ушёл в своё меню, хотя экран был наш.
+Значит каждое нажатие крутилки в CarPlay — это ещё и «подтвердить» в невидимом меню машины.
+Перемещение безвредно, а вот нажатие может втихую переключить настройку. Надо замерить.</p></li>
+<li><h3>Кодировка TV-in-Motion</h3><p>Единственное, что отделяет CarPlay от работы в движении.
+NavCoder с Windows-ноутбука, тем же кабелем и в той же точке. Сначала прочитать и сохранить
+в файл, менять — только потом.</p></li>
+<li><h3>Коды кнопок</h3><p>Удержание крутилки, стрелки треков, кнопки руля. Минута со снифером.</p></li>
+<li><h3>Слушается ли радио кадра кнопки от нас</h3><p>Одна отправка, один взгляд на экран.</p></li>
+<li><h3>Монтаж</h3><p>Обжать контакты MQS 0,63 в белую фишку видеомодуля, контакты 6 и 15.
+Протянуть экранированный кабель из багажника на AUX за монитором.</p></li>
+</ol>
+
+<p>Порядок подключения и запуска — в <a href="15-podklyuchenie-dlya-testa.html">памятке для гаража</a>.</p>
+</div>

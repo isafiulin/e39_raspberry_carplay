@@ -1,0 +1,211 @@
+<title>Корпус из чейнджера</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  figure { margin: 18px 0 8px; background: var(--surface); border: 1px solid var(--line); padding: 16px; overflow-x: auto; }
+  figure svg { display: block; width: 100%; min-width: 660px; height: auto; color: var(--ink); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; max-width: 80ch; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps > li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .steps > li > * { grid-column: 2; min-width: 0; }
+  .steps > li::before { grid-column: 1; content: counter(s); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 24px; color: var(--accent); line-height: 1; padding-top: 3px; }
+  .steps h3 { margin: 0 0 5px; }
+  .steps p { margin: 0 0 8px; }
+  .steps ul { margin: 0 0 8px; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · корпус и разъёмы · вместо покупных косичек</p>
+  <h1>Корпус из убитого чейнджера</h1>
+  <p class="lead">Вместо того чтобы искать ответные части разъёмов, покупается неисправный CD-чейнджер и разбирается на органы. Его собственные разъёмы становятся вашими, его корпус становится корпусом платы, его кронштейн и демпферы остаются штатными. Подключение получается буквально заводским: воткнулось как родное.</p>
+</header>
+
+<div class="tip"><b>Что это решает.</b> Косички 3+6 pin это самая труднодоступная позиция в закупке: их продают только в комплекте с чужими адаптерами или как оригинальный жгут за тридцать долларов. Разъёмы на плате самого чейнджера это те же самые детали, и достаются они вместе с корпусом за цену неисправного аппарата.</div>
+
+<h2>Что покупать</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Позиция</th><th>Детали</th></tr></thead>
+<tbody>
+<tr><td>Чейнджер, заведомо неисправный</td><td>Шестидисковый Alpine или Philips для E36, E38, E39, E46, Z3. Ищите с формулировками «не читает диски», «заедает механизм», «на запчасти». Механизм вам не нужен, важны только корпус и плата с разъёмами</td></tr>
+<tr><td>Где искать</td><td>Авторазборки, Авито, eBay, местные форумы по E39. Запрос: <code>BMW CD чейнджер E39 неисправный</code> или <code>BMW 6 disc CD changer faulty</code></td></tr>
+<tr><td>Цена</td><td>Рабочий стоит 40–80 долларов, неисправный обычно 10–25. Переплачивать за рабочий смысла нет</td></tr>
+<tr><td>Что проверить у продавца</td><td>Целые разъёмы на задней стенке, целый корпус без вмятин, наличие кронштейна и резиновых демпферов, если они идут вместе</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><b>Не берите чейнджер с обрезанными проводами.</b> Иногда их снимают с машины кусачками прямо по жгуту, и разъёмы остаются в машине. Вам нужен аппарат с целыми гнёздами на корпусе, попросите фото задней стенки.</div>
+
+<h2>Что внутри и что откуда берётся</h2>
+<figure>
+<svg viewBox="0 0 900 400" role="img" aria-label="Схема разбора чейнджера: из корпуса удаляется механизм на шесть дисков и основная плата, остаются стальной корпус, задняя стенка с разъёмами и кронштейн; внутрь ставится плата-носитель, донгл выносится наружу через щель магазина." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+    <text x="30" y="28" font-weight="600" font-size="13" letter-spacing=".04em">БЫЛО</text>
+    <rect x="30" y="42" width="300" height="230" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="50" y="70" width="180" height="120" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="140" y="122" text-anchor="middle" font-size="12">механизм на 6 дисков</text>
+    <text x="140" y="140" text-anchor="middle" font-size="11" opacity=".7">в мусор</text>
+    <rect x="50" y="210" width="180" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="140" y="228" text-anchor="middle" font-size="12">плата чейнджера</text>
+    <text x="140" y="244" text-anchor="middle" font-size="11" opacity=".7">снять разъёмы, остальное в мусор</text>
+    <rect x="278" y="80" width="38" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="297" y="100" text-anchor="middle" font-size="11">3p</text>
+    <rect x="278" y="130" width="38" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="297" y="150" text-anchor="middle" font-size="11">6p</text>
+    <text x="180" y="292" text-anchor="middle" font-size="11" opacity=".75">щель под магазин дисков в передней панели</text>
+
+    <line x1="360" y1="155" x2="440" y2="155" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="400" y="148" text-anchor="middle" font-size="11">разбор</text>
+
+    <text x="470" y="28" font-weight="600" font-size="13" letter-spacing=".04em">СТАЛО</text>
+    <rect x="470" y="42" width="300" height="230" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="490" y="70" width="185" height="115" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="582" y="112" text-anchor="middle" font-size="12" font-weight="600">плата-носитель CM4</text>
+    <text x="582" y="130" text-anchor="middle" font-size="11" opacity=".75">120 × 90 мм, влезает с запасом</text>
+    <text x="582" y="150" text-anchor="middle" font-size="11" opacity=".75">процессор прижат к боковой стенке</text>
+    <rect x="490" y="205" width="185" height="48" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="582" y="224" text-anchor="middle" font-size="12">свободное место</text>
+    <text x="582" y="240" text-anchor="middle" font-size="11" opacity=".75">проводка, крепёж, запас на ревизию B</text>
+    <rect x="718" y="80" width="38" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="737" y="100" text-anchor="middle" font-size="11" font-weight="600">3p</text>
+    <rect x="718" y="130" width="38" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="737" y="150" text-anchor="middle" font-size="11" font-weight="600">6p</text>
+    <text x="790" y="99" font-size="11">родные</text>
+    <text x="790" y="150" font-size="11">родные</text>
+
+    <line x1="470" y1="300" x2="620" y2="300" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="620" y1="300" x2="620" y2="272" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="360" y="285" width="110" height="34" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="415" y="306" text-anchor="middle" font-size="11.5">донгл снаружи</text>
+    <text x="545" y="332" text-anchor="middle" font-size="11" opacity=".75">кабель выходит через щель магазина</text>
+
+    <text x="30" y="332" font-size="11" opacity=".75">Кронштейн и резиновые демпферы остаются на месте, корпус встаёт как штатный.</text>
+    <text x="30" y="352" font-size="11" opacity=".75">Габарит примерно 25 × 16 × 5 см, точные размеры замерьте у своего экземпляра.</text>
+  </g>
+</svg>
+<figcaption>Из чейнджера выбрасывается только механизм и его электроника. Корпус, задняя стенка с гнёздами, кронштейн и демпферы работают дальше в том же качестве.</figcaption>
+</figure>
+
+<h2>Что куда подключается: полный список кабелей</h2>
+<p>От чейнджера-донора берутся два штатных гнезда и корпус. Всё остальное выходит наружу новыми кабелями через просверленные отверстия с резиновыми втулками. Ниже полный перечень, чтобы не обнаружить на месте, что отверстий не хватает.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кабель</th><th>Откуда берётся</th><th>Куда идёт</th><th>Зачем</th></tr></thead>
+<tbody>
+<tr><td><b>3-pin, штатный</b></td><td>Гнездо из донора</td><td>Родной разъём чейнджера в машине</td><td>+12 В Kl.30 (красно-зелёный), масса (коричневый), I-Bus (бело-красно-жёлтый). Питание и шина, ничего резать не надо</td></tr>
+<tr><td><b>6-pin, штатный</b></td><td>Гнездо из донора</td><td>Не подключается</td><td>Раньше значился запасным путём для звука. <b>Снят 30.09.2026:</b> радио выберет этот вход только если постоянно эмулировать чейнджер, а от эмуляции проект отказался. Гнездо остаётся на панели корпуса как есть, для вида и на будущее, но не разводится</td></tr>
+<tr><td><b>Пара звука на AUX</b></td><td>Новый кабель, экранированный</td><td>Разъём C радио BM54, контакты 3, 4 и земля 10</td><td><b>Основной путь для звука.</b> Радио в том же багажнике, поэтому кабель короткий</td></tr>
+<tr><td><b>Коаксиал видео</b></td><td>Новый кабель, 75 Ом</td><td>Белый разъём видеомодуля: 13 и 14 (камера) либо 6 и 15 (AV)</td><td>Картинка. Какие именно контакты — решает исход проверок</td></tr>
+<tr><td><b>Две врезки колокольчиком</b></td><td>Существующий разрыв у модуля</td><td>Вход от камеры в плату, выход с платы в модуль</td><td>Только для варианта с входом камеры. В машине уже стоит разъём-мама под колокольчик, куда включён штекер камеры, поэтому <b>контакты в разъёмах модуля трогать не нужно</b>. Плата просто встаёт в разрыв. Выдернул два штекера — камера снова напрямую</td></tr>
+<tr><td><b>Триггер камеры</b></td><td>Новый провод</td><td>Синий разъём видеомодуля, контакт 17</td><td>Ключ на массу. Параллельно штатному реле, его не трогаем</td></tr>
+<tr><td><b>Сигнал заднего хода</b></td><td>Отвод от провода штатного реле камеры</td><td>Вход платы</td><td>Аппаратный приоритет камеры: снимает питание с катушки нашего реле</td></tr>
+<tr><td><b>Пара микрофона</b></td><td>Штатная, если есть</td><td>Плафон в салоне</td><td>Только для звонков. Если штатной нет, тянуть свою экранированную</td></tr>
+<tr><td><b>USB к донглу</b></td><td>Короткий кабель</td><td>Наружу корпуса</td><td>Алюминий и сталь глушат Wi-Fi 5 ГГц, донгл живёт снаружи</td></tr>
+<tr><td><b>Сервисный USB-C и HDMI</b></td><td>На стенке корпуса</td><td>—</td><td>Для обслуживания без разборки</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Земля должна быть одна.</b> Здесь самая частая ошибка в таких установках. Масса приходит с 3-pin разъёма чейнджера, и она единственная. Землю видео на модуле и землю звука на радио нельзя дополнительно сажать на кузов: получатся петли, а их слышно и видно — по картинке ползёт полоса, в динамиках воет генератор. Экраны кабелей сводятся на плате в одну точку, а на дальнем конце остаются только сигнальными землями.</div>
+
+<div class="note"><b>Проверить номинал штатного предохранителя.</b> Цепь чейнджера рассчитана на чейнджер, а мы вешаем на неё вычислитель с донглом. По прикидке это меньше ампера при 12 В, то есть запас есть, но номинал надо посмотреть и не превышать. Ставить предохранитель побольше вместо штатного нельзя: провод в жгуте рассчитан на исходный ток.</div>
+
+<h2>Порядок разбора</h2>
+<ol class="steps">
+<li>
+  <h3>Снять крышку и вытащить механизм</h3>
+  <p>Корпус держится на винтах Torx по периметру. Механизм на шесть дисков стоит на резиновых виброопорах, откручивается четырьмя винтами и вынимается целиком. Он тяжёлый, после его удаления коробка становится в разы легче.</p>
+</li>
+<li>
+  <h3>Аккуратно выпаять разъёмы</h3>
+  <p>Гнёзда 3-pin и 6-pin распаяны на основной плате сквозным монтажом. Есть два пути, оба рабочие.</p>
+  <ul>
+    <li><b>Выпаять полностью.</b> Оплёткой или отсосом, контактов немного. Разъёмы потом ставятся на вашу плату или на кусок макетки внутри корпуса.</li>
+    <li><b>Выпилить кусок платы с разъёмами.</b> Проще и надёжнее: отрезаете лобзиком или дремелем прямоугольник вокруг гнёзд, к дорожкам припаиваете провода. Работает как готовый переходник. Но обязательно прозвоните оставшийся кусок: на нём могут уцелеть детали и дорожки, которые свяжут между собой сигналы или нагрузят шину. Всё лишнее выпаять.</li>
+  </ul>
+  <p>Перед выпаиванием прозвоните и подпишите, какой вывод куда идёт. У 3-pin это I-Bus, +12 В и масса, у 6-pin левый и правый каналы и их земли.</p>
+</li>
+<li>
+  <h3>Проверить ориентацию гнёзд</h3>
+  <p>Разъёмы должны смотреть наружу через задние отверстия корпуса ровно так же, как смотрели раньше. Если сохраняете кусок родной платы, он и держит их в правильном положении. Если выпаяли начисто, сделайте кронштейн из уголка или напечатайте держатель.</p>
+</li>
+<li>
+  <h3>Организовать теплоотвод</h3>
+  <p>Корпус чейнджера стальной, теплопроводность у него хуже, чем у алюминия, но площадь большая. Процессор CM4 прижимается к боковой стенке через термопрокладку 2–3 мм и алюминиевую пластину-переходник толщиной 3–5 мм. Пластина распределяет тепло по стенке.</p>
+  <div class="note"><b>Не рассчитывайте на воздух.</b> Внутри закрытой коробки конвекции почти нет. Тепло уходит только через контакт со стенкой, поэтому прижим должен быть плотным, а прокладка сжатой.</div>
+</li>
+<li>
+  <h3>Вывести донгл наружу</h3>
+  <p>Стальной корпус глушит Wi-Fi 5 ГГц сильнее алюминия, внутрь донгл ставить нельзя. Кабель выводится через щель приёмника магазина в передней панели, донгл крепится снаружи корпуса стяжкой или площадкой на скотче, лучше стороной к салону.</p>
+</li>
+<li>
+  <h3>Просверлить отверстия под новые разъёмы</h3>
+  <p>Нужны три: видеокоаксиал к видеомодулю, микрофонная пара, сервисный USB-C. Панель тонкая, ступенчатое сверло справится. Края обработайте и поставьте резиновые проходные втулки, иначе вибрация перетрёт изоляцию.</p>
+</li>
+<li>
+  <h3>Собрать и поставить на место</h3>
+  <p>Плата на стойках, проводка стянута, крышка на место. Корпус встаёт на штатный кронштейн своими родными точками крепления. Снаружи ничем не отличается от чейнджера, что удобно и при продаже машины: всё возвращается в исходное состояние за десять минут.</p>
+</li>
+</ol>
+
+<h2>Как это меняет закупку</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Позиция</th><th>Было</th><th>Стало</th></tr></thead>
+<tbody>
+<tr><td>Разъёмы 3-pin и 6-pin</td><td>Косички или жгут BMW, 10–30 $, трудно найти</td><td>Родные из чейнджера, бесплатно</td></tr>
+<tr><td>Корпус</td><td>Экструзионный алюминий с крышками, 20–30 $</td><td>Корпус чейнджера, бесплатно</td></tr>
+<tr><td>Крепление</td><td>Свой кронштейн или стяжки</td><td>Штатные точки и демпферы</td></tr>
+<tr><td>Чейнджер на запчасти</td><td>—</td><td>10–25 $</td></tr>
+<tr><td>Дополнительно</td><td>—</td><td>Алюминиевая пластина под процессор, термопрокладка, проходные втулки, ступенчатое сверло. Примерно 10 $</td></tr>
+</tbody>
+</table>
+</div>
+<p>По деньгам примерно тот же порядок, но исчезает риск заказать неподходящие разъёмы и ждать замену. По качеству установки заметно лучше: всё держится на штатных креплениях и штатных гнёздах.</p>
+
+<div class="tip"><b>Когда покупать.</b> Заказывайте чейнджер сразу, вместе с первой группой. Разъёмы понадобятся уже на этапе макета с Nucleo, а корпус пригодится позже. Разбирайте сразу после получения, но корпус не режьте, пока не будет готова плата и не станут известны её точные габариты.</div>
+
+<h2>Что взять из своего чейнджера, если он в машине</h2>
+<p>Если в багажнике стоит рабочий чейнджер, разбирать его не нужно: он всё равно отключается, и вы можете снять его целиком и оставить в гараже как есть. Покупной убитый экземпляр нужен именно как донор, чтобы штатный остался целым и машину можно было вернуть в исходное состояние.</p>
+</div>

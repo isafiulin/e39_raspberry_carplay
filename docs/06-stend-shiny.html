@@ -1,0 +1,680 @@
+<title>Стенд шины на столе</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  pre { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 13.5px; background: var(--mono-bg); padding: 12px 14px; overflow-x: auto; margin: 0 0 14px; line-height: 1.5; }
+  pre code { background: none; padding: 0; white-space: pre; }
+  figure { margin: 18px 0 8px; background: var(--surface); border: 1px solid var(--line); padding: 16px; overflow-x: auto; }
+  figure svg { display: block; width: 100%; min-width: 700px; height: auto; color: var(--ink); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; max-width: 80ch; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps > li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .steps > li > * { grid-column: 2; min-width: 0; }
+  .steps > li::before { grid-column: 1; content: counter(s); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 24px; color: var(--accent); line-height: 1; padding-top: 3px; }
+  .steps h3 { margin: 0 0 5px; }
+  .steps p { margin: 0 0 8px; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · этап 2 · проверка до машины · схема пайки</p>
+  <h1>Стенд шины на столе</h1>
+  <p class="lead">Настоящая I-Bus из двух устройств, собранная дома. С одной стороны Nucleo с трансивером, с другой ноутбук через кабель KKL, у которого свой трансивер внутри. Они видят друг друга ровно так же, как модуль и радио в машине. Схему можно проверить целиком, прошивку отладить до конца, и в машину приехать с работающим кодом.</p>
+</header>
+
+<div class="tip"><b>Почему это лучше симулятора.</b> Falstad покажет аналоговое поведение линии, Wokwi не знает ни STM32, ни L9637D. А два реальных трансивера на одном проводе воспроизводят и уровни, и подтяжку, и коллизии, и тайминги UART. Всё, чего не хватает, это самих сообщений BMW, а их вы напишете скриптом на ноутбуке.</div>
+
+<h2>Распиновка L9637D</h2>
+<p>Из даташита ST, корпус SO-8. Нумерация от точки в углу корпуса против часовой стрелки, как обычно.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th class="n">Вывод</th><th>Имя</th><th>Назначение</th><th>Куда на стенде</th></tr></thead>
+<tbody>
+<tr><td class="n">1</td><td>RX</td><td>Выход принятых данных с линии K</td><td>RX микроконтроллера</td></tr>
+<tr><td class="n">2</td><td>LO</td><td>Выход компаратора линии L, не используется</td><td>Не подключать</td></tr>
+<tr><td class="n">3</td><td>VCC</td><td>Питание логики, к нему привязаны уровни RX и TX</td><td>3,3 В с Nucleo</td></tr>
+<tr><td class="n">4</td><td>TX</td><td>Вход, прижимает линию K к массе</td><td>TX микроконтроллера</td></tr>
+<tr><td class="n">5</td><td>GND</td><td>Общая земля</td><td>Общая земля стенда</td></tr>
+<tr><td class="n">6</td><td>K</td><td>Двунаправленная линия шины</td><td>Общий провод шины</td></tr>
+<tr><td class="n">7</td><td>VS</td><td>Питание от бортсети, 4,5–36 В</td><td>+12 В стенда</td></tr>
+<tr><td class="n">8</td><td>LI</td><td>Вход компаратора линии L, не используется</td><td>На землю</td></tr>
+</tbody>
+</table>
+</div>
+<div class="tip"><b>Главное следствие.</b> Уровни RX и TX привязаны к VCC, и внутри есть подтягивающие резисторы. Если подать на VCC 3,3 В с Nucleo, микросхема сразу говорит на языке STM32, и никаких преобразователей уровня между ними не нужно.</div>
+<div class="note"><b>Вывод 8 (LI) не оставляйте висеть.</b> Это вход компаратора, у болтающегося входа состояние непредсказуемо. Посадите его на землю. Вывод 2 (LO) это выход, его можно просто не подключать.</div>
+
+<h2>Схема стенда</h2>
+<figure>
+<svg viewBox="0 0 940 430" role="img" aria-label="Схема стенда: общий провод шины K подтянут резистором 2,2 кОм к плюс 12 вольт; к нему подключены трансивер L9637D, соединённый с платой Nucleo, и кабель KKL со своим встроенным трансивером, идущий в ноутбук; все земли объединены." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="bar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+    <!-- 12V rail -->
+    <line x1="60" y1="45" x2="880" y2="45" stroke="currentColor" stroke-width="2.5"/>
+    <text x="60" y="34" font-size="12" font-weight="600">+12 В (блок питания 12 В, 1 А)</text>
+
+    <!-- pull-up -->
+    <line x1="470" y1="45" x2="470" y2="72" stroke="currentColor" stroke-width="1.5"/>
+    <rect x="458" y="72" width="24" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="492" y="92" font-size="11.5" font-weight="600">R1</text>
+    <text x="492" y="108" font-size="11.5">2,2 кОм</text>
+    <line x1="470" y1="118" x2="470" y2="165" stroke="currentColor" stroke-width="1.5"/>
+
+    <!-- K bus line -->
+    <line x1="150" y1="165" x2="790" y2="165" stroke="currentColor" stroke-width="2.5"/>
+    <text x="470" y="188" text-anchor="middle" font-size="12" font-weight="600">линия K · общий провод шины</text>
+    <circle cx="470" cy="165" r="3.5" fill="currentColor"/>
+
+    <!-- left device -->
+    <rect x="60" y="225" width="180" height="80" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="150" y="250" text-anchor="middle" font-weight="600">L9637D</text>
+    <text x="150" y="268" text-anchor="middle" font-size="11" opacity=".78">на переходнике SOP8-DIP8</text>
+    <text x="150" y="286" text-anchor="middle" font-size="11" opacity=".78">C1, C2 по 100 нФ</text>
+    <line x1="150" y1="165" x2="150" y2="225" stroke="currentColor" stroke-width="1.5"/>
+    <text x="158" y="205" font-size="11">выв. 6 · K</text>
+    <circle cx="150" cy="165" r="3.5" fill="currentColor"/>
+    <polyline points="95,225 95,45" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="60" y="212" font-size="11">выв. 7</text>
+    <circle cx="95" cy="45" r="3.5" fill="currentColor"/>
+
+    <rect x="60" y="335" width="180" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="150" y="358" text-anchor="middle" font-weight="600">Nucleo-G0B1RE</text>
+    <text x="150" y="376" text-anchor="middle" font-size="11" opacity=".78">USB в ноутбук</text>
+    <line x1="110" y1="305" x2="110" y2="335" stroke="currentColor" stroke-width="1.5" marker-end="url(#bar)"/>
+    <line x1="150" y1="305" x2="150" y2="335" stroke="currentColor" stroke-width="1.5" marker-start="url(#bar)"/>
+    <line x1="195" y1="305" x2="195" y2="335" stroke="currentColor" stroke-width="1.5"/>
+    <text x="248" y="318" font-size="11">выв. 4 TX · выв. 1 RX · выв. 3 VCC = 3,3 В</text>
+
+    <!-- right device -->
+    <rect x="700" y="225" width="180" height="80" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="790" y="250" text-anchor="middle" font-weight="600">Кабель VAG KKL</text>
+    <text x="790" y="268" text-anchor="middle" font-size="11" opacity=".78">свой трансивер внутри</text>
+    <text x="790" y="286" text-anchor="middle" font-size="11" opacity=".78">разъём OBD отрезан</text>
+    <line x1="790" y1="165" x2="790" y2="225" stroke="currentColor" stroke-width="1.5"/>
+    <text x="700" y="205" text-anchor="end" font-size="11">конт. 7 · K</text>
+    <circle cx="790" cy="165" r="3.5" fill="currentColor"/>
+    <polyline points="845,225 845,45" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="853" y="212" font-size="11">конт. 16</text>
+    <circle cx="845" cy="45" r="3.5" fill="currentColor"/>
+
+    <rect x="700" y="335" width="180" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="790" y="358" text-anchor="middle" font-weight="600">Ноутбук</text>
+    <text x="790" y="376" text-anchor="middle" font-size="11" opacity=".78">скрипт-имитатор радио</text>
+    <line x1="790" y1="305" x2="790" y2="335" stroke="currentColor" stroke-width="1.5" marker-end="url(#bar)" marker-start="url(#bar)"/>
+    <text x="798" y="322" font-size="11">USB</text>
+
+    <!-- ground -->
+    <line x1="60" y1="415" x2="880" y2="415" stroke="currentColor" stroke-width="2.5"/>
+    <text x="470" y="410" text-anchor="middle" font-size="12" font-weight="600">общая земля: блок питания, L9637D выв. 5 и 8, Nucleo, KKL конт. 4 и 5</text>
+  </g>
+</svg>
+<figcaption>Резистор R1 играет роль подтяжки, которую в машине обеспечивает радио: без него линия висит в воздухе и связи не будет. Оба устройства прижимают линию к массе, когда передают нулевой бит, и слышат друг друга и самих себя.</figcaption>
+</figure>
+
+<h3>Монтажная схема на макетной плате</h3>
+<p>Ориентация переходника: выводы 1–4 в верхней половине, 8–5 в нижней, метка первого вывода слева. Если у вас чип сел наоборот, схему надо мысленно перевернуть сверху вниз.</p>
+<figure>
+<svg viewBox="0 0 1090 770" role="img" aria-label="Монтажная схема на макетной плате под ориентацию, где выводы 1-4 в верхней половине, а 8-5 в нижней: переходник в колонках 5-8 через канавку, выводы 1, 3 и 4 идут влево к Nucleo, вывод 7 к нижней плюсовой шине 12 вольт, выводы 8 и 5 к нижней минусовой шине, вывод 6 перемычкой в колонку 14, куда подключается кабель KKL." xmlns="http://www.w3.org/2000/svg">
+<g font-family="IBM Plex Sans, Arial, sans-serif" font-size="11" fill="currentColor">
+<rect x="252" y="46" width="566" height="470" rx="8" fill="none" stroke="currentColor" stroke-width="2" opacity=".85"/>
+<line x1="276" y1="72" x2="802" y2="72" stroke="#cf7040" stroke-width="1.2" opacity=".25"/>
+<text x="268" y="76" text-anchor="end" font-size="13" font-weight="600" fill="#cf7040" opacity=".25">+</text>
+<line x1="276" y1="98" x2="802" y2="98" stroke="currentColor" stroke-width="1.2" opacity=".25"/>
+<text x="268" y="102" text-anchor="end" font-size="13" font-weight="600" fill="currentColor" opacity=".25">–</text>
+<line x1="276" y1="458" x2="802" y2="458" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+<text x="268" y="462" text-anchor="end" font-size="13" font-weight="600" fill="currentColor" opacity="1">–</text>
+<line x1="276" y1="484" x2="802" y2="484" stroke="#cf7040" stroke-width="1.2" opacity=".55"/>
+<text x="268" y="488" text-anchor="end" font-size="13" font-weight="600" fill="#cf7040" opacity="1">+</text>
+<text x="810" y="76" font-size="10" opacity=".5">верхние шины не используем</text>
+<circle cx="290" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="290" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="316" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="342" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="368" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="394" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="420" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="446" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="472" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="498" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="524" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="550" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="576" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="602" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="628" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="654" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="680" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="706" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="732" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="758" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="72" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="98" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="458" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="484" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="152" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="178" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="204" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="230" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="256" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="302" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="328" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="354" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="380" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<circle cx="784" cy="406" r="4.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<text x="290" y="140" text-anchor="middle" font-size="10" opacity=".6">1</text>
+<text x="290" y="430" text-anchor="middle" font-size="10" opacity=".6">1</text>
+<text x="420" y="140" text-anchor="middle" font-size="10" opacity=".6">6</text>
+<text x="420" y="430" text-anchor="middle" font-size="10" opacity=".6">6</text>
+<text x="550" y="140" text-anchor="middle" font-size="10" opacity=".6">11</text>
+<text x="550" y="430" text-anchor="middle" font-size="10" opacity=".6">11</text>
+<text x="680" y="140" text-anchor="middle" font-size="10" opacity=".6">16</text>
+<text x="680" y="430" text-anchor="middle" font-size="10" opacity=".6">16</text>
+<text x="270" y="156" text-anchor="end" font-size="10" opacity=".55">J</text>
+<text x="270" y="182" text-anchor="end" font-size="10" opacity=".55">I</text>
+<text x="270" y="208" text-anchor="end" font-size="10" opacity=".55">H</text>
+<text x="270" y="234" text-anchor="end" font-size="10" opacity=".55">G</text>
+<text x="270" y="260" text-anchor="end" font-size="10" opacity=".55">F</text>
+<text x="270" y="306" text-anchor="end" font-size="10" opacity=".55">E</text>
+<text x="270" y="332" text-anchor="end" font-size="10" opacity=".55">D</text>
+<text x="270" y="358" text-anchor="end" font-size="10" opacity=".55">C</text>
+<text x="270" y="384" text-anchor="end" font-size="10" opacity=".55">B</text>
+<text x="270" y="410" text-anchor="end" font-size="10" opacity=".55">A</text>
+<rect x="262" y="266" width="530" height="26" fill="currentColor" opacity=".07"/>
+<text x="706" y="284" font-size="10.5" opacity=".55">канавка</text>
+<rect x="379" y="262" width="108" height="34" rx="3" fill="currentColor" opacity=".82"/>
+<circle cx="389" cy="288" r="3" fill="none" stroke="#fff" stroke-width="1.2"/>
+<text x="433.0" y="285" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">L9637D</text>
+<line x1="394" y1="262" x2="394" y2="256" stroke="currentColor" stroke-width="2"/>
+<circle cx="394" cy="256" r="4.6" fill="currentColor"/>
+<text x="402" y="248" font-size="12" font-weight="600">1</text>
+<line x1="420" y1="262" x2="420" y2="256" stroke="currentColor" stroke-width="2"/>
+<circle cx="420" cy="256" r="4.6" fill="currentColor"/>
+<text x="428" y="248" font-size="12" font-weight="600">2</text>
+<line x1="446" y1="262" x2="446" y2="256" stroke="currentColor" stroke-width="2"/>
+<circle cx="446" cy="256" r="4.6" fill="currentColor"/>
+<text x="454" y="248" font-size="12" font-weight="600">3</text>
+<line x1="472" y1="262" x2="472" y2="256" stroke="currentColor" stroke-width="2"/>
+<circle cx="472" cy="256" r="4.6" fill="currentColor"/>
+<text x="480" y="248" font-size="12" font-weight="600">4</text>
+<line x1="394" y1="296" x2="394" y2="302" stroke="currentColor" stroke-width="2"/>
+<circle cx="394" cy="302" r="4.6" fill="currentColor"/>
+<text x="402" y="317" font-size="12" font-weight="600">8</text>
+<line x1="420" y1="296" x2="420" y2="302" stroke="currentColor" stroke-width="2"/>
+<circle cx="420" cy="302" r="4.6" fill="currentColor"/>
+<text x="428" y="317" font-size="12" font-weight="600">7</text>
+<line x1="446" y1="296" x2="446" y2="302" stroke="currentColor" stroke-width="2"/>
+<circle cx="446" cy="302" r="4.6" fill="currentColor"/>
+<text x="454" y="317" font-size="12" font-weight="600">6</text>
+<line x1="472" y1="296" x2="472" y2="302" stroke="currentColor" stroke-width="2"/>
+<circle cx="472" cy="302" r="4.6" fill="currentColor"/>
+<text x="480" y="317" font-size="12" font-weight="600">5</text>
+<rect x="30" y="170" width="190" height="170" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+<text x="125" y="196" text-anchor="middle" font-size="13" font-weight="600">Nucleo</text>
+<text x="125" y="214" text-anchor="middle" font-size="12" font-weight="600">G0B1RE</text>
+<path d="M394,152 L394,138 L244,138 L244,250 L220,250" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="394" cy="152" r="4.6" fill="currentColor"/>
+<text x="210" y="244" text-anchor="end" font-size="11.5" font-weight="600">RX</text>
+<path d="M446,178 L446,128 L258,128 L258,282 L220,282" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="446" cy="178" r="4.6" fill="currentColor"/>
+<text x="210" y="276" text-anchor="end" font-size="11.5" font-weight="600">3,3 В</text>
+<path d="M472,204 L472,118 L272,118 L272,314 L220,314" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="472" cy="204" r="4.6" fill="currentColor"/>
+<text x="210" y="308" text-anchor="end" font-size="11.5" font-weight="600">TX</text>
+<text x="428" y="234" font-size="10.5" opacity=".7">вывод 2 — никуда</text>
+<path d="M394,406 L394,458" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="394" cy="406" r="4.6" fill="currentColor"/>
+<circle cx="394" cy="458" r="4.6" fill="currentColor"/>
+<text x="386" y="440" text-anchor="end" font-size="10.5">земля</text>
+<path d="M420,406 L420,484" fill="none" stroke="#cf7040" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="420" cy="406" r="4.6" fill="#cf7040"/>
+<circle cx="420" cy="484" r="4.6" fill="#cf7040"/>
+<text x="430" y="474" font-size="10.5" fill="#cf7040">12 В</text>
+<path d="M472,380 L472,458" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="472" cy="380" r="4.6" fill="currentColor"/>
+<circle cx="472" cy="458" r="4.6" fill="currentColor"/>
+<path d="M420,354 L420,374 L472,374 L472,354" fill="none" stroke="currentColor" stroke-width="2"/>
+<rect x="427" y="363" width="38" height="22" rx="10" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<text x="446.0" y="379" text-anchor="middle" font-size="10" font-weight="600">C1</text>
+<circle cx="420" cy="354" r="4.6" fill="currentColor"/>
+<circle cx="472" cy="354" r="4.6" fill="currentColor"/>
+<path d="M446,152 L446,118 L342,118 L342,152" fill="none" stroke="currentColor" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="446" cy="152" r="4.6" fill="currentColor"/>
+<circle cx="342" cy="152" r="4.6" fill="currentColor"/>
+<path d="M342,230 L342,328" fill="none" stroke="currentColor" stroke-width="2"/>
+<rect x="331" y="267.0" width="22" height="24" rx="10" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<text x="326" y="283.0" text-anchor="end" font-size="10" font-weight="600">C2</text>
+<circle cx="342" cy="230" r="4.6" fill="currentColor"/>
+<circle cx="342" cy="328" r="4.6" fill="currentColor"/>
+<path d="M342,406 L342,458" fill="none" stroke="currentColor" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="342" cy="406" r="4.6" fill="currentColor"/>
+<circle cx="342" cy="458" r="4.6" fill="currentColor"/>
+<text x="326" y="436" text-anchor="end" font-size="10" opacity=".7">C2 к земле</text>
+<path d="M446,328 L628,328" fill="none" stroke="#2f7fd1" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="446" cy="328" r="4.6" fill="#2f7fd1"/>
+<circle cx="628" cy="328" r="4.6" fill="#2f7fd1"/>
+<text x="537.0" y="319" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f7fd1">линия шины K</text>
+<path d="M628,406 L628,484" fill="none" stroke="#2f7fd1" stroke-width="2.4" stroke-dasharray="6 4"/>
+<rect x="619" y="432.0" width="18" height="26" rx="3" fill="none" stroke="#2f7fd1" stroke-width="1.8"/>
+<circle cx="628" cy="406" r="4.6" fill="#2f7fd1"/>
+<circle cx="628" cy="484" r="4.6" fill="#2f7fd1"/>
+<text x="643" y="443.0" font-size="10.5" fill="#2f7fd1">R 1–2,2 кОм</text>
+<text x="643" y="457.0" font-size="10" fill="#2f7fd1" opacity=".8">только если</text>
+<text x="643" y="470.0" font-size="10" fill="#2f7fd1" opacity=".8">понадобится</text>
+<path d="M220,335 L240,335 L240,458 L290,458" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="290" cy="458" r="4.6" fill="currentColor"/>
+<text x="210" y="329" text-anchor="end" font-size="11.5" font-weight="600">GND</text>
+<rect x="860" y="380" width="200" height="66" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+<text x="960" y="406" text-anchor="middle" font-size="13" font-weight="600">Блок 12 В</text>
+<text x="960" y="424" text-anchor="middle" font-size="10.5" opacity=".75">тот же, что у монитора</text>
+<path d="M860,396 L798,396 L798,484 L784,484" fill="none" stroke="#cf7040" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="784" cy="484" r="4.6" fill="#cf7040"/>
+<path d="M860,432 L766,432 L766,458 L758,458" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="758" cy="458" r="4.6" fill="currentColor"/>
+<rect x="860" y="470" width="220" height="118" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+<text x="970" y="496" text-anchor="middle" font-size="13" font-weight="600">Кабель VAG KKL</text>
+<text x="970" y="514" text-anchor="middle" font-size="10.5" opacity=".75">разъём OBD отрезан</text>
+<text x="874" y="542" font-size="11.5">конт. 7 · K</text>
+<path d="M860,538 L830,538 L830,380 L628,380" fill="none" stroke="#2f7fd1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="628" cy="380" r="4.6" fill="#2f7fd1"/>
+<text x="874" y="562" font-size="11.5">конт. 16 · 12 В</text>
+<path d="M860,558 L814,558 L814,484 L706,484" fill="none" stroke="#cf7040" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="706" cy="484" r="4.6" fill="#cf7040"/>
+<text x="874" y="582" font-size="11.5">конт. 4 и 5 · земля</text>
+<path d="M860,578 L798,578 L798,458 L680,458" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="680" cy="458" r="4.6" fill="currentColor"/>
+<g>
+  <rect x="26" y="560" width="700" height="186" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+  <text x="44" y="584" font-size="12.5" font-weight="600" letter-spacing=".04em">ЧТО СТАВИМ</text>
+
+  <rect x="47" y="600" width="26" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <text x="86" y="613" font-size="11.5"><tspan font-weight="600">C1</tspan> · 100 нФ керамический · между выводами 7 и 5 · развязка питания 12 В</text>
+
+  <rect x="47" y="626" width="26" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <text x="86" y="639" font-size="11.5"><tspan font-weight="600">C2</tspan> · 100 нФ керамический · между выводами 3 и 5 · развязка логики 3,3 В</text>
+
+  <rect x="51" y="652" width="18" height="18" rx="3" fill="none" stroke="#2f7fd1" stroke-width="1.8"/>
+  <text x="86" y="665" font-size="11.5"><tspan font-weight="600" fill="#2f7fd1">R1</tspan> · 1–2,2 кОм · подтяжка линии K к +12 В · <tspan font-style="italic">ставить только если линия не подтянута</tspan></text>
+
+  <text x="86" y="687" font-size="11" opacity=".8">Резисторы 1 кОм и 10 кОм из закупки это запас на подбор: если с 2,2 кОм связь неустойчива,</text>
+  <text x="86" y="702" font-size="11" opacity=".8">пробуют меньше, если линия греет выходы — больше. Сначала измерьте напряжение на линии без резистора.</text>
+
+  <circle cx="60" cy="722" r="4.6" fill="currentColor"/>
+  <text x="86" y="726" font-size="11" opacity=".85">кружок в отверстии = сюда воткнут провод. Провода на схеме просто перекрещиваются, они изолированы.</text>
+
+  <line x1="47" y1="740" x2="73" y2="740" stroke="#2f7fd1" stroke-width="2.4" stroke-dasharray="6 4"/>
+  <text x="86" y="744" font-size="11" opacity=".85">пунктир = ставится по необходимости. Внутри одной колонки все пять отверстий половины соединены.</text>
+</g>
+</g></svg>
+<figcaption>Колонки пронумерованы, ряды подписаны буквами. Переходник ставится через канавку в колонки с пятой по восьмую. Питание и шина внизу, всё, что идёт к микроконтроллеру, наверху. Верхние шины питания не используются.</figcaption>
+</figure>
+
+<h2>Что надо докупить</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Позиция</th><th>Зачем</th></tr></thead>
+<tbody>
+<tr><td>Блок питания 12 В, 1 А</td><td>Питание шины и обоих трансиверов. Годится любой адаптер от роутера с подходящим напряжением. Запрос <code>12V 1A 电源适配器</code></td></tr>
+<tr><td>Резисторы 1 кОм и 2,2 кОм, плюс 10 кОм в запас</td><td>Подтяжка линии. Годится любой номинал от 510 Ом до 2,2 кОм, подбор по факту. Запрос <code>金属膜电阻 1/4W 包</code>, набор номиналов</td></tr>
+<tr><td>Клеммник или разъём под адаптер</td><td>Чтобы не скручивать провода питания. Запрос <code>DC 母座 5.5x2.1 接线端子</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Что паяется</h2>
+<p>На всём этапе паяльник нужен два раза, оба на переходнике SOP8-DIP8.</p>
+<ol class="steps">
+<li>
+  <h3>Микросхема на переходник</h3>
+  <p>Совместите первую ножку L9637D, у неё в углу корпуса точка или скос, с площадкой номер 1 на переходнике, она обычно квадратная. Паяйте на широкую сторону SOP8 с шагом 1,27 мм, узкая посередине под SSOP не ваша. Сначала прихватите один угловой вывод, проверьте, что корпус лёг ровно и остальные ножки попали на площадки, потом паяйте остальные.</p>
+</li>
+<li>
+  <h3>Гребёнка снизу</h3>
+  <p>Две гребёнки по четыре контакта, длинными концами вниз, чтобы втыкались в макетную плату. Вставьте их в макетку, сверху положите переходник, тогда всё выровняется само, и паяйте.</p>
+</li>
+</ol>
+<p>Дальше только провода-перемычки, ничего не паяется. Конденсаторы 100 нФ втыкаются в макетную плату: один между выводами 7 и 5, второй между 3 и 5, обязательно рядом с микросхемой.</p>
+
+<h2>Сборка на макетной плате</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Откуда</th><th>Куда</th></tr></thead>
+<tbody>
+<tr><td>L9637D выв. 1 (RX)</td><td>RX выбранного UART на Nucleo</td></tr>
+<tr><td>L9637D выв. 4 (TX)</td><td>TX того же UART</td></tr>
+<tr><td>L9637D выв. 3 (VCC)</td><td>3,3 В с Nucleo</td></tr>
+<tr><td>L9637D выв. 5 (GND)</td><td>Земля стенда и земля Nucleo</td></tr>
+<tr><td>L9637D выв. 8 (LI)</td><td>Земля</td></tr>
+<tr><td>L9637D выв. 7 (VS)</td><td>+12 В</td></tr>
+<tr><td>L9637D выв. 6 (K)</td><td>Линия шины</td></tr>
+<tr><td>R1, 2,2 кОм</td><td>Между линией шины и +12 В</td></tr>
+<tr><td>KKL, контакт 7 обрезанного разъёма</td><td>Линия шины</td></tr>
+<tr><td>KKL, контакт 16</td><td>+12 В</td></tr>
+<tr><td>KKL, контакты 4 и 5</td><td>Земля</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Проверка перед подачей питания</h2>
+<ol class="steps">
+<li>
+  <h3>Прозвонка без питания</h3>
+  <p>Мультиметром в режиме прозвонки: между выводами 7 и 5 не должно звониться, между 3 и 5 тоже. Если звенит, значит конденсатор пробит или где-то замыкание. Проверьте, что земля действительно общая у всех участников.</p>
+</li>
+<li>
+  <h3>Подать только 12 В, без Nucleo</h3>
+  <p>На линии K должно быть около 12 В, её тянет вверх резистор. Потребление всей сборки единицы миллиампер. Если микросхема греется, питание сразу выключить и искать ошибку в распиновке.</p>
+</li>
+<li>
+  <h3>Добавить 3,3 В с Nucleo</h3>
+  <p>На выводе 1 (RX) должно быть около 3,3 В: линия свободна, значит на выходе логическая единица. Это первая настоящая проверка, что микросхема жива и правильно распаяна.</p>
+</li>
+<li>
+  <h3>Проверить передачу вручную</h3>
+  <p>Замкните вывод 4 (TX) на землю через резистор 1 кОм. Напряжение на линии K должно упасть почти до нуля, а на выводе 1 (RX) тоже до нуля. Отпустили, всё вернулось. Значит тракт работает в обе стороны.</p>
+</li>
+<li>
+  <h3>Первый байт</h3>
+  <p>Откройте порт KKL на ноутбуке, 9600 бод, 8 бит, чётность even, 1 стоп. С Nucleo отправьте любой байт. Он должен появиться в терминале. Потом наоборот. С этого момента у вас есть работающая шина, и дальше только софт.</p>
+</li>
+</ol>
+
+<div class="note"><b>Осторожно с 12 В.</b> Выводы 3, 1 и 4 рассчитаны на логические уровни. Если случайно подать на них 12 В вместо 3,3 В, микросхема и, возможно, Nucleo погибнут. Перед первым включением перепроверьте, куда идут провода питания. Микросхем у вас десять, а Nucleo одна.</div>
+
+<h2>Falstad, если хочется посмотреть на аналог</h2>
+<p>Собрать в CircuitJS за пару минут, чтобы увидеть, как ведёт себя шина с двумя передатчиками:</p>
+<ul>
+<li>Источник напряжения 12 В.</li>
+<li>Резистор 2,2 кОм от плюса к узлу K.</li>
+<li>Два n-канальных MOSFET, стоки на узел K, истоки на землю. Это модели выходов двух трансиверов.</li>
+<li>На затворы прямоугольные генераторы с разными частотами.</li>
+<li>Вольтметр на узле K.</li>
+</ul>
+<p>Видно главное свойство шины: когда открывается любой из двух транзисторов, линия падает, и передатчик, который в этот момент выдавал единицу, увидит на линии ноль. Это и есть коллизия, и именно поэтому прошивка обязана сверять эхо каждого отправленного байта.</p>
+
+<h2>Что дальше</h2>
+<p>Когда байты бегают в обе стороны, стенд превращается в полноценную среду разработки: на ноутбуке пишется скрипт, который играет роль радио и монитора, а на Nucleo растёт прошивка чейнджера. К моменту, когда приедет донор с разъёмами, у вас будет отлаженный код, и в машине останется только подключиться и снять реальные сообщения.</p>
+</div>

@@ -1,0 +1,29 @@
+[Unit]
+# Мышь как палец. Только для стенда: в машине ни мыши, ни касаний не будет.
+#
+# Установка:
+#   cp ~/bmw-tools/mysh.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user start mysh
+#
+# Намеренно без enable: в машине эта служба не нужна, а на стенде её удобно
+# включать и выключать руками.
+#
+# Посмотреть, куда попадают клики:
+#   tail -f ~/logi/mysh.log
+
+Description=Мышь как палец для CarPlay (только стенд)
+After=carplay.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/bmw-tools
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
+ExecStart=/bin/sh -c '%h/bmw-tools/.venv/bin/python %h/bmw-tools/mysh.py >> %h/logi/mysh.log 2>&1'
+Restart=always
+RestartSec=3
+StartLimitIntervalSec=0
+
+[Install]
+WantedBy=default.target

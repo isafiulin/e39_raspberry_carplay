@@ -1,0 +1,33 @@
+[Unit]
+# Выставляет уровень выхода Headphone микросхемы WM8960 при каждой загрузке.
+#
+# Headphone идёт на AUX радио. При 95 (-26 dB) CarPlay в машине звучит заметно
+# тише радио, поэтому выход поднят до 124 (+3 dB). Чистый максимум кодека —
+# 121 (0 dB); если громкие треки хрипят, вернуть 121. 127 (+6 dB) — перебор.
+#
+# Сохранённого через alsactl store состояния недостаточно: после загрузки его
+# уже перезаписывали (см. carplay/README.md). А эта служба выставляет уровень
+# сама, после восстановления ALSA, и root ей не нужен.
+#
+# Установка:
+#   cp ~/bmw-tools/gromkost.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now gromkost
+#
+# Проверить:
+#   amixer -c wm8960soundcard sget Headphone
+
+Description=Уровень выхода WM8960 на AUX радио
+Before=carplay.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# Ждём появления карты, затем даём alsa-restore закончить, чтобы он не
+# перезаписал значение своим сохранённым состоянием.
+ExecStartPre=/bin/sh -c "for i in $(seq 30); do amixer -c wm8960soundcard sget Headphone >/dev/null 2>&1 && exit 0; sleep 1; done; exit 1"
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/bin/amixer -q -c wm8960soundcard sset Headphone 124
+
+[Install]
+WantedBy=default.target

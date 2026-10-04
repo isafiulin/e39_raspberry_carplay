@@ -1,0 +1,37 @@
+[Unit]
+# Обработчик кнопок монитора. Слушает I-Bus, показывает и прячет картинку,
+# передаёт крутилку и выбор в CarPlay.
+#
+# Установка:
+#   mkdir -p ~/.config/systemd/user
+#   cp ~/bmw-tools/bmw-agent.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now bmw-agent.service
+#
+# Посмотреть, что происходит:
+#   journalctl --user -u bmw-agent -f
+#
+# ВНИМАНИЕ. В ExecStart стоит --razreshit-peredachu, то есть служба
+# действительно говорит в шину автомобиля. Пока вы не уверены в поведении,
+# уберите этот флаг: тогда она будет только печатать, что собиралась
+# отправить, и ничего не переключать.
+
+Description=Кнопки монитора BMW E39 для CarPlay
+# Не вешаем на graphical-session.target: на Raspberry Pi OS с lightdm эта цель
+# никогда не активируется, хотя X работает и пользователь залогинен. Служба
+# при этом остаётся enabled, но после перезагрузки не стартует — выглядит так,
+# будто автозапуск просто не работает. Проверено 30.09.2026.
+
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=%h/bmw-tools
+ExecStart=%h/bmw-tools/.venv/bin/python agent.py /dev/ttyUSB0 --sokset --razreshit-peredachu
+Restart=always
+RestartSec=5
+# Служба сама ждёт кабель и переживает его выдёргивание, не завершаясь.
+# Перезапуск оставлен страховкой на случай настоящей поломки.
+
+[Install]
+WantedBy=default.target

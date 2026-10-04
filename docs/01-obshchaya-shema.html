@@ -1,0 +1,716 @@
+<title>CarPlay для BMW E39</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2;
+    --surface: #ffffff;
+    --surface-2: #e3e7ec;
+    --ink: #16191d;
+    --muted: #5b6470;
+    --line: #c9cfd6;
+    --accent: #0b5fa5;
+    --accent-soft: #dce9f6;
+    --warn: #9a5b00;
+    --warn-soft: #fbeed4;
+    --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c;
+      --surface: #1e2228;
+      --surface-2: #262b32;
+      --ink: #e6e8eb;
+      --muted: #9aa3ae;
+      --line: #3a414a;
+      --accent: #5aa2f0;
+      --accent-soft: #1d3550;
+      --warn: #e2a84a;
+      --warn-soft: #3a2d15;
+      --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c;
+    --surface: #1e2228;
+    --surface-2: #262b32;
+    --ink: #e6e8eb;
+    --muted: #9aa3ae;
+    --line: #3a414a;
+    --accent: #5aa2f0;
+    --accent-soft: #1d3550;
+    --warn: #e2a84a;
+    --warn-soft: #3a2d15;
+    --mono-bg: #262b32;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .page { max-width: 1040px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 36px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 48px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 19px; margin: 26px 0 8px; }
+  p, li { max-width: 70ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; color: var(--ink); max-width: 72ch; }
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 24px 0 0; }
+  .verdict div { background: var(--surface); border-top: 3px solid var(--accent); padding: 12px 14px; }
+  .verdict b { display: block; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 17px; margin-bottom: 4px; }
+  .verdict span { color: var(--muted); font-size: 14px; }
+  code, .mono { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.92em; background: var(--mono-bg); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+  pre { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 13.5px; background: var(--mono-bg); padding: 12px 14px; overflow-x: auto; margin: 0 0 14px; line-height: 1.5; }
+  pre code { background: none; padding: 0; white-space: pre; }
+  figure { margin: 18px 0 8px; background: var(--surface); border: 1px solid var(--line); padding: 16px; overflow-x: auto; }
+  figure svg { display: block; width: 100%; min-width: 760px; height: auto; color: var(--ink); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; max-width: 80ch; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  td.num, th.num { font-variant-numeric: tabular-nums; }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); max-width: none; }
+  .steps li > * { grid-column: 2; min-width: 0; }
+  .steps li::before { grid-column: 1; content: counter(s); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 22px; color: var(--accent); line-height: 1; padding-top: 2px; }
+  .steps b { display: block; margin-bottom: 2px; }
+  .steps p { margin: 0; max-width: 72ch; color: var(--ink); }
+  .sources { font-size: 13.5px; color: var(--muted); }
+  .sources a { color: var(--accent); }
+  .sources li { max-width: none; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · 2002–2003 · монитор 16:9 · BM54 · видеомодуль · навигация на CD · I-Bus</p>
+  <h1>CarPlay для BMW E39: схема подключения и установки</h1>
+  <p class="lead">Настоящий беспроводной CarPlay на штатном мониторе через свою плату в багажнике. Донгл Carlinkit держит сеанс CarPlay, Compute Module 4 декодирует видео и звук, маленький микроконтроллер живёт на I-Bus и управляет источниками и питанием.</p>
+  <div class="verdict">
+    <div><b>Видео</b><span>композит с CM4 во вход видеомодуля, дальше штатно на монитор. Какой из двух входов модуля, AV или камеры, решается проверкой на гашение в движении</span></div>
+    <div><b>Звук</b><span>стерео с ЦАП I2S во вход AUX радио BM54. Не через видеомодуль: там моно</span></div>
+    <div><b>Управление</b><span>крутилка и кнопки монитора и руля приходят по I-Bus, MCU переводит их в команды донгла</span></div>
+    <div><b>Питание</b><span>Kl.30 с 3-контактного разъёма чейнджера, включение по зажиганию, сон вместе с шиной</span></div>
+  </div>
+</header>
+
+<div class="note"><b>Почему звук не через видеомодуль.</b> Аудиовход видеомодуля принимает один канал: под звук там отведены только «вход аудио +» и его земля. Стерео туда не завести. Поэтому видео идёт через видеомодуль, а стерео — прямо в радио, в штатный вход AUX. Вход CD-чейнджера как запасной путь <b>снят с рассмотрения 30.09.2026</b>: чтобы радио его выбрало, надо постоянно эмулировать чейнджер, а от эмуляции проект отказался.</div>
+
+<h2>Блок-схема трактов</h2>
+<figure>
+<svg viewBox="0 0 1010 545" role="img" aria-label="Тракт CarPlay: телефон по Wi-Fi к донглу Carlinkit, донгл по USB к Compute Module 4 на плате-носителе; с платы композит идёт в видеомодуль и на монитор, стерео с ЦАП идёт в BM54 и на динамики, микроконтроллер платы сидит на I-Bus вместе с монитором, видеомодулем, радио и IKE." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f7fd1"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+    <!-- carrier group -->
+    <rect x="370" y="40" width="300" height="470" rx="6" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="6 4"/>
+    <text x="385" y="60" font-size="12" font-weight="600" letter-spacing=".04em">ВАША ПЛАТА-НОСИТЕЛЬ · БАГАЖНИК</text>
+
+    <!-- left column -->
+    <rect x="30" y="77" width="110" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="85" y="101" text-anchor="middle" font-weight="600">iPhone</text>
+    <text x="85" y="118" text-anchor="middle" font-size="11" opacity=".75">в салоне</text>
+
+    <rect x="190" y="77" width="140" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="260" y="98" text-anchor="middle" font-weight="600">Carlinkit CPC200-CCPA</text>
+    <text x="260" y="114" text-anchor="middle" font-size="11" opacity=".75">чип MFi · Wi-Fi 5 ГГц · BT</text>
+
+    <line x1="140" y1="105" x2="190" y2="105" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)" marker-start="url(#arr)"/>
+    <text x="165" y="150" text-anchor="middle" font-size="11">CarPlay</text>
+    <text x="165" y="163" text-anchor="middle" font-size="11">по воздуху</text>
+
+    <rect x="190" y="250" width="140" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="260" y="270" text-anchor="middle" font-weight="600">Микрофон</text>
+    <text x="260" y="286" text-anchor="middle" font-size="11" opacity=".75">штатная проводка у плафона</text>
+
+    <rect x="190" y="430" width="140" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="260" y="450" text-anchor="middle" font-weight="600">Kl.30 · масса</text>
+    <text x="260" y="466" text-anchor="middle" font-size="11" opacity=".75">3-pin разъём чейнджера</text>
+
+    <!-- carrier blocks -->
+    <rect x="400" y="70" width="240" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="520" y="93" text-anchor="middle" font-weight="600">Compute Module 4</text>
+    <text x="520" y="110" text-anchor="middle" font-size="11" opacity=".75">USB-хост · декод H.264 · кадр → PAL</text>
+    <text x="520" y="126" text-anchor="middle" font-size="11" opacity=".75">eMMC, корень только для чтения</text>
+
+    <rect x="400" y="170" width="240" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="520" y="190" text-anchor="middle" font-weight="600">ЦАП I2S · PCM5102A</text>
+    <text x="520" y="206" text-anchor="middle" font-size="11" opacity=".75">стерео, делитель до линейного уровня</text>
+
+    <rect x="400" y="250" width="240" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="520" y="270" text-anchor="middle" font-weight="600">АЦП I2S · PCM1808</text>
+    <text x="520" y="286" text-anchor="middle" font-size="11" opacity=".75">предусилитель микрофона, эхоподавление в ПО</text>
+
+    <rect x="400" y="330" width="240" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="520" y="352" text-anchor="middle" font-weight="600">MCU · STM32 + TH3122</text>
+    <text x="520" y="368" text-anchor="middle" font-size="11" opacity=".75">I-Bus: кнопки, источники, сон и запуск CM4</text>
+
+    <rect x="400" y="420" width="240" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="520" y="442" text-anchor="middle" font-weight="600">Питание</text>
+    <text x="520" y="458" text-anchor="middle" font-size="11" opacity=".75">TVS, обратная полярность, buck 5 В и 3.3 В</text>
+
+    <!-- USB -->
+    <line x1="330" y1="105" x2="400" y2="105" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" marker-start="url(#arr)"/>
+    <text x="365" y="122" text-anchor="middle" font-size="11" font-weight="600">USB</text>
+    <text x="365" y="135" text-anchor="middle" font-size="10.5">H.264 + PCM</text>
+    <text x="365" y="148" text-anchor="middle" font-size="10.5">кнопки + мик</text>
+
+    <!-- mic -->
+    <line x1="330" y1="275" x2="400" y2="275" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+    <!-- power -->
+    <line x1="330" y1="455" x2="400" y2="455" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="365" y="448" text-anchor="middle" font-size="11">12 В</text>
+
+    <!-- internal: MCU controls CM4/power -->
+    <polyline points="385,360 385,455 400,455" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="400" y1="360" x2="385" y2="360" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="382" y="410" text-anchor="end" font-size="10" opacity=".75">вкл/выкл</text>
+
+    <!-- right column -->
+    <rect x="760" y="70" width="180" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="850" y="92" text-anchor="middle" font-weight="600">Видеомодуль (TV) · 0xED</text>
+    <text x="850" y="108" text-anchor="middle" font-size="11" opacity=".75">X18806: 6 видео, 15 экран</text>
+    <text x="850" y="122" text-anchor="middle" font-size="11" opacity=".75">источник AUX</text>
+
+    <rect x="760" y="160" width="180" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="850" y="184" text-anchor="middle" font-weight="600">Монитор 16:9 · BMBT 0xF0</text>
+    <text x="850" y="202" text-anchor="middle" font-size="11" opacity=".75">крутилка и кнопки → I-Bus</text>
+
+    <rect x="760" y="250" width="180" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="850" y="274" text-anchor="middle" font-weight="600">BM54 радио · 0x68</text>
+    <text x="850" y="292" text-anchor="middle" font-size="11" opacity=".75">вход CD-чейнджера: 2 GND, 8 L, 9 R</text>
+
+    <rect x="760" y="340" width="180" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="850" y="366" text-anchor="middle" font-weight="600">Усилитель и динамики</text>
+
+    <rect x="760" y="420" width="180" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="850" y="438" text-anchor="middle" font-weight="600">IKE 0x80 · руль MFL 0x50</text>
+    <text x="850" y="454" text-anchor="middle" font-size="11" opacity=".75">зажигание, кнопки на руле</text>
+
+    <!-- CVBS accent -->
+    <line x1="640" y1="88" x2="760" y2="88" stroke="#2f7fd1" stroke-width="2.5" marker-end="url(#arrA)"/>
+    <text x="700" y="82" text-anchor="middle" font-size="11" font-weight="600" fill="#2f7fd1">CVBS PAL, 75 Ом</text>
+
+    <!-- TV -> monitor -->
+    <line x1="850" y1="130" x2="850" y2="160" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="858" y="149" font-size="11">штатный кабель</text>
+
+    <!-- audio accent -->
+    <polyline points="640,195 700,195 700,265 760,265" fill="none" stroke="#2f7fd1" stroke-width="2.5" marker-end="url(#arrA)"/>
+    <text x="705" y="235" font-size="11" font-weight="600" fill="#2f7fd1">стерео L/R</text>
+    <text x="705" y="248" font-size="11" fill="#2f7fd1">6-pin чейнджера</text>
+
+    <!-- radio -> speakers -->
+    <line x1="850" y1="310" x2="850" y2="340" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- I-Bus -->
+    <polyline points="640,360 700,360 700,500 975,500 975,100" fill="none" stroke="currentColor" stroke-width="2"/>
+    <line x1="940" y1="100" x2="975" y2="100" stroke="currentColor" stroke-width="2"/>
+    <line x1="940" y1="190" x2="975" y2="190" stroke="currentColor" stroke-width="2"/>
+    <line x1="940" y1="280" x2="975" y2="280" stroke="currentColor" stroke-width="2"/>
+    <line x1="940" y1="442" x2="975" y2="442" stroke="currentColor" stroke-width="2"/>
+    <circle cx="975" cy="100" r="3" fill="currentColor"/>
+    <circle cx="975" cy="190" r="3" fill="currentColor"/>
+    <circle cx="975" cy="280" r="3" fill="currentColor"/>
+    <circle cx="975" cy="442" r="3" fill="currentColor"/>
+    <text x="838" y="522" text-anchor="middle" font-size="11" font-weight="600">I-Bus · один провод · 9600 8E1 · все блоки на одной шине</text>
+  </g>
+</svg>
+<figcaption>Синим выделены два аналоговых сигнала, которые формирует ваша плата: композитное видео во вход видеомодуля и стерео во вход AUX радио. Схема на рисунке отражает прежний вариант со входом чейнджера и будет перерисована.</figcaption>
+</figure>
+
+<h2>Что покупать</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Узел</th><th>Что именно</th><th>Зачем и на что смотреть</th></tr></thead>
+<tbody>
+<tr><td>CarPlay-модуль</td><td>Carlinkit CPC200-CCPA</td><td>Беспроводной, внутри чип MFi и радиочасть. Именно этот тип поддержан в node-carplay. Адаптеры «из проводного CarPlay в беспроводной» не подходят, они притворяются телефоном, а не магнитолой.</td></tr>
+<tr><td>Для первых тестов</td><td>Carlinkit CPC200-Autokit (проводной) + Raspberry Pi 4 B</td><td>Дешевле, и обкатать USB-протокол, декодер и композит можно на столе. В машину потом идёт CM4 на своей плате.</td></tr>
+<tr><td>Вычислитель</td><td>Compute Module 4, eMMC 16 ГБ, 2 ГБ ОЗУ, версия с Wi-Fi не обязательна</td><td>Диапазон −20…+85 °C, eMMC вместо microSD, аппаратный декодер H.264, вывод композита с ножки TV-out.</td></tr>
+<tr><td>Микроконтроллер шины</td><td>STM32G0/G4 или PIC24 (как в BlueBus) + трансивер Melexis TH3122 (запасной вариант L9637D)</td><td>Всегда включён, ток в сне ниже 1 мА, работает с шиной, пока CM4 выключен.</td></tr>
+<tr><td>Звук наружу</td><td>Кодек WM8960, как на аудиошляпе</td><td>Чистый линейный выход, встроенный звук Pi на ШИМ шумит. Делитель до линейного уровня <b>ещё не рассчитан</b>: нужно входное сопротивление BM54 и замер на клиппинг.</td></tr>
+<tr><td>Звук внутрь</td><td>Микрофонный вход того же кодека</td><td>Штатному микрофону BMW нужно внешнее смещение. <b>Напряжение и резистор не подтверждены</b>: нужен номер микрофона и его паспортный ток.</td></tr>
+<tr><td>Питание</td><td>Автомобильный buck на 5 В с запасом по току (TPS54560B или аналог), входная защита, диод от переполюсовки, LDO 3,3 В для MCU</td><td>Бортсеть даёт импульсы до десятков вольт и просадки при старте. Конденсаторы на −40 °C. <b>Номиналы и защита не рассчитаны</b>, см. раздел «Что не посчитано» в документе про плату. LMR36015 из прежней редакции убран: он на 1,5 А, а не на 3 А.</td></tr>
+<tr><td>Корпус</td><td>Неисправный CD-чейнджер как донор: стальной корпус, штатное крепление, родные разъёмы</td><td>Процессор прижимается к боковой стенке через термопрокладку и алюминиевую пластину. Лак по плате от конденсата. Подробности в документе про корпус.</td></tr>
+<tr><td>Разъёмы в машину</td><td>Контакты BMW MQS под X18806 (4 шт.), коаксиал 75 Ом. Разъёмы 3-pin и 6-pin берутся из чейнджера-донора</td><td>Чтобы ничего не резать: штатный чейнджер отключается, а гнёзда донора становятся разъёмами вашей платы.</td></tr>
+<tr><td>Отладка</td><td>USB-UART + второй TH3122 или L9637D как снифер</td><td>Без снифера точные байты для вашей машины не получить.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Подключение в машине</h2>
+<p>Всё делается в багажнике, где стоят BM54, видеомодуль и разъёмы чейнджера. В салон идёт только микрофон, и обычно его проводка уже проложена.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Сигнал</th><th>С платы</th><th>В машине</th><th>Замечания</th></tr></thead>
+<tbody>
+<tr><td>Видео</td><td>Выход TV-out модуля, обвязка по референсной схеме CM4IO</td><td>Видеомодуль, разъём X18806: контакт 6 видео, контакт 15 его земля</td><td>Для LEAR Video Module II это подтверждено первичным документом. Вариант «8 и 17» из форумов не подтверждён, наугад по нему не подключаться. Контакты в разъёме обычно пустые, их надо вставить. <b>Цепь выхода пока описана приблизительно:</b> нужна одна схема по референсу с проверкой размаха на нагруженном входе, а 75 Ом волнового сопротивления кабеля сами по себе не означают последовательный резистор 75 Ом.</td></tr>
+<tr><td>Стерео</td><td>Линейный выход кодека L, R, GND плюс резистор опознавания</td><td>Вход AUX радио BM54: разъём C, контакты 3 и 4, земля 10</td><td>Радио в том же багажнике, кабель короткий и экранированный. Земля звука соединяется с землёй BM54 только в этой точке. <b>Номера контактов по форумам, подтвердить по ETM и мультиметром.</b> Вход чейнджера не используется: он требует постоянной эмуляции.</td></tr>
+<tr><td>I-Bus, питание</td><td>MCU через TH3122; вход buck</td><td>X18180, 3 контакта. <b>Определять по цвету провода, а не по номеру:</b> коричневый это масса, красно-зелёный это +12 В Kl.30, бело-красно-жёлтый это I-Bus</td><td>Цвета совпадают у всех найденных источников. А вот нумерация спорная: заводская схема E38 даёт 1 масса, 2 питание, 3 I-Bus, форумные источники для E39 дают обратный порядок 1 и 3. На трёхконтактном разъёме номера переворачиваются в зависимости от стороны взгляда, поэтому подтверждайте мультиметром. <a href="10-cheyndzher-bmw-4730en.md">Расшифровка схемы E38</a>, <a href="sources/4730en.pdf">исходный PDF</a>. Статус зажигания MCU получает по I-Bus.</td></tr>
+<tr><td>Микрофон</td><td>Вход предусилителя</td><td>Штатный микрофон у плафона, если есть подготовка под телефон, иначе новый микрофон на стойке и витая пара в багажник</td><td>Экранированный кабель, экран на массу только со стороны платы.</td></tr>
+<tr><td>Донгл</td><td>USB 2.0 на плате</td><td>Внутри корпуса или на коротком удлинителе</td><td>Проверьте уровень Wi-Fi из багажника до телефона. Если слабо, вынесите донгл под полку заднего стекла.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip"><b>Проверено на машине 30.09.2026: режим камеры звук не трогает.</b> Пока триггер камеры замкнут, картинка на мониторе принадлежит камере и переключить её нельзя. Но звук при этом живёт своей жизнью: работают радио, AUX и чейнджер, источники переключаются свободно. В отличие от режима Television, который звук забирает себе.
+<br><br><b>Это и есть решение.</b> Вход камеры — не источник, а захват экрана. Значит стерео через штатный AUX и картинка через вход камеры работают одновременно и не мешают друг другу. Проблема моно-звука обходится целиком, вместе с ней отпадают мост шины, RGB-тракт и неизвестное сообщение выбора AV.
+<br><br><b>Остался один вопрос:</b> гасится ли вход камеры в движении. Это последнее, что отделяет схему от окончательной.</div>
+
+<h2>Схема после проверок 30.09.2026</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Что</th><th>Куда</th><th>Состояние</th></tr></thead>
+<tbody>
+<tr><td>Видео</td><td>Вход камеры видеомодуля, белый разъём 13 и 14, в стандарте камеры (NTSC)</td><td>Вход уже разведён под штатную камеру, нужен видеокоммутатор</td></tr>
+<tr><td>Переключение картинки</td><td>Контакт 17 синего разъёма на массу ключом с платы</td><td>Провод вместо неизвестного сообщения по шине</td></tr>
+<tr><td>Звук</td><td>Штатный вход AUX радио BM54, стерео</td><td>Вход есть и включён, появляется в меню при нагрузке</td></tr>
+<tr><td>Управление</td><td>I-Bus: кнопки руля, крутилка, кнопки монитора</td><td>Кнопки работают и в режиме камеры</td></tr>
+<tr><td>Эмуляция чейнджера</td><td>—</td><td><b>Не нужна.</b> Самая сложная часть прошивки выпадает из проекта</td></tr>
+<tr><td>Мост I-Bus, RGB-тракт</td><td>—</td><td>Не нужны, если вход камеры не гасится в движении</td></tr>
+</tbody>
+</table>
+</div>
+<p>Микроконтроллер в этой схеме не притворяется устройством, а только слушает шину и управляет двумя линиями: ключом триггера и питанием. Это принципиально проще того, с чего проект начинался.</p>
+<div class="tip"><b>Разрешение монитора: 400 × 234 точки.</b> Цифра из заводского учебного документа BMW по широкоформатному монитору. Из неё следуют три вывода сразу.
+<br><br><b>Спор PAL или NTSC закрыт.</b> Монитор всё равно показывает 234 строки. Что мы отдадим, 576 строк или 480, он ужмёт до одного и того же. Разницы в детализации не будет вообще, и стандарт перестаёт быть аргументом при выборе входа.
+<br><br><b>Проверка читаемости была честной.</b> Испытательный монитор 4,3 дюйма имеет 480 × 234 — та же высота в точках, что у штатного. То есть то, что вы видели на столе, и есть то, что будет в машине, только крупнее по физическому размеру.
+<br><br><b>И RGB-тракт окончательно теряет смысл.</b> Единственным его преимуществом была бы резкость, но упереться всё равно в 234 строки. Ради этого не стоит ни коммутатор, ни преобразователь.</div>
+
+<h2>Два варианта развития</h2>
+<div class="note" style="border-left-width:6px"><b>30.09.2026 вариант A стал основным.</b> Мы подключились к шине в машине, сняли кадры переключения в Television и выяснили, что монитор командует видео и звуком <b>раздельно</b>. Отправив только видеополовину — <code>3B 05 BB 4F 01 00</code> и обратно <code>4F 02 00</code> — мы включили и выключили картинку AV, <b>не тронув звук вообще</b>: AUX играл в стерео всё время. Вариант B остаётся запасным. Логи и разбор: <a href="../logs/README.md">logs/</a>.</div>
+<div class="tip"><b>У каждого варианта теперь свой документ</b> с отдельной схемой, списком проводов, требованиями к плате, логикой управления и порядком проверки: <a href="12-variant-a-av.html">вариант A — вход AV</a> и <a href="13-variant-b-kamera.html">вариант B — вход камеры</a>. Ниже — только сравнение и общая часть.</div>
+<p>Звуковой тракт в обоих одинаковый и уже определён. Различается только то, каким входом видеомодуля отдаётся картинка и чем этот вход выбирается. Проверки в машине решат, какой из двух остаётся.</p>
+
+<figure>
+<svg viewBox="0 0 1010 690" role="img" aria-label="Две схемы подключения. Общая часть: iPhone по Wi-Fi к донглу Carlinkit, донгл по USB к плате с Compute Module 4, кодеком и микроконтроллером; стерео с платы идёт во вход AUX радио BM54 и дальше на динамики. Вариант A: композит с платы во вход AV видеомодуля, контакты 6 и 15 белого разъёма, микроконтроллер по шине выбирает AV и возвращает источник звука AUX, требуется кодирование TV-in-Motion. Вариант B: композит через реле во вход камеры, контакты 13 и 14 белого разъёма, штатная камера подключена ко второму входу реле, сигнал заднего хода имеет приоритет, микроконтроллер замыкает триггер на контакте 17 синего разъёма." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="v-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    <marker id="v-arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f7fd1"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+
+  <!-- ============ COMMON ============ -->
+  <rect x="20" y="24" width="970" height="176" rx="6" fill="none" stroke="currentColor" stroke-dasharray="6 4"/>
+  <text x="36" y="44" font-weight="600" letter-spacing=".04em">ОБЩАЯ ЧАСТЬ · ОДИНАКОВАЯ В ОБОИХ ВАРИАНТАХ</text>
+
+  <rect x="36" y="62" width="104" height="48" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="88" y="84" text-anchor="middle" font-weight="600">iPhone</text>
+  <text x="88" y="100" text-anchor="middle" font-size="11" opacity=".75">в салоне</text>
+
+  <line x1="140" y1="86" x2="182" y2="86" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#v-arr)" marker-start="url(#v-arr)"/>
+  <text x="161" y="126" text-anchor="middle" font-size="11">Wi-Fi</text>
+
+  <rect x="182" y="62" width="128" height="48" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="246" y="84" text-anchor="middle" font-weight="600">Carlinkit CCPA</text>
+  <text x="246" y="100" text-anchor="middle" font-size="11" opacity=".75">чип MFi</text>
+
+  <line x1="310" y1="86" x2="352" y2="86" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+  <text x="331" y="78" text-anchor="middle" font-size="11">USB</text>
+
+  <rect x="352" y="56" width="212" height="112" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="458" y="78" text-anchor="middle" font-weight="600">Плата в багажнике</text>
+  <text x="458" y="96" text-anchor="middle" font-size="11" opacity=".75">CM4: декод H.264 → композит</text>
+  <text x="458" y="112" text-anchor="middle" font-size="11" opacity=".75">WM8960: стерео и микрофон</text>
+  <text x="458" y="128" text-anchor="middle" font-size="11" opacity=".75">STM32: I-Bus, кнопки, питание</text>
+  <text x="458" y="152" text-anchor="middle" font-size="11" opacity=".75">питание Kl.30 с 3-pin чейнджера</text>
+
+  <!-- audio path common -->
+  <line x1="564" y1="112" x2="628" y2="112" stroke="#2f7fd1" stroke-width="2" marker-end="url(#v-arrB)"/>
+  <text x="596" y="104" text-anchor="middle" font-size="11" fill="#2f7fd1">стерео</text>
+
+  <rect x="628" y="80" width="150" height="64" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="703" y="102" text-anchor="middle" font-weight="600">Вход AUX радио</text>
+  <text x="703" y="118" text-anchor="middle" font-size="11" opacity=".75">разъём C: 3, 4, земля 10</text>
+  <text x="703" y="134" text-anchor="middle" font-size="11" opacity=".75">+ резистор опознавания</text>
+
+  <line x1="778" y1="112" x2="822" y2="112" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+
+  <rect x="822" y="80" width="152" height="64" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="898" y="102" text-anchor="middle" font-weight="600">BM54 → динамики</text>
+  <text x="898" y="118" text-anchor="middle" font-size="11" opacity=".75">громкость штатной ручкой</text>
+  <text x="898" y="134" text-anchor="middle" font-size="11" opacity=".75">эмуляция чейнджера не нужна</text>
+
+  <!-- ============ VARIANT A ============ -->
+  <rect x="20" y="220" width="970" height="198" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="36" y="244" font-weight="600" letter-spacing=".04em">ВАРИАНТ A · ПРИОРИТЕТНЫЙ · ВХОД AV</text>
+  <text x="330" y="244" font-size="11" opacity=".75">камера не тронута, коммутатор не нужен</text>
+
+  <rect x="36" y="262" width="150" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="111" y="284" text-anchor="middle" font-weight="600">Композит с платы</text>
+  <text x="111" y="300" text-anchor="middle" font-size="11" opacity=".75">PAL или NTSC на выбор</text>
+
+  <line x1="186" y1="290" x2="252" y2="290" stroke="#2f7fd1" stroke-width="2" marker-end="url(#v-arrB)"/>
+
+  <rect x="252" y="262" width="164" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="334" y="284" text-anchor="middle" font-weight="600">Белый 6 и 15</text>
+  <text x="334" y="300" text-anchor="middle" font-size="11" opacity=".75">вход AV, контакты обжать</text>
+
+  <line x1="416" y1="290" x2="482" y2="290" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+
+  <rect x="482" y="252" width="190" height="76" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="577" y="274" text-anchor="middle" font-weight="600">Видеомодуль</text>
+  <text x="577" y="290" text-anchor="middle" font-size="11" opacity=".75">режим Television → AV</text>
+  <text x="577" y="306" text-anchor="middle" font-size="11" opacity=".75">RGB на монитор с синего</text>
+  <text x="577" y="320" text-anchor="middle" font-size="11" opacity=".75">5, 6, 7</text>
+
+  <line x1="672" y1="290" x2="738" y2="290" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+
+  <rect x="738" y="262" width="150" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="813" y="284" text-anchor="middle" font-weight="600">Монитор 16:9</text>
+  <text x="813" y="300" text-anchor="middle" font-size="11" opacity=".75">штатный интерфейс доступен</text>
+
+  <!-- A: bus actions -->
+  <line x1="458" y1="168" x2="458" y2="352" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="458" y1="352" x2="252" y2="352" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="46" y="356" font-size="11" font-weight="600">По шине от STM32:</text>
+  <text x="46" y="374" font-size="11">1. выбрать вход AV у модуля</text>
+  <text x="46" y="390" font-size="11">2. вернуть источник звука на AUX — тот самый кадр, что ищем</text>
+  <text x="46" y="406" font-size="11" opacity=".75">Отдельно: TV-in-Motion в кодировке модуля, иначе картинка гаснет на ходу</text>
+
+  <!-- ============ VARIANT B ============ -->
+  <rect x="20" y="438" width="970" height="232" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="36" y="462" font-weight="600" letter-spacing=".04em">ВАРИАНТ B · ЗАПАСНОЙ · ВХОД КАМЕРЫ</text>
+  <text x="326" y="462" font-size="11" opacity=".75">звук точно не трогается, но нужен коммутатор и NTSC</text>
+
+  <rect x="36" y="480" width="150" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="111" y="500" text-anchor="middle" font-weight="600">Композит с платы</text>
+  <text x="111" y="516" text-anchor="middle" font-size="11" opacity=".75">только NTSC</text>
+
+  <rect x="36" y="552" width="150" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="111" y="572" text-anchor="middle" font-weight="600">Штатная камера</text>
+  <text x="111" y="588" text-anchor="middle" font-size="11" opacity=".75">перехват у модуля</text>
+
+  <line x1="186" y1="505" x2="240" y2="524" stroke="#2f7fd1" stroke-width="2" marker-end="url(#v-arrB)"/>
+  <line x1="186" y1="577" x2="240" y2="558" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+
+  <rect x="240" y="512" width="132" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="306" y="534" text-anchor="middle" font-weight="600">Реле</text>
+  <text x="306" y="550" text-anchor="middle" font-size="11" opacity=".75">без питания —</text>
+  <text x="306" y="564" text-anchor="middle" font-size="11" opacity=".75">пропускает камеру</text>
+
+  <rect x="200" y="614" width="216" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="308" y="631" text-anchor="middle" font-size="11">Сигнал заднего хода</text>
+  <text x="308" y="646" text-anchor="middle" font-size="11" opacity=".75">снимает катушку напрямую, мимо MCU</text>
+  <line x1="308" y1="614" x2="308" y2="570" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#v-arr)"/>
+
+  <line x1="372" y1="541" x2="430" y2="541" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+
+  <rect x="430" y="513" width="152" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="506" y="535" text-anchor="middle" font-weight="600">Белый 13 и 14</text>
+  <text x="506" y="551" text-anchor="middle" font-size="11" opacity=".75">вход камеры, уже разведён</text>
+
+  <line x1="582" y1="541" x2="640" y2="541" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+
+  <rect x="640" y="503" width="180" height="76" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="730" y="525" text-anchor="middle" font-weight="600">Видеомодуль</text>
+  <text x="730" y="541" text-anchor="middle" font-size="11" opacity=".75">экран занят потоком камеры</text>
+  <text x="730" y="557" text-anchor="middle" font-size="11" opacity=".75">звук не трогает</text>
+  <text x="730" y="571" text-anchor="middle" font-size="11" opacity=".75">кнопки работают</text>
+
+  <line x1="820" y1="541" x2="878" y2="541" stroke="currentColor" stroke-width="1.5" marker-end="url(#v-arr)"/>
+  <rect x="878" y="513" width="96" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="926" y="541" text-anchor="middle" font-weight="600">Монитор</text>
+  <text x="926" y="557" text-anchor="middle" font-size="11" opacity=".75">16:9</text>
+
+  <line x1="640" y1="490" x2="430" y2="490" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#v-arr)"/>
+  <text x="646" y="487" font-size="11">Ключ STM32 → синий 17 на массу: включает картинку</text>
+  <text x="646" y="596" font-size="11" opacity=".75">Отпускать по кнопке MENU и аппаратно при зависании</text>
+
+  </g>
+</svg>
+<figcaption>Обзорная схема обоих вариантов. Подробные схемы — в документах 12 и 13. Синим выделены сигналы, которые формирует плата. Верхняя рамка одинакова в обоих вариантах: звук всегда идёт в штатный вход AUX радио. Различие только в нижних двух рамках — каким входом видеомодуля отдаётся картинка и чем этот вход включается.</figcaption>
+</figure>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Признак</th><th>Вариант A · вход AV</th><th>Вариант B · вход камеры</th></tr></thead>
+<tbody>
+<tr><td>Чем включается картинка</td><td>Сообщением по I-Bus, которое ещё надо поймать</td><td>Проводом на массу, детерминированно</td></tr>
+<tr><td>Что со звуком</td><td>Уходит на модуль, надо вернуть на AUX командой. <b>Не подтверждено</b></td><td>Не трогается вовсе. <b>Подтверждено на машине</b></td></tr>
+<tr><td>Лок в движении</td><td>Действует, снимается кодированием TV-in-Motion. <b>Не подтверждено</b></td><td>Неизвестно, возможно не действует. <b>Проверяется одной поездкой</b></td></tr>
+<tr><td>Стандарт</td><td>PAL или NTSC на выбор</td><td>Только NTSC</td></tr>
+<tr><td>Разница по картинке</td><td colspan="2" style="text-align:center">нет: монитор всё равно 400 × 234</td></tr>
+<tr><td>Штатная камера</td><td>Не тронута</td><td>Через реле, приоритет заднего хода железом</td></tr>
+<tr><td>Штатный экран</td><td>Доступен как обычно</td><td>Занят, пока замкнут триггер</td></tr>
+<tr><td>Дополнительно на плате</td><td>Ничего</td><td>Реле, ключ триггера, вход заднего хода, аппаратное освобождение экрана</td></tr>
+<tr><td>Контакты обжимать</td><td>Да, 6 и 15 пустые</td><td>Нет, уже стоят под камеру</td></tr>
+<tr><td>Непроверенных зависимостей</td><td>Две</td><td>Одна</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip"><b>Плату можно разводить, не дожидаясь исхода.</b> Общая часть одинакова: композитный выход, стерео на AUX с резистором опознавания, I-Bus, питание. Всё, что относится к варианту B, собрано в один блок — реле, ключ триггера, вход заднего хода — и закладывается как опциональный. Побеждает вариант A, эти детали просто не запаиваются.</div>
+
+
+<h2>Стерео при видео через модуль: что говорит англоязычный опыт</h2>
+<p>Вопрос изучался отдельно, потому что от него зависит вся схема. Коротко: аудиовход видеомодуля действительно моно, но обходные пути известны, и их четыре.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Путь</th><th>Что известно</th><th>Уверенность</th></tr></thead>
+<tbody>
+<tr><td><b>Смириться с моно</b></td><td>Подтверждено распиновкой: аудиовход AV это один канал (белый разъём, контакты 4 и 5), и <b>выход модуля на радио тоже один канал</b> (синий 9 и 18). То есть моно это свойство схемы модуля, а не настройка. В инструкциях по подключению DVD прямо написано объединять левый и правый каналы. На немецком форуме владелец E39 с DVD так и живёт, называя это «моно-микс», и доволен</td><td>Подтверждено несколькими источниками</td></tr>
+<tr><td><b>Звук отдельным источником, видео через модуль</b></td><td>Сюда раньше был записан приём с удержанием TONE из руководства Mura. После чтения полного документа <b>формулировку пришлось исправить</b>: это не скрытая функция BMW.
+<br><br>Mura это <b>замена</b> штатного видеомодуля, свой цифровой тюнер со своим меню настроек (TV motion, CAM mode, AUX Mode, AV Mode). И в том же руководстве прямо сказано: аудиовход TV у штатных радиоблоков BMW моно, поэтому для стерео <b>требуются переделки проводки, переразводка контактов и дополнительные провода</b>. Удержание TONE — последний шаг уже после этих переделок и с их модулем.
+<br><br>Что из этого всё-таки следует для нас, и это ценно: состояние «на экране видео, а радио играет AUX в стерео» <b>достижимо на BM54</b>. Значит радио можно к этому привести, вопрос только в том, чем. У Mura это их модуль плюс переделка. У нас — либо найденный снифером кадр, либо вход камеры, где то же самое получается само.</td><td>Проверено по первоисточнику, вывод изменён</td></tr>
+<tr><td><b>Раздельные команды видео и звука по шине</b></td><td><b>Найдено и проверено 30.09.2026.</b> При входе в Television монитор шлёт два кадра разным адресатам: <code>3B 05 BB 4F 01 00</code> ТВ-модулю про картинку и <code>3B 05 68 4E 01 00</code> радио про звук. Звук пропадает из-за второго. Мы шлём только первый — картинка появляется, звук остаётся на AUX в стерео. Возврат экрана <code>3B 05 BB 4F 02 00</code>, тоже без последствий для звука</td><td><b>Проверено в машине, оба направления</b></td></tr>
+<tr><td><b>Вход камеры вместо AV</b></td><td>У камеры нет звука, поэтому у радио нет повода уходить с выбранного источника. Прямых подтверждений в источниках нет, это наше рассуждение</td><td>Гипотеза</td></tr>
+<tr><td><b>Мимо модуля, прямо в монитор</b></td><td>Коммерческие интерфейсы для 16:9 без TV-тюнера (Kufatec, AMPIRE) дают именно это: видео подаётся прямо в монитор, а звук заводится в штатный AUX и остаётся стерео. Радио при этом вообще не знает, что показывается видео, и источник не меняет</td><td>Подтверждено существованием серийных изделий</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Поправка к нашему прежнему выводу про RGB.</b> Раньше здесь было сказано, что RGB-тракт невозможен, потому что интерфейс DPI занимает все выводы GPIO0–27 модуля CM4. Это верно только для случая, когда RGB <b>формирует сам процессор</b>. Преобразователь «композит на входе, RGB на выходе» отдельной микросхемой обходит это ограничение целиком: с CM4 уходит один композитный сигнал, как и в остальных вариантах, а в RGB его превращает железо на плате. Именно так, судя по описаниям, работают серийные интерфейсы для 16:9. Это не значит, что путь простой: нужен коммутатор RGB перед монитором, согласование с форматом штатной навигации и её строчной частотой. Но вычёркивать его как невозможный было неправильно.</div>
+
+<div class="note"><b>Подтверждено на машине: режим Television забирает звук себе.</b> В разделе Television монитора выбирается AV или TV, и при входе туда AUX, радио и остальные источники пропадают — звук переключается на собственный аудиовход видеомодуля. Это логично со стороны BMW: у телетюнера есть свой звук, и радио обязано на него перейти. Но для нас это ломает главную связку.
+<br><br><b>Следствие: через режим AV стерео не проходит.</b> Аудиовход видеомодуля моно, а как только мы показываем картинку через AV, радио уходит с AUX на этот моно-вход. То есть путь «видео через AV» автоматически означает «звук моно». Для звонков терпимо, для музыки нет.
+<br><br><b>Отсюда новая расстановка.</b> Вход камеры перестаёт быть просто обходом лока по скорости. Его главное преимущество в другом: <b>это не источник, а прерывание</b>. У камеры нет звука, значит у радио нет причины уходить с AUX. Если это подтвердится, получается единственная схема, дающая одновременно картинку и стерео: видео через вход камеры, звук через AUX, и они не мешают друг другу.
+<br><br><b>Что проверить, и это делается бесплатно прямо сейчас:</b> включить музыку через AUX и замкнуть триггер камеры. Если музыка продолжает играть, пока на экране картинка — вопрос закрыт в нашу пользу. Если пропадает и там, придётся выбирать между моно-звуком и отсутствием видео.</div>
+
+<div class="tip"><b>Штатный AUX радио в этой машине есть и уже включён.</b> Радио 2003 года, то есть после 09/2002, и в списке источников на мониторе владелец видит радио, CD-чейнджер, кассету и AUX. Значит кодирование уже сделано и отдельный стереовход доступен как обычный источник.
+<br><br><b>Это заметно упрощает звуковой тракт.</b> Стерео заводится прямо в AUX радио, а не во вход чейнджера. Самая сложная часть прошивки — эмуляция чейнджера с её жёсткими таймингами и неизвестным диалогом — перестаёт быть обязательной. Микроконтроллер на шине по-прежнему нужен, но уже для другого: ловить кнопки руля и крутилку, управлять питанием и сном, переключать источники. Это заметно проще, чем притворяться устройством.
+<br><br><b>Как радио понимает, что источник подключён.</b> AUX появляется в списке только при нагрузке на входе: у владельца пункт виден, когда что-то воткнуто, и пропадает, когда нет. По описаниям самодельных кабелей радио опознаёт устройство по сопротивлению между левым и правым каналами, порядка 300 кОм, причём резистор должен стоять со стороны радио, за разделительными конденсаторами. Для нас это не препятствие, а функция: тот же резистор можно коммутировать с платы и показывать пункт AUX только тогда, когда CarPlay действительно активен. Точное значение надо подобрать на месте, форумные 300 кОм это ориентир.
+<br><br><b>Где вход физически доступен.</b> За монитором в салоне стоит гнездовой разъём, в который вставляется готовый кабель-переходник на 3,5 мм. То есть BMW протянула пару от радио в багажнике до места за монитором и там её терминировала. Для нас это означает две возможные точки подключения: у самого радио в багажнике, рядом с платой, и за монитором в салоне. <b>Разумнее брать в багажнике</b>: провод короче, аналог не тащится через весь салон, и плата стоит там же. Но сначала надо прозвонить, что пара за монитором и контакты на разъёме радио это одни и те же провода. Если да — наш кабель за монитором отключаем, иначе он останется висящим отводом и будет собирать помехи.
+<br><br><b>Побочная польза прямо сейчас.</b> Готовое гнездо 3,5 мм за монитором позволяет проверить весь звуковой тракт без единой пайки: воткнуть туда выход стенда и послушать CarPlay через штатные динамики. Это ближайший дешёвый шаг.
+<br><br><b>Проверить до того, как на это закладываться:</b> пункт в меню не означает, что к контактам AUX что-то физически подключено. Нужно найти, куда уходят контакты 3 и 4 разъёма C (земля 10), есть ли в машине готовое гнездо и какой уровень сигнала радио ждёт. Номера контактов взяты из форумов и требуют подтверждения по ETM и мультиметром.</div>
+
+<h2>Как это выглядит для водителя</h2>
+<p>Модуль встаёт на место чейнджера и забирает оба его разъёма. Отдельно из него выходят только два кабеля, которых у чейнджера не было: коаксиал к видеомодулю и пара к микрофону.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Разъём</th><th>Провод</th><th>Куда на модуле</th></tr></thead>
+<tbody>
+<tr><td>3-pin</td><td>I-Bus</td><td>Вход трансивера TH3122 или L9637D</td></tr>
+<tr><td>3-pin</td><td>+12 В Kl.30</td><td>Вход преобразователя питания</td></tr>
+<tr><td>3-pin</td><td>масса</td><td>Общая земля</td></tr>
+<tr><td>6-pin</td><td>жила левого канала</td><td>Левый выход кодека через делитель</td></tr>
+<tr><td>6-pin</td><td>экран левого</td><td>Аналоговая земля</td></tr>
+<tr><td>6-pin</td><td>жила правого канала</td><td>Правый выход кодека через делитель</td></tr>
+<tr><td>6-pin</td><td>экран правого</td><td>Аналоговая земля</td></tr>
+</tbody>
+</table>
+</div>
+<p>Из шести позиций аудиоразъёма заняты четыре, это штатная разводка: экранированная стереопара с отдельной землёй на канал.</p>
+
+<h3>Два независимых переключения</h3>
+<p>Кажется, что режим один, но их два, и они не связаны между собой. Монитор решает, что показывать, радио решает, что играть. CarPlay это их комбинация.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Что происходит</th><th>Монитор</th><th>Радио</th></tr></thead>
+<tbody>
+<tr><td>Обычная езда</td><td>Навигация</td><td>FM</td></tr>
+<tr><td><b>CarPlay</b></td><td><b>видеовход модуля</b></td><td><b>AUX радио</b></td></tr>
+<tr><td>Входящий звонок во время FM</td><td>видеовход модуля</td><td>AUX радио</td></tr>
+<tr><td>Вернулись на радио</td><td>Навигация</td><td>FM</td></tr>
+</tbody>
+</table>
+</div>
+<p>Оба переключения делает микроконтроллер, водителю лазить в меню не нужно. Радио показывает источник CD, монитор показывает картинку CarPlay.</p>
+
+<figure>
+<svg viewBox="0 0 940 250" role="img" aria-label="Последовательность включения CarPlay: телефон подключается к донглу по Wi-Fi, донгл сообщает CM4, CM4 просит микроконтроллер переключить источники, микроконтроллер переключает видеовход и источник звука." xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="sq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  </defs>
+  <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="currentColor">
+    <rect x="20" y="70" width="120" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="80" y="92" text-anchor="middle" font-weight="600">iPhone</text>
+    <text x="80" y="108" text-anchor="middle" font-size="11" opacity=".75">сел в машину</text>
+
+    <rect x="190" y="70" width="120" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="250" y="92" text-anchor="middle" font-weight="600">Донгл</text>
+    <text x="250" y="108" text-anchor="middle" font-size="11" opacity=".75">телефон на связи</text>
+
+    <rect x="360" y="70" width="120" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="420" y="92" text-anchor="middle" font-weight="600">CM4</text>
+    <text x="420" y="108" text-anchor="middle" font-size="11" opacity=".75">запрос REQ</text>
+
+    <rect x="530" y="70" width="120" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="590" y="92" text-anchor="middle" font-weight="600">MCU</text>
+    <text x="590" y="108" text-anchor="middle" font-size="11" opacity=".75">два кадра I-Bus</text>
+
+    <rect x="760" y="30" width="160" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="840" y="52" text-anchor="middle" font-weight="600">Монитор</text>
+    <text x="840" y="68" text-anchor="middle" font-size="11" opacity=".75">TV, источник AUX</text>
+
+    <rect x="760" y="112" width="160" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="840" y="134" text-anchor="middle" font-weight="600">Радио BM54</text>
+    <text x="840" y="150" text-anchor="middle" font-size="11" opacity=".75">источник CD-чейнджер</text>
+
+    <line x1="140" y1="96" x2="190" y2="96" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#sq)"/>
+    <text x="165" y="140" text-anchor="middle" font-size="10.5">Wi-Fi</text>
+    <line x1="310" y1="96" x2="360" y2="96" stroke="currentColor" stroke-width="1.5" marker-end="url(#sq)"/>
+    <text x="335" y="140" text-anchor="middle" font-size="10.5">USB</text>
+    <line x1="480" y1="96" x2="530" y2="96" stroke="currentColor" stroke-width="1.5" marker-end="url(#sq)"/>
+    <text x="505" y="140" text-anchor="middle" font-size="10.5">UART</text>
+
+    <polyline points="650,88 705,88 705,56 760,56" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#sq)"/>
+    <polyline points="650,104 705,104 705,138 760,138" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#sq)"/>
+    <text x="707" y="196" text-anchor="middle" font-size="10.5">I-Bus, два разных адресата</text>
+
+    <text x="20" y="225" font-size="11" opacity=".75">Обратно: водитель нажимает кнопку источника на радио, MCU видит это по шине и возвращает монитор на навигацию.</text>
+  </g>
+</svg>
+<figcaption>Один запрос от телефона превращается в два кадра I-Bus к разным блокам: картинку включает монитор, звук открывает радио.</figcaption>
+</figure>
+
+<h2>I-Bus: кто с кем говорит</h2>
+<p>Кадр шины: адрес источника, длина, адрес получателя, данные, контрольная сумма XOR всех байтов. Скорость 9600, 8 бит, чётность even, 1 стоп.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th class="num">Адрес</th><th>Блок</th><th>Что делает ваша плата</th></tr></thead>
+<tbody>
+<tr><td class="num"><code>0x18</code></td><td>CD-чейнджер</td><td>Ваш MCU выдаёт себя за него: отвечает на опрос радио, шлёт статус «играет», тогда BM54 открывает вход чейнджера.</td></tr>
+<tr><td class="num"><code>0x68</code></td><td>Радио BM54</td><td>Опрашивает чейнджер, переключает источники, показывает текст.</td></tr>
+<tr><td class="num"><code>0xF0</code></td><td>Монитор BMBT</td><td>Присылает крутилку и кнопки. MCU переводит их в команды донгла: влево, вправо, выбор, назад, домой.</td></tr>
+<tr><td class="num"><code>0xED</code></td><td>Видеомодуль</td><td>Переключается на источник AUX и сообщает монитору, что показывать вход TV.</td></tr>
+<tr><td class="num"><code>0x3B</code></td><td>Навигационный компьютер GT</td><td>Рисует меню на мониторе. Сообщения к нему выводят текст, например название трека.</td></tr>
+<tr><td class="num"><code>0x80</code></td><td>Приборная панель IKE</td><td>Статус зажигания: по нему MCU включает и выключает CM4.</td></tr>
+<tr><td class="num"><code>0x50</code></td><td>Кнопки на руле MFL</td><td>Трек вперёд и назад, принять и сбросить звонок.</td></tr>
+<tr><td class="num"><code>0xC8</code></td><td>Телефон</td><td>Можно объявлять статус звонка, чтобы монитор показал «телефон».</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Сообщения, которые нужны с первого дня</h3>
+<pre><code>68 03 18 01 72          радио опрашивает чейнджер
+18 04 68 02 00 76       чейнджер: «я здесь, готов»
+18 04 FF 02 01 E0       чейнджер объявляет себя всем при старте
+
+ED 05 F0 4F 11 12 54    видеомодуль → монитор: показать вход TV, 16:9, PAL
+ED 05 F0 4F 10 12 55    видеомодуль → монитор: вернуть навигацию, 16:9, PAL</code></pre>
+<p>Разбор байтов команды 4F: в первом байте данных бит 0x10 это «монитор включён», младшие два бита выбирают источник (00 навигация, 01 TV, 10 видео GT). Во втором байте старший полубайт это формат кадра (0 это 4:3, 1 это 16:9), младшие два бита кодировка (01 NTSC, 10 PAL). Примеры в открытой документации подписаны противоречиво, поэтому сверьте с живой машиной: переключите источник на мониторе вручную и посмотрите снифером, что реально уходит.</p>
+<p>Полный статус чейнджера (диск, трек, режим) длиннее, его удобнее взять из открытой прошивки BlueBus, файл <code>ibus.c</code>. Сообщение, которым GT переводит сам видеомодуль на источник AUX, в открытых источниках не задокументировано: снимите его снифером, выбрав AUX в меню TV на мониторе, и повторяйте с MCU.</p>
+
+<div class="note"><b>Звонок при включённом FM.</b> Пока водитель слушает радио, вход чейнджера закрыт, и звонок не будет слышно. При входящем вызове MCU обязан сам переключить BM54 на чейнджер и монитор на TV, а после звонка вернуть всё назад. Донгл сообщает о звонке отдельным типом аудиопотока, по нему и переключайтесь.</div>
+
+<h2>Кнопки монитора: что каждая делает</h2>
+<p>Назначение кнопок взято из заводского учебного документа BMW по широкоформатному монитору. Коды — из опубликованной таблицы команды <code>0x48</code> для панели того же семейства: они <b>правдоподобны, но не проверены на этой машине</b>, снифер расставит всё по местам за пять минут.</p>
+<p>Состояние нажатия кодируется прибавлением к значению кнопки: <code>+0x00</code> нажата, <code>+0x40</code> удержание, <code>+0x80</code> отпущена.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Кнопка</th><th>Где</th><th>Что делает штатно</th><th>Код</th></tr></thead>
+<tbody>
+<tr><td><b>INFO</b></td><td>левый блок, сверху</td><td>Открывает экранное меню RDS и PTY. Кнопка мягких клавиш</td><td>возможно <code>0x22</code></td></tr>
+<tr><td><b>1…6</b></td><td>левый блок, три ряда</td><td>Пресеты радио и выбор диска в чейнджере</td><td><code>0x11 0x01 0x12 0x02 0x13 0x03</code></td></tr>
+<tr><td><b>FM</b> / <b>AM</b></td><td>левый блок</td><td>Выбор диапазона</td><td><code>0x31</code> / <code>0x21</code></td></tr>
+<tr><td><b>MODE</b></td><td>левый блок, снизу слева</td><td>Перебирает источники звука: радио, кассета, CD, AUX</td><td><code>0x23</code> и <code>0x33</code>, двусторонняя</td></tr>
+<tr><td><b>DISPLAY</b></td><td>левый блок, снизу справа</td><td><b>Чередует радиоэкран и другие экраны: BC, TEL, NAV и прочие.</b> Наш кандидат на включение и выключение CarPlay</td><td><code>0x30</code>, в таблице названа Overlay</td></tr>
+<tr><td><b>Ручка слева</b></td><td>под левым блоком</td><td>Громкость, нажатие — питание радио</td><td>нажатие <code>0x06</code></td></tr>
+<tr><td><b>Светодиод рядом</b></td><td>под левым блоком</td><td>Состояние радио, сигнал приходит по шине</td><td>—</td></tr>
+<tr><td><b>▲ треугольник</b></td><td>правый блок, сверху</td><td>Наклоняет экран вперёд, открывая кассетоприёмник. Рядом светодиоды состояния телефона</td><td><code>0x24</code>, Tape Eject</td></tr>
+<tr><td><b>Трубка</b></td><td>правый блок</td><td>Телефон: принять и завершить вызов</td><td><code>0x08</code></td></tr>
+<tr><td><b>◄|► с часами</b></td><td>правый блок</td><td>Реверс кассеты. При выключенном ключе показывает время, при долгом удержании включает автономную вентиляцию</td><td><code>0x14</code>, часы и вентиляция — <code>0x07</code></td></tr>
+<tr><td><b>TONE SELECT</b></td><td>правый блок</td><td>Tone: тембр и Dolby для кассеты. Select: способ поиска станций — авто, ручной, скан</td><td><code>0x04</code> и <code>0x20</code></td></tr>
+<tr><td><b>◄ ►</b></td><td>правый блок</td><td>Перемотка кассеты и поиск станций. В режиме CD — следующий и предыдущий трек</td><td><code>0x00</code> и <code>0x10</code></td></tr>
+<tr><td><b>MENU</b></td><td>правый блок, снизу</td><td>Возвращает экран в главное меню</td><td><b>в таблице отсутствует</b>, снять снифером</td></tr>
+<tr><td><b>Ручка справа</b></td><td>под правым блоком</td><td>Навигация по меню: вращение — выбор пункта, нажатие — подтверждение</td><td>вращение <code>0x49</code>, нажатие <code>0x05</code></td></tr>
+<tr><td><b>Фотоэлемент</b></td><td>у экрана</td><td>Датчик освещённости, подстраивает яркость</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note"><b>Что из этого списка нужно нам.</b> Три кнопки: <b>DISPLAY</b> для показа и скрытия CarPlay, <b>MODE</b> и список источников для выбора AUX, <b>правая ручка</b> для управления внутри CarPlay. Остальные — только чтобы понимать, что происходит в логе, и не перепутать их коды со своими.
+<br><br>Отдельно: в опубликованной таблице нет ни MENU, ни INFO. Возможно, они уходят другой командой или прямо навигационному компьютеру. Это надо снять на месте.</div>
+
+<h2>Питание и сон</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Режим</th><th>Что включено</th><th class="num">Ток от 12 В</th></tr></thead>
+<tbody>
+<tr><td>Сон, машина закрыта</td><td>Только MCU в режиме ожидания на шине</td><td class="num">&lt; 1 мА</td></tr>
+<tr><td>Зажигание, CarPlay работает</td><td>CM4, донгл, ЦАП, MCU</td><td class="num">0,8–1,2 А</td></tr>
+<tr><td>Прокрутка стартера</td><td>MCU держит CM4 выключенным, включает через 2–3 с после стабилизации</td><td class="num">&lt; 10 мА</td></tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>CM4 просыпается по сигналу зажигания от IKE, а не по отдельному проводу. Так плата ставится одним разъёмом.</li>
+<li>Корень только для чтения на eMMC, состояние и логи в отдельном разделе. Выключение по обрыву питания безопасно.</li>
+<li>Buildroot вместо Raspberry Pi OS: загрузка до картинки за 5–8 с, без графической оболочки, вывод напрямую через DRM/KMS.</li>
+</ul>
+
+<h2>Порядок работы</h2>
+<ol class="steps">
+<li><b>Стол: донгл и одноплатник.</b><p>Raspberry Pi 4 B, проводной Autokit или CCPA, обычный телевизор по композиту. Поднять node-carplay или свой USB-драйвер, получить картинку и звук. Настройка в config.txt: <code>enable_tvout=1</code>, <code>sdtv_mode=2</code>. Здесь же понять, читается ли интерфейс CarPlay в масштабе экрана E39.</p></li>
+<li><b>Стол: снифер шины.</b><p>Второй трансивер к USB-UART, подключить к машине через 3-pin разъём чейнджера. Записать: опрос чейнджера, крутилку, кнопки монитора и руля, выбор AUX в меню TV, включение и выключение зажигания.</p></li>
+<li><b>Стол: макет платы.</b><p>MCU с трансивером и ЦАП на макетке. Эмулировать чейнджер: радио должно показать источник CD и открыть звук. Сразу измерить уровни и фон.</p></li>
+<li><b>Машина: звук и управление.</b><p>Снять чейнджер, подключить макет на его разъёмы. Проверить музыку, звонки через микрофон, переключение при звонке во время FM, уход в сон и просыпание.</p></li>
+<li><b>Машина: видео.</b><p>Впаять 4 контакта в X18806 видеомодуля, завести композит, переключить на AUX сообщением с MCU. Проверить, что монитор переключается туда и обратно и не ловит помехи от генератора.</p></li>
+<li><b>Плата и корпус.</b><p>Развести носитель CM4 со всем обвесом, покрыть лаком, собрать в корпус чейнджера-донора с родными разъёмами и поставить на штатный кронштейн. Кабели зафиксировать, донгл вывести наружу через щель магазина.</p></li>
+</ol>
+
+<h2>Навигационный компьютер на CD: что это меняет</h2>
+<p>В машине стоит GT на CD-дисках (MK3 или ранний MK4). Для схемы это хорошая новость и одна ловушка.</p>
+<ul>
+<li><b>Меню TV рисует GT.</b> Пункт AUX в меню TV есть, значит сообщение GT → видеомодуль на выбор AUX можно снять снифером и повторять с MCU. Без навигации его пришлось бы подбирать.</li>
+<li><b>Текст трека.</b> GT показывает меню CD-чейнджера. Ваш «чейнджер» может отдавать названия треков, и они появятся на экране навигации в штатном виде.</li>
+<li><b>RGB-вход монитора занят.</b> Навигация подключена к нему напрямую, поэтому базовый путь для видео остаётся через AUX видеомодуля.</li>
+</ul>
+<div class="note"><b>Гашение видео в движении подтверждено на этой машине.</b> Владелец проверил: при включении режима TV на скорости монитор выдаёт предупреждение, что смотреть во время движения нельзя. Значит лок реально работает, и вопрос только в том, распространяется ли он на все входы модуля или только на TV и AV. Ниже четыре выхода, и первые два появились позже остальных.</div>
+
+<div class="tip"><b>Отдельный вход камеры заднего вида — самый перспективный путь.</b> У видеомодуля E38/E39 не один видеовход, а два, и второй предназначен для камеры. По руководству на дооснащение модуля видеосигнал камеры идёт на <b>контакты 13 и 14 белого разъёма</b> (13 сигнал, 14 земля), а выбор этого входа делается не по шине и не через меню, а <b>железно: контакт 17 синего разъёма замыкается на массу</b>. Штатно туда вешают реле от фонарей заднего хода.
+<br><br>Почему это интересно именно нам. Во-первых, картинка камеры по своему назначению показывается во время движения, пусть и задним ходом, поэтому есть основания надеяться, что лок по скорости на этот вход не действует или действует иначе. Во-вторых, переключение становится проводом, а не неизвестным сообщением по шине: плате достаточно вывода с открытым стоком на массу, и никакого сообщения от GT искать не нужно.
+<br><br><b>Это гипотеза, а не факт.</b> Ни в одном источнике не написано, что вход камеры работает на любой скорости: возможен порог вроде «до 15–20 км/ч», как на более поздних моделях. Проверяется одним выездом, см. вопрос А3 в <a href="11-voprosy-pered-startom.html">документе 11</a>.</div>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Выход</th><th>Как устроено</th><th>Плюсы и минусы</th></tr></thead>
+<tbody>
+<tr><td><b>Кодирование TV-in-Motion в самом модуле</b></td><td>Лок по скорости это не жёсткая логика, а настройка в кодировке видеомодуля. Она читается и меняется по той же I-Bus, тем же интерфейсом, который у нас уже есть для снифера. Готовый инструмент для этого — NavCoder, он же умеет переключать вход камеры между PAL и NTSC.</td><td>Ничего не добавляется ни к плате, ни к проводке, и обычный вход AV начинает работать в движении. Меняется кодировка штатного блока, поэтому перед записью надо сохранить исходную. По форумным данным не работает на самых ранних модулях до 1998 года, но машина 2002–2003.</td></tr>
+<tr><td><b>Вход камеры заднего вида</b></td><td>Композит с платы идёт не на AV-вход, а на контакты 13 и 14 белого разъёма модуля. Плата ключом на массу замыкает контакт 17 синего разъёма, когда нужно показать CarPlay, и отпускает его, когда нужно вернуть навигацию.</td><td>Самый простой путь: ни моста шины, ни RGB, переключение одним выводом MCU. Неизвестно главное — действует ли на этот вход лок по скорости. Вход может оказаться только NTSC, картинка может быть зеркальной, а сами контакты в разъёме могут быть не установлены.</td></tr>
+<tr><td>Изолировать видеомодуль на своём сегменте шины</td><td>На плате второй трансивер TH3122. Видеомодуль отключается от общей I-Bus и подключается только к MCU. MCU прозрачно пересылает все кадры в обе стороны, кроме сообщения скорости от IKE. Так работают коммерческие «TV-Freischaltung» для E38/E39.</td><td>Не трогает видеотракт, один дополнительный трансивер и разъём. Нужно аккуратно писать мост: задержка пересылки и контроль коллизий на двух сегментах.</td></tr>
+<tr><td>RGB-переключатель перед монитором</td><td>Между кабелем навигации и монитором ставится аналоговый коммутатор на три канала плюс синхро. CM4 выдаёт RGB с параллельного порта DPI через резисторный ЦАП и объединитель синхроимпульсов на 15,6 кГц. MCU переключает вход, видеомодуль не участвует.</td><td>Заметно чище картинка, гашение не действует. Больше схемотехники, нужны тайминги под монитор. GT при этом не знает, что показывается CarPlay, и кнопки монитора одновременно двигают его меню, поэтому GT тоже придётся изолировать на своём сегменте шины.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Порядок теперь другой. Сначала прочитать кодировку видеомодуля и посмотреть, есть ли в ней настройка TV-in-Motion: это дешевле всего и не трогает ни схему, ни проводку. Параллельно в одну поездку проверить оба входа модуля в движении, AV и камеру, потому что это тоже не требует никакого нового железа. Если вход камеры не гасится, вся конструкция упрощается: ни второго трансивера, ни RGB. Если гасятся оба входа, тогда мост шины или RGB-тракт.</p>
+<div class="note"><b>Мост между сегментами шины это пока замысел, а не решение.</b> Одного правила «отбрасывать сообщение скорости» мало. Нужно продумать подтяжку отдельного сегмента, очереди в обе стороны, задержку пересылки и, главное, чтобы мост не пересылал обратно собственное эхо и не устраивал коллизии на обеих сторонах. Обещать работоспособность заранее нельзя.</div>
+
+<h2>Что проверить на своей машине до заказа плат</h2>
+<ul>
+<li>Какие контакты отвечают за AV-видео на вашем видеомодуле. Руководство на дооснащение даёт 6 и 15 на белом разъёме, вариант «8 и 17» скорее всего перепутан с контактом 17 синего разъёма, который на самом деле триггер камеры. Нужен номер детали модуля и ETM для вашего года.</li>
+<li>Есть ли в вашем модуле рабочий вход камеры и установлены ли контакты 13 и 14 белого разъёма и 17 синего.</li>
+<li>Гасится ли вход камеры в движении так же, как TV и AV. Это главный вопрос всего проекта.</li>
+<li>Точная версия навигационного компьютера (MK3 или MK4 на CD) и версия его прошивки: от неё зависит вид меню TV и то, есть ли в нём пункт AUX.</li>
+<li>Гасит ли видеомодуль вход AV в движении. Подтверждено, что предупреждение выдаётся в режиме TV; отдельно проверить сам вход AV.</li>
+<li>Стоит ли физический чейнджер и есть ли у BM54 вход AUX по дате выпуска.</li>
+<li>Есть ли штатная проводка микрофона от плафона в багажник.</li>
+<li>Добивает ли Wi-Fi 5 ГГц донгла из багажника до телефона на переднем сиденье.</li>
+<li>Читаемость интерфейса CarPlay 800×480, ужатого до экрана E39. Если не читается, схема всё равно даёт музыку и звонки, а картинку можно не включать.</li>
+</ul>
+
+<h2>Источники</h2>
+<ul class="sources">
+<li>Моно-звук AV-входа и обход через вход чейнджера ради стерео: <a href="https://www.bimmerfest.com/threads/video-module-video-input-possible.1244762/">bimmerfest.com, «Video module. Video INPUT possible?»</a>, <a href="https://www.bmw-syndikat.de/bmwsyndikatforum/topic70536_DVD-Player_E39_-Kaufempfehlung_Car_Hifi___Multimedia___Navigation.html">bmw-syndikat.de, «DVD-Player E39»</a></li>
+<li>Разрешение монитора 400 × 234, назначение кнопок MODE и DISPLAY, RGB от навигации по трём экранированным проводам, сигнал заднего хода от LCM: заводской учебный документ BMW «Wide Screen On-Board Monitor», <a href="http://www.e38.org/widescreennav.pdf">e38.org</a>, копия в проекте</li>
+<li>Коды кнопок монитора, команда 0x48, состояния нажатия: <a href="https://github.com/piersholt/wilhelm-docs/blob/master/bmbt/48.md">piersholt/wilhelm-docs</a></li>
+<li>Приём с удержанием TONE для перевода звука TV на вход AUX в стерео: руководство пользователя AUX-модуля Mura, <a href="https://mca.electricmura.ro/resources/User_Manual_En_v5.pdf">mca.electricmura.ro</a></li>
+<li>Серийные интерфейсы для 16:9 без TV-тюнера: видео прямо в монитор, звук в штатный AUX, стерео сохраняется: <a href="https://www.kufatec.com/">kufatec.com</a>, <a href="https://www.ampire.de/">ampire.de</a></li>
+<li>Распиновка AV-входа видеомодуля E39, X18806 и моно-звук: <a href="https://www.bmw-syndikat.de/bmwsyndikatforum/topic142561_Av_beim_tv_modul_Car_Hifi___Multimedia___Navigation.html">bmw-syndikat.de, «Av beim tv modul»</a></li>
+<li>Альтернативная нумерация контактов видеовхода (8 и 17): <a href="https://www.bimmerfest.com/threads/video-module-video-input-possible.1244762/page-9">bimmerfest.com, «Video module. Video INPUT possible?»</a></li>
+<li>Кодирование видеомодуля, настройка TV-in-Motion и перевод входа камеры между PAL и NTSC: <a href="https://www.navcoder.com/">navcoder.com</a></li>
+<li>Плата PiBUS для Raspberry Pi подключается к тем же контактам модуля (синий 17, белый 13 и 14): <a href="http://pibus.info/buy.html">pibus.info</a></li>
+<li>Полная распиновка обоих разъёмов видеомодуля, схема «BMW TV Tuner Anschluss-Belegung»: питание и I-Bus на синем, RGB на монитор с синего, RGB навигации на белом, входы AV и камеры на белом, триггер камеры синий 17</li>
+<li>Распиновка белого и синего разъёмов видеомодуля, вход камеры 13/14 и триггер 17: <a href="https://www.ifixit.com/Guide/Retrofit+BMW+Television+Module+1997+1998+1999+2000+2001+2002+2003+BMW+5+Series/13194">iFixit, «Retrofit BMW Television Module, 1997–2003 BMW 5 Series»</a>, зеркало <a href="https://en.bmw-club.cz/article/retrofit-bmw-television-module-1997-2003-bmw-5-series-509">en.bmw-club.cz</a></li>
+<li>Дооснащение камерой заднего вида на E38/E39 через TV-модуль, реле от фонарей заднего хода: <a href="https://bimmersport.co.nz/topic/31104-revsering-camera-for-e38-e39/">bimmersport.co.nz</a></li>
+<li>Сообщение 0x4F монитора: <a href="https://github.com/piersholt/wilhelm-docs/blob/master/bmbt/4f.md">piersholt/wilhelm-docs</a></li>
+<li>Разъёмы чейнджера E39, контакты BM54 для чейнджера и AUX: <a href="https://www.bimmerfest.com/threads/cd-changer-wiring-harness-pinouts.79980/">bimmerfest.com, «CD changer wiring harness pinouts»</a>, <a href="https://www.e46fanatics.com/threads/bmw-e46-pre-2002-09-navi-16-9-bm54-adding-aux.1252811/">e46fanatics.com, «BM54 Adding Aux»</a></li>
+<li>Открытая реализация чейнджера на I-Bus и схема с TH3122 и BM83: <a href="https://github.com/tedsalmon/BlueBus">tedsalmon/BlueBus</a></li>
+<li>USB-протокол донгла и список поддерживаемых моделей: <a href="https://github.com/rhysmorgan134/node-CarPlay">rhysmorgan134/node-CarPlay</a></li>
+</ul>
+</div>

@@ -1,0 +1,198 @@
+<title>Подключение для теста</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef0f2; --surface: #ffffff; --surface-2: #e3e7ec; --ink: #16191d; --muted: #5b6470;
+    --line: #c9cfd6; --accent: #0b5fa5; --accent-soft: #dce9f6; --warn: #9a5b00; --warn-soft: #fbeed4;
+    --stop: #a02020; --stop-soft: #f7dede; --ok: #1d6b3a; --ok-soft: #dcefe2; --mono-bg: #e8ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+      --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+      --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15181c; --surface: #1e2228; --surface-2: #262b32; --ink: #e6e8eb; --muted: #9aa3ae;
+    --line: #3a414a; --accent: #5aa2f0; --accent-soft: #1d3550; --warn: #e2a84a; --warn-soft: #3a2d15;
+    --stop: #f08080; --stop-soft: #3d1e1e; --ok: #74c790; --ok-soft: #1c3526; --mono-bg: #262b32;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; margin: 0; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+  h2 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 26px; margin: 44px 0 14px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 18px; margin: 22px 0 6px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 12px; }
+  ul, ol { padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  .lead { font-size: 18px; max-width: 72ch; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.9em; background: var(--mono-bg); padding: 2px 6px; border-radius: 3px; }
+  .tablewrap { overflow-x: auto; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .note { background: var(--warn-soft); border-left: 3px solid var(--warn); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 14px 0; max-width: 78ch; }
+  .q { counter-reset: none; list-style: none; padding: 0; margin: 0; }
+  .q > li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); max-width: none; margin: 0; }
+  .q > li > * { grid-column: 2; min-width: 0; }
+  .q > li > .id { grid-column: 1; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 14px; color: var(--accent); padding-top: 4px; }
+  .q h3 { margin: 0 0 6px; }
+  .q p { margin: 0 0 8px; }
+  .q ul { margin: 0 0 8px; }
+  .how, .out { padding: 8px 12px; font-size: 14.5px; margin-top: 8px; }
+  .how { background: var(--surface-2); }
+  .out { background: var(--surface); border: 1px solid var(--line); }
+  .how b, .out b { font-family: "IBM Plex Sans Condensed", sans-serif; }
+  .tag { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; vertical-align: 2px; margin-left: 8px; }
+  .t-stop { background: var(--stop-soft); color: var(--stop); }
+  .t-warn { background: var(--warn-soft); color: var(--warn); }
+  .t-ok { background: var(--ok-soft); color: var(--ok); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+  .legend div { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 14.5px; }
+  .flow { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 14px; }
+  .flow h3 { margin-top: 0; }
+  .flow ol { margin-bottom: 8px; }
+  .flow .dep { font-size: 14px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="page">
+<header>
+  <p class="eyebrow">BMW E39 · памятка для гаража · 30.09.2026</p>
+  <h1>Подключение для теста</h1>
+  <p class="lead">Всё, что нужно сделать руками, по порядку. Без объяснений почему —
+  они в остальных документах.</p>
+</header>
+
+<div class="note"><b>Машина стоит, двигатель заглушен.</b> Зажигание в положении Kl.R
+или просто откройте дверь: шина должна проснуться, иначе в логе будет пусто.</div>
+
+<h2>1. Шина: три провода</h2>
+
+<p>Врезаемся в <b>3-контактный разъём чейнджера в багажнике</b>. В разъёме OBD в салоне
+шины I-Bus нет, туда лезть бесполезно.</p>
+
+<p>У кабеля KKL на конце папа OBD, поэтому нужна <b>мама</b> — либо косичка, либо
+мини-крокодилы прямо на контакты папы.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Контакт OBD</th><th>Провод в багажнике</th><th>Что это</th></tr></thead>
+<tbody>
+<tr><td><b>7</b></td><td>бело-красно-жёлтый</td><td>шина I-Bus</td></tr>
+<tr><td><b>4</b> или <b>5</b></td><td>коричневый</td><td>масса</td></tr>
+<tr><td><b>16</b></td><td>красно-зелёный</td><td>+12 В Kl.30</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><b>Определять по цвету провода, а не по номеру контакта в фишке:</b> нумерация
+в источниках противоречивая, цвета совпадают у всех и проверены на вашей машине.</p>
+
+<div class="tip"><b>Как найти номера на разъёме OBD, если они не отлиты на пластике.</b>
+Воткните голую косичку (провода ни к чему не подключены) в штатный OBD в салоне и померьте
+относительно кузова: стабильные +12 В — это <b>16</b>, нулевое сопротивление на кузов — это
+<b>4</b> и <b>5</b>. Дальше однозначно: 16 это угол нижнего ряда, прямо <b>над</b> ним сидит
+<b>8</b>, а <b>7 — соседний с 8 внутрь ряда</b>. Ряды не переворачиваются, трапеция не даст
+вставить наоборот.</div>
+
+<div class="note"><b>Порядок подключения: масса → шина → питание.</b> Отключать наоборот.
+Не закоротите красно-зелёный на коричневый — это прямая постоянка от аккумулятора.
+<br><br>И <b>не втыкайте этот же кабель в штатный OBD</b>, пока он висит на багажнике:
+это соединит K-линию с I-Bus.</div>
+
+<h2>2. Картинка</h2>
+<p>Композит с малины в <b>белый разъём видеомодуля, контакты 6 и 15</b>. Контакты MQS 0,63
+обжать и вставить в пустые гнёзда.</p>
+<p>Штекер у малины четырёхконтактный и распаян не так, как у большинства AV-кабелей от камер.
+Кабель проверяйте <b>до</b> машины, на столе: <a href="08-proverka-kabelya.html">документ 08</a>.</p>
+
+<h2>3. Звук</h2>
+<p>С выхода наушников аудиоплаты малины экранированным кабелем в <b>штатный AUX за монитором</b> —
+ту самую маму, куда втыкается заводской переходник на 3,5 мм. Кабель тянется из багажника в салон.</p>
+
+<h2>4. Питание малины</h2>
+<p>Павербанк или прикуриватель. Павербанк уже давал просадку: если в логе появится
+<code>Undervoltage</code>, дело в нём, а не в схеме.</p>
+
+<h2>5. Запуск</h2>
+<p>Малина поднимает CarPlay сама, с загрузки. Обработчик кнопок нужно запустить вручную,
+потому что он говорит в шину.</p>
+
+<pre><code>ssh -i ~/.ssh/id_bmw_pi ilgiz@172.20.10.14</code></pre>
+
+<p>Сначала убедиться, что шина слышна:</p>
+<pre><code>~/proverka.sh</code></pre>
+
+<p>Если кадры пошли — запустить обработчик. <b>Сначала вхолостую</b>, он ничего не отправит,
+только покажет, что собирался:</p>
+<pre><code>cd ~/bmw-tools &amp;&amp; .venv/bin/python agent.py /dev/ttyUSB0 --sokset</code></pre>
+
+<p>Понажимайте кнопки. Если решения правильные — по-настоящему:</p>
+<pre><code>cd ~/bmw-tools &amp;&amp; .venv/bin/python agent.py /dev/ttyUSB0 --sokset --razreshit-peredachu</code></pre>
+
+<h2>6. Что должно произойти</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Действие</th><th>Ожидание</th></tr></thead>
+<tbody>
+<tr><td>Запустили обработчик, телефон подключён</td><td>На мониторе появляется CarPlay</td></tr>
+<tr><td>Крутите правую крутилку</td><td>Двигается выделение в CarPlay</td></tr>
+<tr><td>Нажали крутилку</td><td>Выбор</td></tr>
+<tr><td>Нажали MENU</td><td>CarPlay уходит, экран машины ваш</td></tr>
+<tr><td>Нажали DISPLAY</td><td>CarPlay возвращается</td></tr>
+<tr><td>Нажали MODE</td><td>Меняется источник звука, картинка остаётся</td></tr>
+<tr><td>Воткнули заднюю</td><td>Камера. Вернули паркинг — CarPlay сам на месте</td></tr>
+<tr><td><b>Тронулись</b></td><td><b>Синий оверлей.</b> Так и должно быть, пока нет кодировки TV-in-Motion</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>7. Проверки, ради которых стоит ехать</h2>
+<ol class="chk">
+<li><h3>Что делает меню машины под нашей картинкой</h3><p><b>Самая важная из непроверенных.</b>
+Кнопки мы не перехватываем — на общей шине это невозможно, мы только подслушиваем. Значит пока
+вы крутите крутилку в CarPlay, меню машины под нашей картинкой крутится тоже, а каждое нажатие
+это ещё и «подтвердить» в невидимом меню.
+<br><br>Перемещение безвредно. Опасно нажатие: если меню стоит на переключателе настройки, тот
+переключится втихую.
+<br><br><b>Как проверить:</b> запомнить или сфотографировать состояние бортового меню, показать
+CarPlay, минуту поработать крутилкой и нажатиями, отпустить экран кнопкой MENU и посмотреть, где
+оказалось меню и не изменилось ли что-нибудь. Если изменилось — придётся думать, как это
+обходить.</p></li>
+<li><h3>Подержать крутилку секунду</h3><p>Ждём в логе <code>F0 04 3B 48 45</code>. Этот кадр
+у нас предположительный, на него повешено «назад» в CarPlay.</p></li>
+<li><h3>Отправить кадр кнопки MODE от себя</h3><p><code>.venv/bin/python send.py /dev/ttyUSB0 F0 68 48 23</code>
+и следом <code>F0 68 48 A3</code>. Послушается ли радио кадра не от монитора.</p></li>
+<li><h3>Сохранить кодировку видеомодуля</h3><p>NavCoder с Windows-ноутбука, тем же кабелем
+и в той же точке. Сначала прочитать и сохранить в файл, менять — только потом.</p></li>
+</ol>
+
+<h2>Если что-то не так</h2>
+<p>Оба процесса пишут журнал в файлы, journald тут ничего не сохраняет.</p>
+<pre><code>tail -40 ~/logi/carplay.log
+tail -40 ~/logi/agent.log</code></pre>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>В журнале</th><th>Что значит</th></tr></thead>
+<tbody>
+<tr><td><code>НЕ УШЛО</code></td><td>Кадр не передался. Шина занята или провод шины не подключён</td></tr>
+<tr><td><code>ffplay ЗАВЕРШИЛСЯ С ОШИБКОЙ</code></td><td>Картинки не будет. Обычно нет доступа к экрану</td></tr>
+<tr><td><code>aplay ЗАВЕРШИЛСЯ С ОШИБКОЙ</code></td><td>Звука не будет. Занято устройство или не то имя</td></tr>
+<tr><td>нет <code>телефон подключился</code></td><td>Донгл не видит телефон. Wi-Fi и Bluetooth на телефоне включены?</td></tr>
+<tr><td><code>порт не найден</code></td><td>Кабель шины не воткнут в малину</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Собрать всё для разбора потом:</p>
+<pre><code>~/zapis.sh imya-proverki</code></pre>
+</div>
