@@ -19,7 +19,6 @@ import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import net from 'node:net'
 import process from 'node:process'
-import { Readable, Writable } from 'node:stream'
 
 import CarplayNode from 'node-carplay/node'
 import { DongleDriver, DEFAULT_CONFIG, SendCommand, SendTouch, TouchAction, decodeTypeMap, AudioCommand } from 'node-carplay/node'
@@ -332,17 +331,7 @@ function stopPlayer() {
 const audioStreams = new Map()
 const audioRetryAt = new Map()
 const audioVolumes = new Map()
-const AUDIO_DELAY_SECONDS = 0.5
-const MAX_RATE_SHIFT = 0.006
-const AUDIO_CHUNK_SECONDS = 0.02
-// Пустая очередь — ещё не голодание. Ниже по цепочке (труба и буфер aplay)
-// лежит до 0.7 с звука, и aplay забирает его рывками: очередь Node то копится
-// секунду, то разом уходит почти вся. Телефон шлёт пакет каждые 65 мс, поэтому
-// пока он присылает данные, ждём следующий пакет, а не подмешиваем тишину.
-// Тишина — только если данных нет дольше этого времени. Проверено 03.10.2026.
-const AUDIO_GAP_MS = 250
-// Задаётся журналом очереди (--zhurnal-ocheredi) в конце файла.
-let onQueueEvent = null
+const audioPlayers = new Set() // активные и доигрывающие процессы
 const AUDIO_FILE = arg('--zapis-zvuka', null)
 let audioCapture = null
 let audioCaptureBytes = 0
@@ -376,117 +365,28 @@ function captureAudio(message) {
   }
 }
 
-function stopAudio(type) {
-  const stream = audioStreams.get(type)
-  if (!stream) return
-  audioStreams.delete(type) // запоздалый exit не должен затронуть новый поток
-  clearTimeout(stream.gapTimer)
-  stream.source.destroy()
-  stream.sink.destroy()
+function closeAudio(stream, reason) {
+  if (!audioPlayers.delete(stream)) return
+  clearTimeout(stream.closeTimer)
+  if (audioStreams.get(stream.type) === stream) audioStreams.delete(stream.type)
   stream.child.stdin.destroy()
   stream.child.kill('SIGTERM')
+  if (reason) log(`aplay поток ${stream.type}: ${reason}`)
 }
 
 function stopAllAudio() {
-  for (const type of audioStreams.keys()) stopAudio(type)
+  for (const stream of audioPlayers) closeAudio(stream)
   audioVolumes.clear()
   audioRetryAt.clear()
 }
 
-function pushAudio(stream, buffer) {
-  stream.lastDataAt = performance.now()
-  if (!stream.pending.length) stream.queuedAt = stream.lastDataAt
-  stream.ended = false
-  stream.received += buffer.length
-  const limit = stream.target * 2
-  // Не копируем огромный всплеск целиком. Обрезка всегда по границе PCM-кадра.
-  if (stream.pending.length + buffer.length > limit) {
-    const keep = stream.target
-    stream.pending = buffer.length >= keep ? Buffer.from(buffer.subarray(-keep))
-      : Buffer.concat([stream.pending.subarray(-(keep - buffer.length)), buffer])
-    stream.phase = 0
-    stream.drops++
-    onQueueEvent?.(stream, 'обрезка')
-  } else {
-    stream.pending = Buffer.concat([stream.pending, buffer])
-  }
-  if (stream.waiting) resumeAudio(stream)
-}
-
-// Readable ждёт данных: read() ничего не отдал. Продолжаем по приходу пакета,
-// по OUTPUT_STOP или, если телефон замолчал, через AUDIO_GAP_MS.
-function waitAudio(stream) {
-  stream.waiting = true
-  clearTimeout(stream.gapTimer)
-  stream.gapTimer = setTimeout(() => resumeAudio(stream), AUDIO_GAP_MS)
-}
-
-function resumeAudio(stream) {
-  stream.waiting = false
-  clearTimeout(stream.gapTimer)
-  if (stream.source.destroyed) return
-  const chunk = takeAudio(stream, stream.chunkBytes)
-  if (chunk) stream.source.push(chunk)
-  else waitAudio(stream)
-}
-
-function takeAudio(stream, outBytes) {
-  const { frameBytes, rate } = stream
-  const outFrames = outBytes / frameBytes
-  const out = Buffer.alloc(outBytes)
-  if (!stream.primed) {
-    if (!stream.pending.length) return out
-    // Даже короткое уведомление начнёт играть через полсекунды, не ожидая
-    // недостижимого для него размера очереди. OUTPUT_STOP позволяет начать раньше.
-    if (stream.pending.length < stream.target && !stream.ended &&
-        performance.now() - stream.queuedAt < AUDIO_DELAY_SECONDS * 1000) return out
-    stream.primed = true
-    stream.fadeIn = Math.round(rate * 0.005)
-  }
-  const haveFrames = stream.pending.length / frameBytes
-  const error = (stream.pending.length - stream.target) / stream.target
-  const ratio = 1 + Math.max(-MAX_RATE_SHIFT, Math.min(MAX_RATE_SHIFT, error * 0.05))
-  // null — «подожди»: см. AUDIO_GAP_MS. +1 кадр нужен для интерполяции.
-  if (haveFrames < Math.ceil(stream.phase + outFrames * ratio) + 1 && !stream.ended &&
-      performance.now() - stream.lastDataAt < AUDIO_GAP_MS) return null
-  let pos = stream.phase
-  let produced = 0
-  for (; produced < outFrames && pos < haveFrames; produced++, pos += ratio) {
-    const idx = Math.floor(pos)
-    const frac = pos - idx
-    const next = Math.min(idx + 1, haveFrames - 1)
-    if (stream.gainFrames > 0) {
-      stream.gain += (stream.gainTarget - stream.gain) / stream.gainFrames--
-    }
-    const fadeFrames = Math.max(1, Math.round(rate * 0.005))
-    const fade = stream.fadeIn > 0 ? 1 - stream.fadeIn-- / fadeFrames : 1
-    for (let ch = 0; ch < frameBytes / 2; ch++) {
-      const a = stream.pending.readInt16LE(idx * frameBytes + ch * 2)
-      const b = stream.pending.readInt16LE(next * frameBytes + ch * 2)
-      out.writeInt16LE(Math.round((a + (b - a) * frac) * stream.gain * fade),
-        produced * frameBytes + ch * 2)
-    }
-  }
-  const consumed = Math.min(Math.floor(pos), haveFrames)
-  stream.pending = stream.pending.subarray(consumed * frameBytes)
-  stream.phase = pos - consumed
-  if (produced < outFrames || !stream.pending.length) {
-    // Голодание завершает волну один раз. Нельзя оставить один отсчёт и
-    // сбросить phase: тогда он повторяется каждые 20 мс бесконечно.
-    const tail = Math.min(produced, Math.max(1, Math.round(rate * 0.005)))
-    for (let i = 0; i < tail; i++) {
-      for (let ch = 0; ch < frameBytes / 2; ch++) {
-        const at = (produced - tail + i) * frameBytes + ch * 2
-        out.writeInt16LE(Math.round(out.readInt16LE(at) * (tail - i - 1) / tail), at)
-      }
-    }
-    stream.pending = Buffer.alloc(0)
-    stream.phase = 0
-    stream.primed = false
-    stream.underruns++
-    onQueueEvent?.(stream, 'опустошение')
-  }
-  return out
+function finishAudio(stream) {
+  if (audioStreams.get(stream.type) !== stream) return
+  audioStreams.delete(stream.type)
+  stream.ended = true
+  // EOF даёт aplay доиграть последний неполный период через ALSA drain.
+  stream.child.stdin.end()
+  stream.closeTimer = setTimeout(() => closeAudio(stream, 'таймаут завершения'), 15000)
 }
 
 function setAudioVolume(type, volume, seconds) {
@@ -504,24 +404,16 @@ function playAudio(message) {
   if (!message || typeof message !== 'object') return
   captureAudio(message)
   const type = message.audioType
-  // 1 — основной выход, 2 — навигация/уведомления; 3 — микрофон, не выход.
-  if (![1, 2].includes(type)) return
+  if (![1, 2].includes(type)) return // 3 — микрофон, не выход
   if (message.volumeDuration != null) {
     setAudioVolume(type, message.volume, message.volumeDuration)
-    log(`громкость потока ${type}: ${message.volume}, переход ${message.volumeDuration} с`)
     return
   }
   if (message.command != null) {
     log(`аудиокоманда ${AudioCommand[message.command] || message.command}, поток ${type}, формат ${message.decodeType}`)
     const stream = audioStreams.get(type)
-    // Команды могут относиться к прежнему формату (например, media после Siri).
-    // OUTPUT_STOP — конец подачи, а не повод уничтожить ещё не сыгранный хвост.
     if (message.command === AudioCommand.AudioOutputStop &&
-        stream?.decodeType === message.decodeType) {
-      stream.ended = true
-      if (stream.waiting) resumeAudio(stream) // доиграть хвост с затуханием
-    }
-    // Микрофонные команды исполняет CarplayNode; остальные — информационные.
+        stream?.decodeType === message.decodeType) finishAudio(stream)
     return
   }
   const format = decodeTypeMap[message.decodeType]
@@ -533,68 +425,104 @@ function playAudio(message) {
   }
   let stream = audioStreams.get(type)
   if (stream && stream.decodeType !== message.decodeType) {
-    stopAudio(type)
+    finishAudio(stream)
     stream = null
   }
   if (!stream) {
     if (performance.now() < (audioRetryAt.get(type) || 0)) return
+    // ponytail: максимум четыре процесса, включая доигрывающие хвосты.
+    // Неограниченный поток смен формата — ошибка, а не повод плодить aplay.
+    if (audioPlayers.size >= 4) {
+      log(`звук ${type}: слишком много незавершённых потоков`)
+      audioRetryAt.set(type, performance.now() + 3000)
+      return
+    }
     const rate = format.frequency
     const frameBytes = format.channel * 2
     const child = spawn('aplay', [
       '-t', 'raw', '-f', 'S16_LE', '-r', String(rate), '-c', String(format.channel),
-      // На живом WM8960 period_time округляется до 125 мс. Запрос 200 мс
-      // даёт лишь два периода; 500 мс позволяет использовать все три (375 мс).
+      // Сохраняем проверенные на WM8960 параметры ALSA; своего буфера нет.
       '-D', AUDIO_DEVICE, '--buffer-time=500000', '--period-time=40000',
     ], { stdio: ['pipe', 'ignore', 'pipe'] })
     const gain = audioVolumes.get(type)?.volume ?? 1
-    stream = { child, decodeType: message.decodeType, rate, frameBytes,
-      pending: Buffer.alloc(0), phase: 0, primed: false, queuedAt: 0, ended: false,
-      target: Math.round(rate * AUDIO_DELAY_SECONDS) * frameBytes,
-      gain, gainTarget: gain, gainFrames: 0, fadeIn: 0,
-      received: 0, drops: 0, underruns: 0, measuredAt: performance.now() }
-    const chunkBytes = Math.round(rate * AUDIO_CHUNK_SECONDS) * frameBytes
-    stream.chunkBytes = chunkBytes
+    stream = { type, child, decodeType: message.decodeType, rate, frameBytes,
+      gain, gainTarget: gain, gainFrames: 0, ended: false,
+      received: 0, packets: 0, lastPacketAt: null, maxGapMs: 0, underruns: 0,
+      measuredAt: performance.now() }
     const current = stream
-    // Стандартный pipe прекращает чтение при write(false) и ждёт drain.
-    // Темп задаёт потребление aplay/ALSA, а не независимый таймер Node.
-    stream.source = new Readable({ highWaterMark: chunkBytes,
-      read() {
-        const chunk = takeAudio(current, chunkBytes)
-        if (chunk) this.push(chunk)
-        else waitAudio(current)
-      } })
     audioStreams.set(type, stream)
+    audioPlayers.add(stream)
     const failed = (reason) => {
-      if (audioStreams.get(type) !== current) return
-      log(`aplay поток ${type}: ${reason}`)
-      stopAudio(type)
-      audioRetryAt.set(type, performance.now() + 3000)
+      if (!audioPlayers.has(current)) return
+      if (audioStreams.get(type) === current) audioRetryAt.set(type, performance.now() + 3000)
+      closeAudio(current, reason)
     }
     child.on('error', (err) => failed(err.message))
     child.stdin.on('error', (err) => failed(err.message))
-    child.on('exit', (code, signal) => failed(`завершился: код ${code}, сигнал ${signal}`))
-    child.stderr.on('data', (chunk) => log(`aplay поток ${type}:`, chunk.toString().trim()))
-    stream.source.on('error', (err) => failed(err.message))
-    // Ограничиваем ещё и Node-очередь stdin одной порцией: его стандартный
-    // highWaterMark может вместить секунды моно. Остальной запас — трубы ОС/ALSA.
-    stream.sink = new Writable({ highWaterMark: chunkBytes,
-      write(chunk, encoding, done) { child.stdin.write(chunk, done) } })
-    stream.sink.on('error', (err) => failed(err.message))
-    stream.source.pipe(stream.sink)
+    child.on('exit', (code, signal) => {
+      if (current.ended && code === 0) {
+        clearTimeout(current.closeTimer)
+        audioPlayers.delete(current)
+      } else failed(`завершился: код ${code}, сигнал ${signal}`)
+    })
+    child.stderr.on('data', (chunk) => {
+      const text = chunk.toString().trim()
+      log(`aplay поток ${type}:`, text)
+      // stderr может разбить слово между чанками; сохраняем только короткий хвост.
+      const diagnostic = (current.stderrTail || '') + text
+      current.underruns += (diagnostic.match(/underrun!!!/g) || []).length
+      current.stderrTail = diagnostic.slice(-10).replace(/underrun!!!/g, '')
+      if (diagnostic.includes('underrun!!!')) {
+        const age = current.lastPacketAt == null ? 'нет PCM' :
+          `${Math.round(performance.now() - current.lastPacketAt)} мс`
+        log(`недогрузка ${type}/${current.decodeType}: последний PCM ${age}, ` +
+          `max интервал ${Math.round(current.maxGapMs)} мс, stdin ${child.stdin.writableLength} Б`)
+      }
+    })
     log(`aplay запущен: поток ${type}, ${rate}:${format.channel}, устройство ${AUDIO_DEVICE}`)
   }
-  pushAudio(stream, Buffer.from(data.buffer, data.byteOffset, data.byteLength))
+  // USB нельзя остановить ради одного аудиопотока: там же видео и команды.
+  // ponytail: штатная очередь Writable, максимум 4 с PCM; при зависшем выходе
+  // явно завершаем поток с ошибкой. Нет скрытой обрезки или ускорения звука.
+  if (stream.child.stdin.writableLength + data.byteLength > stream.rate * stream.frameBytes * 4) {
+    audioRetryAt.set(type, performance.now() + 3000)
+    closeAudio(stream, 'выход не успевает: очередь превысила 4 с PCM')
+    return
+  }
+  // Копия: USB может переиспользовать исходный буфер до завершения записи.
+  const pcm = Buffer.from(new Uint8Array(data.buffer, data.byteOffset, data.byteLength))
+  // Только команды громкости CarPlay (например, приглушение музыки навигацией).
+  // При gain=1 PCM побайтно неизменен; частоту и смешивание обслуживает ALSA.
+  if (stream.gain !== 1 || stream.gainFrames) {
+    for (let at = 0; at < pcm.length; at += stream.frameBytes) {
+      if (stream.gainFrames > 0) stream.gain += (stream.gainTarget - stream.gain) / stream.gainFrames--
+      for (let ch = 0; ch < stream.frameBytes; ch += 2) {
+        pcm.writeInt16LE(Math.round(pcm.readInt16LE(at + ch) * stream.gain), at + ch)
+      }
+    }
+  }
+  const arrivedAt = performance.now()
+  if (stream.lastPacketAt != null) {
+    stream.maxGapMs = Math.max(stream.maxGapMs, arrivedAt - stream.lastPacketAt)
+  }
+  stream.lastPacketAt = arrivedAt
+  stream.packets++
+  stream.received += pcm.length
+  stream.child.stdin.write(pcm)
 }
 
 const audioStatsTimer = setInterval(() => {
   for (const [type, stream] of audioStreams) {
     const now = performance.now()
     const incoming = Math.round(stream.received * 1000 / (now - stream.measuredAt))
-    log(`звук ${type}/${stream.decodeType}: очередь ${stream.pending.length}/${stream.target}, ` +
+    log(`звук ${type}/${stream.decodeType}: stdin ${stream.child.stdin.writableLength} Б, ` +
       `вход ${incoming} Б/с, номинал ${stream.rate * stream.frameBytes}, ` +
-      `обрезки ${stream.drops}, опустошения ${stream.underruns}`)
+      `пакетов ${stream.packets}, max интервал ${Math.round(stream.maxGapMs)} мс, ` +
+      `недогрузок ${stream.underruns}`)
     stream.measuredAt = now
     stream.received = 0
+    stream.packets = 0
+    stream.maxGapMs = 0
   }
 }, 5000)
 
@@ -1032,29 +960,8 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
   })
 }
 
-// Подробный журнал очереди для поиска пропаданий звука. Включается
-// параметром --zhurnal-ocheredi <файл>; без него ничего не пишет.
-// Строка: время мс, поток, очередь Б, буфер Readable, буфер sink,
-// буфер stdin aplay, primed, обрезки, опустошения, задержка таймера мс.
-const QUEUE_LOG = arg('--zhurnal-ocheredi', null)
-if (QUEUE_LOG) {
-  let queueLog = fs.createWriteStream(QUEUE_LOG, { flags: 'a' })
-  queueLog.on('error', (err) => { log('журнал очереди недоступен:', err.message); queueLog = null })
-  let expected = performance.now() + 100
-  setInterval(() => {
-    const now = performance.now()
-    const lag = Math.round(now - expected)
-    expected = now + 100
-    for (const [type, st] of audioStreams) {
-      queueLog?.write(`${Date.now()} ${type} ${st.pending.length} ${st.source.readableLength} ` +
-        `${st.sink.writableLength} ${st.child.stdin.writableLength} ${st.primed ? 1 : 0} ` +
-        `${st.drops} ${st.underruns} ${lag}\n`)
-    }
-  }, 100)
-  onQueueEvent = (stream, what) => queueLog?.write(`${Date.now()} ! ${what} ` +
-    `очередь ${stream.pending.length} stdin ${stream.child.stdin.writableLength}\n`)
-  log('журнал очереди:', QUEUE_LOG)
-}
+// Старый systemd drop-in совместим, но очереди ресемплера больше нет.
+if (arg('--zhurnal-ocheredi', null)) log('журнал очереди отменён: PCM передаётся напрямую в ALSA')
 
 startSocket().then(supervise).catch((err) => {
   log('надзор упал:', err?.message || err)

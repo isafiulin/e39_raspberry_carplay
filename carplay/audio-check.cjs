@@ -16,19 +16,26 @@ const decodeTypeMap = Object.fromEntries([
   [5, 16000, 1], [6, 24000, 1], [7, 16000, 2],
 ].map(([id, frequency, channel]) => [id, { frequency, channel, bitrate: 16 }]))
 let now = 0
+let blocked = false
 const children = []
 const context = vm.createContext({
-  Buffer, Readable, Writable, decodeTypeMap, AudioCommand: { AudioOutputStop: 2 },
+  Buffer, decodeTypeMap, AudioCommand: { AudioOutputStop: 2 },
   performance: { now: () => now }, AUDIO_DEVICE: 'carplay',
   arg(name, fallback) { return fallback }, log() {}, setInterval() {},
   setTimeout, clearTimeout,
   spawn(name, args) {
+    assert.equal(name, 'aplay')
     const child = new EventEmitter()
     child.args = args
     child.writes = []
     child.callbacks = []
     child.stdin = new Writable({ highWaterMark: 32,
-      write(chunk, encoding, done) { child.writes.push(chunk); child.callbacks.push(done) } })
+      write(chunk, encoding, done) {
+        child.writes.push(Buffer.from(chunk))
+        if (blocked) child.callbacks.push(done)
+        else done()
+      } })
+    child.stdin.on('finish', () => child.emit('exit', 0))
     child.stderr = new EventEmitter()
     child.kill = () => { child.killed = true }
     children.push(child)
@@ -38,170 +45,113 @@ const context = vm.createContext({
 vm.runInContext(section('// --- звук ', '// --- сокет'), context)
 const run = (code) => vm.runInContext(code, context)
 function message(decodeType, audioType = 1) {
-  return { decodeType, audioType, volume: 0, data: new Int16Array(1000) }
+  return { decodeType, audioType, data: new Int16Array([123, -123, 32767, -32768]) }
 }
 function play(value) { context.message = value; run('playAudio(message)') }
-function state(rate = 44100, channels = 2, frames = 10000) {
-  return { rate, frameBytes: channels * 2, pending: Buffer.alloc(frames * channels * 2),
-    target: Math.round(rate * 0.5) * channels * 2, phase: 0, primed: true,
-    queuedAt: now, gain: 1, gainTarget: 1, gainFrames: 0, fadeIn: 0,
-    underruns: 0, received: 0, drops: 0 }
-}
-function take(s, frames = 882) {
-  context.testState = s; context.outBytes = frames * s.frameBytes
-  return run('takeAudio(testState, outBytes)')
-}
 async function check() {
   for (const [id, format] of Object.entries(decodeTypeMap)) {
     play(message(Number(id)))
     const child = children.at(-1)
     assert.equal(child.args[child.args.indexOf('-r') + 1], String(format.frequency))
     assert.equal(child.args[child.args.indexOf('-c') + 1], String(format.channel))
+    assert.deepEqual(child.writes[0], Buffer.from(message(Number(id)).data.buffer))
+    await turn() // старый формат доигрывает EOF
   }
+  run('stopAllAudio()')
+  play(message(5))
   const main = run('audioStreams.get(1)')
-  play(message(5, 2))
+  play(message(2, 2))
   const nav = run('audioStreams.get(2)')
-  assert.equal(run('audioStreams.get(1)'), main)
   assert.notEqual(main, nav)
+  const count = children.length
   play(message(5, 3))
-  assert.equal(run('audioStreams.size'), 2)
-  play({ ...message(99), frequency: 44100, channel: 2 })
-  assert.equal(run('audioStreams.get(1)'), main) // неизвестный тип не маскируется fallback
-  const old = main.child
-  play(message(4))
-  const current = run('audioStreams.get(1)')
-  old.emit('exit', 0)
-  assert.equal(run('audioStreams.get(1)'), current)
-  const before = current.pending.length
-  play({ decodeType: 4, audioType: 1, data: Buffer.alloc(3) })
-  assert.equal(current.pending.length, before)
-  // Учитываем byteOffset, а не весь backing ArrayBuffer.
+  play(message(99))
+  play({ decodeType: 5, audioType: 1, data: Buffer.alloc(3) })
+  assert.equal(children.length, count)
+  assert.equal(main.child.writes.length, 1)
   const backing = Buffer.alloc(24, 99)
   backing.fill(0, 4, 20)
-  play({ decodeType: 4, audioType: 1, data: backing.subarray(4, 20) })
-  assert.ok(current.pending.subarray(-16).every((b) => b === 0))
+  play({ decodeType: 5, audioType: 1, data: backing.subarray(4, 20) })
+  assert.deepEqual(main.child.writes.at(-1), Buffer.alloc(16))
 
-  for (const channels of [1, 2]) {
-    const s = state(44100, channels)
-    for (let i = 0; i < s.pending.length; i += 2) s.pending.writeInt16LE(12345, i)
-    const output = take(s)
-    for (let i = 0; i < output.length; i += 2) assert.equal(output.readInt16LE(i), 12345)
-  }
-  for (const [frames, ratio] of [[12000, 0.994], [26000, 1.006]]) {
-    const s = state(44100, 2, frames)
-    for (let i = 0; i < frames; i++) {
-      s.pending.writeInt16LE(i, i * 4); s.pending.writeInt16LE(-i, i * 4 + 2)
-    }
-    take(s)
-    const output = take(s)
-    assert.equal(output.readInt16LE(0), Math.round(882 * ratio))
-    assert.equal(output.readInt16LE(2), -Math.round(882 * ratio))
-  }
-  // Регрессия: последний отсчёт не повторяется после голодания.
-  const last = state(44100, 1, 1)
-  last.pending.writeInt16LE(12000)
-  take(last)
-  assert.equal(last.pending.length, 0)
-  for (let i = 0; i < 10; i++) assert.ok(take(last).every((b) => b === 0))
-  // Короткое уведомление стартует по таймауту, затем доигрывает полностью.
-  const short = state(44100, 1, 1000)
-  short.primed = false
-  for (let i = 0; i < short.pending.length; i += 2) short.pending.writeInt16LE(5000, i)
-  assert.ok(take(short).every((b) => b === 0))
-  assert.equal(short.pending.length, 2000)
-  now += 500
-  assert.ok(take(short).some((b) => b !== 0))
-  take(short)
-  assert.equal(short.pending.length, 0)
-  assert.ok(take(short).every((b) => b === 0))
-  // Мгновенно пустая очередь при живом потоке — ожидание, а не тишина.
-  const gap = state(44100, 2, 100)
-  gap.lastDataAt = now
-  assert.equal(take(gap), null)
-  assert.equal(gap.pending.length, 400)
-  assert.equal(gap.underruns, 0)
-  assert.equal(gap.primed, true)
-  now += 249
-  assert.equal(take(gap), null)
-  now += 1
-  assert.ok(take(gap).length > 0) // телефон молчит 250 мс: настоящее голодание
-  assert.equal(gap.underruns, 1)
-  const stop = state(44100, 2, 100)
-  stop.lastDataAt = now
-  stop.ended = true
-  assert.ok(take(stop).length > 0) // OUTPUT_STOP доигрывает хвост сразу
-  assert.equal(stop.underruns, 1)
-  // Пришёл пакет — ожидающий поток продолжает без подмешанной тишины.
-  const podhvachen = state(44100, 2, 100)
-  const pushed = []
-  podhvachen.lastDataAt = now
-  podhvachen.chunkBytes = 882 * 4
-  podhvachen.source = { destroyed: false, push(chunk) { pushed.push(chunk) } }
-  context.testState = podhvachen
-  run('waitAudio(testState)')
-  context.packet = Buffer.alloc(2880 * 4, 7)
-  run('pushAudio(testState, packet)')
-  assert.equal(podhvachen.waiting, false)
-  assert.equal(pushed.length, 1)
-  assert.equal(pushed[0].length, 882 * 4)
-  assert.equal(podhvachen.underruns, 0)
-  clearTimeout(podhvachen.gapTimer)
-  // Большой всплеск ограничен целевым запасом и не ломает кадры.
-  context.testState = state()
-  run('pushAudio(testState, Buffer.alloc(1000000))')
-  assert.equal(context.testState.pending.length, context.testState.target)
-  assert.equal(context.testState.pending.length % 4, 0)
-  // Минута непрерывной подачи быстрее/медленнее выхода на 0.531%.
-  for (const drift of [0.00531, -0.00531]) {
-    const s = state(8000, 1, 4000)
-    let incoming = 0
-    context.testState = s
-    for (let tick = 0; tick < 3000; tick++) {
-      const total = Math.floor((tick + 1) * 160 * (1 + drift))
-      context.packet = Buffer.alloc((total - incoming) * 2)
-      incoming = total
-      run('pushAudio(testState, packet)')
-      take(s, 160)
-    }
-    assert.equal(s.drops, 0)
-    assert.equal(s.underruns, 0)
-    assert.ok(s.pending.length > s.target * 0.8 && s.pending.length < s.target * 1.2)
-  }
-  const fading = state(44100, 1)
-  for (let i = 0; i < fading.pending.length; i += 2) fading.pending.writeInt16LE(10000, i)
-  fading.gainTarget = 0.5
-  fading.gainFrames = 882
-  const faded = take(fading)
-  assert.equal(faded.readInt16LE(881 * 2), 5000)
+  // 1.2 с речи: начало и конец переданы побайтно, без ускорения и обрезки.
+  const voice = Buffer.alloc(16000 * 2 * 1.2)
+  for (let i = 0; i < voice.length / 2; i++) voice.writeInt16LE(i % 16000, i * 2)
+  play({ decodeType: 5, audioType: 1, data: voice })
+  assert.deepEqual(main.child.writes.at(-1), voice)
+  now += 116
+  play(message(5))
+  assert.equal(main.maxGapMs, 116)
+  main.child.stderr.emit('data', Buffer.from('under'))
+  main.child.stderr.emit('data', Buffer.from('run!!! (at least 20 ms long)'))
+  assert.equal(main.underruns, 1)
+  main.child.stderr.emit('data', Buffer.from('another diagnostic'))
+  assert.equal(main.underruns, 1)
+  const writes = main.child.writes.length
+  await turn()
+  assert.equal(main.child.writes.length, writes) // тишина не синтезируется
 
-  // Управление не попадает в PCM; stop другого формата не закрывает текущий.
+  // Приглушение по команде сохраняет количество PCM-кадров и не меняет вход.
+  play({ decodeType: 5, audioType: 1, volume: 0.5, volumeDuration: 0 })
+  const original = message(5)
+  play(original)
+  const quiet = main.child.writes.at(-1)
+  assert.equal(quiet.readInt16LE(0), 62)
+  assert.equal(quiet.length, original.data.byteLength)
+  assert.equal(original.data[0], 123)
+  play({ decodeType: 5, audioType: 1, volume: NaN, volumeDuration: 0 })
+  assert.equal(main.gainTarget, 0.5)
+  play({ decodeType: 5, audioType: 1, volume: 1, volumeDuration: 4 / 16000 })
+  play(original)
+  assert.equal(main.child.writes.at(-1).readInt16LE(6), -32768)
+
+  // STOP чужого формата не закрывает текущий; правильный даёт EOF и хвост.
+  play({ decodeType: 2, audioType: 1, command: 2 })
+  assert.equal(main.child.stdin.writableEnded, false)
   play({ decodeType: 5, audioType: 1, command: 2 })
-  assert.equal(current.ended, false)
-  play({ decodeType: 4, audioType: 1, command: 2 })
-  assert.equal(current.ended, true)
-  play({ decodeType: 4, audioType: 1, volume: 0.1, volumeDuration: 0.5 })
-  assert.equal(current.gainTarget, 0.1)
-  assert.equal(current.gainFrames, 24000)
-  play({ decodeType: 4, audioType: 1, volume: NaN, volumeDuration: 0.5 })
-  assert.equal(current.gainTarget, 0.1)
-  // Реальные Readable/Writable: получатель заблокирован, генерация останавливается.
+  assert.equal(main.child.stdin.writableEnded, true)
+  assert.equal(main.child.killed, undefined)
   await turn()
-  const writes = current.child.writes.length
-  assert.equal(writes, 1)
-  const queued = current.source.readableLength
-  await turn()
-  assert.equal(current.child.writes.length, writes)
-  assert.equal(current.source.readableLength, queued)
-  assert.ok(queued <= 48000 * 4 * 0.02)
-  current.child.callbacks.shift()()
-  await turn()
-  assert.equal(current.child.writes.length, writes + 1)
-  current.child.emit('error', new Error('test failure'))
-  assert.equal(run('audioStreams.has(1)'), false)
-  const count = children.length
-  play(message(4))
-  assert.equal(children.length, count) // пауза после отказа
+  assert.equal(run('audioPlayers.has(audioStreams.get(2))'), true)
   run('stopAllAudio()')
+
+  // Медленный получатель: Writable хранит все пакеты в порядке, EOF ждёт их.
+  blocked = true
+  play(message(5))
+  const slow = children.at(-1)
+  const expected = [Buffer.from(message(5).data.buffer)]
+  for (let i = 0; i < 8; i++) {
+    const packet = Buffer.alloc(640, i)
+    expected.push(Buffer.from(packet))
+    play({ decodeType: 5, audioType: 1, data: packet })
+    packet.fill(255) // буфер USB переиспользован
+  }
+  play({ decodeType: 5, audioType: 1, command: 2 })
+  assert.equal(slow.stdin.writableFinished, false)
+  // Новый формат может стартовать, поздний exit прежнего его не удаляет.
+  play(message(2))
+  const newer = run('audioStreams.get(1)')
+  while (slow.callbacks.length) slow.callbacks.shift()()
+  await turn()
+  assert.deepEqual(Buffer.concat(slow.writes), Buffer.concat(expected))
+  assert.equal(slow.stdin.writableFinished, true)
+  assert.equal(slow.killed, undefined)
+  assert.equal(run('audioStreams.get(1)'), newer)
+  newer.child.emit('error', new Error('test failure'))
+  assert.equal(run('audioStreams.has(1)'), false)
+  const failedCount = children.length
+  play(message(2))
+  assert.equal(children.length, failedCount)
+  run('stopAllAudio()')
+
+  // Зависший выход ограничен по памяти и сообщает отказ вместо скрытой обрезки.
+  play(message(5))
+  const stuck = children.at(-1)
+  play({ decodeType: 5, audioType: 1, data: Buffer.alloc(16000 * 2 * 4) })
+  assert.equal(stuck.killed, true)
+  assert.equal(run('audioPlayers.size'), 0)
+  run('stopAllAudio()')
+  blocked = false
 
   // Видео: ошибка запуска обрабатывается, поздний exit не убивает новое окно.
   const videos = []
