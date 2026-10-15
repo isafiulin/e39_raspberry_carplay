@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 
 from ibus import Frame, describe
@@ -14,6 +15,8 @@ from ibus.port import Bus, CollisionError
 
 from .carplay import Backend
 from .logs import setup
+from .pin import LogHold
+from .pitanie import Hold, Power, PowerCommand, Release
 from .state import Agent, Back, Command, HidePicture, Navigate, LeaveTelevision, PressMode, Select, ShowPicture, Track
 
 DIA_AS_MONITOR = 0x3B   # прикидываемся монитором: кадры картинки шлёт он
@@ -33,13 +36,16 @@ RETURN_AUDIO = Frame(src=DIA_AS_MONITOR, dst=RADIO, data=bytes([0x4E, 0x00, 0x00
 
 
 class Runner:
-    def __init__(self, bus: Bus | None, backend: Backend, *, transmit: bool = False, verbose: bool = False) -> None:
+    def __init__(self, bus: Bus | None, backend: Backend, *, transmit: bool = False, verbose: bool = False, hold=None) -> None:
         self.bus = bus
         self.backend = backend
         self.transmit = transmit
         self.verbose = verbose
         self.agent = Agent()
         self.log = setup("agent", verbose=verbose)
+        # Без платы питания (стенд, кабель KKL) HOLD только пишется в журнал.
+        self.hold = hold or LogHold(self.log)
+        self.power = Power.start(time.monotonic())
 
     def replay(self, frames) -> None:
         """Прогнать готовые кадры вместо живой шины. Передача всегда выключена."""
@@ -63,7 +69,9 @@ class Runner:
                     self.log.info("телефон %s", "подключился" if self.agent.phone else "пропал")
                 self._apply(commands)
             self._apply(self.agent.tick(now))
+            self._power(self.power.tick(now))
             for frame in self.bus.poll():
+                self._power(self.power.on_frame(time.monotonic()))
                 self._on_frame(frame)
             time.sleep(0.002)
 
@@ -79,6 +87,21 @@ class Runner:
             return
         self.log.info("%s  %s", frame.hex(), ev)
         self._apply(self.agent.on_event(ev))
+
+    def _power(self, commands: list[PowerCommand]) -> None:
+        for command in commands:
+            if isinstance(command, Release):
+                # Питание может пропасть сразу после HOLD = 0, поэтому
+                # сначала всё на диск. Система только для чтения, пишется
+                # лишь журнал.
+                self.log.info("шина молчит, отпускаю питание (HOLD = 0)")
+                for handler in self.log.handlers:
+                    handler.flush()
+                os.sync()
+                self.hold.set(False)
+            elif isinstance(command, Hold):
+                self.log.info("HOLD = 1: %s", command.why)
+                self.hold.set(True)
 
     def _apply(self, commands: list[Command]) -> None:
         for command in commands:

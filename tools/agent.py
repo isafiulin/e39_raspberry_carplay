@@ -15,6 +15,9 @@
 
     # то же, но по-настоящему
     python3 agent.py /dev/ttyUSB0 --telefon --razreshit-peredachu
+
+    # на плате питания из docs/20: шина через L9637D, малина сама отпускает питание
+    python3 agent.py /dev/serial0 --sokset --razreshit-peredachu --pitanie
 """
 
 from __future__ import annotations
@@ -27,6 +30,7 @@ from pathlib import Path
 from agent.carplay import LogBackend
 from agent.logs import LOG_DIR, setup
 from agent.dongle import DEFAULT_PATH, DongleBackend
+from agent.pin import PinctrlHold
 from agent.replay import frames_from_log
 from agent.runner import Runner
 from ibus.port import Bus
@@ -42,6 +46,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--telefon", action="store_true", help="считать, что телефон подключён (для стенда без донгла)")
     parser.add_argument("--sokset", nargs="?", const=DEFAULT_PATH, help=f"работать с настоящим процессом CarPlay через сокет (по умолчанию {DEFAULT_PATH})")
     parser.add_argument("--razreshit-peredachu", action="store_true", dest="transmit", help="действительно отправлять кадры в шину")
+    parser.add_argument("--pitanie", action="store_true", help="управлять питанием через HOLD на GPIO26 (только на плате из docs/20)")
     parser.add_argument("--vse-kadry", action="store_true", dest="verbose", help="писать в журнал и те кадры, которые нам неинтересны")
     args = parser.parse_args(argv)
 
@@ -78,7 +83,8 @@ def main(argv: list[str] | None = None) -> int:
             waiting_logged = False
             try:
                 with Bus.open(str(device)) as bus:
-                    Runner(bus, backend, transmit=args.transmit, verbose=args.verbose).run()
+                    hold = PinctrlHold(log) if args.pitanie else None
+                    Runner(bus, backend, transmit=args.transmit, verbose=args.verbose, hold=hold).run()
             except OSError as exc:
                 # Кабель выдернули или адаптер отвалился. Это не повод
                 # прекращать работу: ждём и пробуем снова.

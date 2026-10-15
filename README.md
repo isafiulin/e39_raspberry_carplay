@@ -109,6 +109,7 @@ not AUX, so AUX needs its own cable to the BM54.
 | [docs/16-itogi-30-09-2026.html](docs/16-itogi-30-09-2026.html) | Day summary 30.09.2026: what the bus revealed. Start reading here |
 | [docs/17-itogi-01-10-2026.html](docs/17-itogi-01-10-2026.html) | Day summary 01.10.2026: everything working in the car |
 | [docs/18-kompakt-zero2w.html](docs/18-kompakt-zero2w.html) | Compact build on Raspberry Pi Zero 2 W |
+| [docs/20-plata-pitaniya-i-shiny.html](docs/20-plata-pitaniya-i-shiny.html) | Power and I-Bus board: L9637D on the Pi UART instead of the KKL cable, wake on bus activity, Pi fully unpowered while the car sleeps (design, not yet built) |
 
 Screenshots: [CarPlay on a 4.3" composite monitor](docs/images/carplay-na-monitore-4.3.jpg),
 [framebuffer capture 720×576](docs/images/carplay-720x576.png).
